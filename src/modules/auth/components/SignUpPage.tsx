@@ -8,9 +8,9 @@ import { AuthLayout } from "./AuthLayout";
 import { AuthPageFallback } from "./AuthPageFallback";
 import { IntentBanner } from "./IntentBanner";
 import { OAuthButtons } from "./OAuthButtons";
-import { SignInForm } from "./SignInForm";
+import { SignUpForm } from "./SignUpForm";
 
-function LoginPageContent() {
+function SignUpPageContent() {
   const searchParams = useSearchParams();
   const intent = searchParams.get("intent");
 
@@ -18,7 +18,7 @@ function LoginPageContent() {
     <AuthLayout>
       <AuthCard>
         <IntentBanner intent={intent} />
-        <SignInForm intent={intent} />
+        <SignUpForm intent={intent} />
         <AuthDivider />
         <OAuthButtons />
       </AuthCard>
@@ -26,10 +26,10 @@ function LoginPageContent() {
   );
 }
 
-export function LoginPage() {
+export function SignUpPage() {
   return (
     <Suspense fallback={<AuthPageFallback />}>
-      <LoginPageContent />
+      <SignUpPageContent />
     </Suspense>
   );
 }
