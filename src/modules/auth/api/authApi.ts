@@ -22,3 +22,11 @@ export async function continueWithPassword(params: {
 export async function getCurrentUser(): Promise<CurrentUser> {
   return apiRequest<CurrentUser>("/api/v1/auth/me");
 }
+
+export async function refreshSession(): Promise<void> {
+  await apiRequest<null>("/api/v1/auth/refresh", { method: "POST" });
+}
+
+export async function logout(): Promise<void> {
+  await apiRequest<null>("/api/v1/auth/logout", { method: "POST" });
+}
