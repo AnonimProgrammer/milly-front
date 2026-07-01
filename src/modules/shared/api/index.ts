@@ -1,2 +1,3 @@
-/** REST client — to be implemented */
-export {};
+export { apiRequest } from "./client";
+export { getApiBaseUrl } from "./config";
+export { ApiError, type ApiResponse } from "./types";
