@@ -9,7 +9,7 @@ export default async function StaffRoute({ params }: StaffRouteProps) {
   const { venueId } = await params;
 
   return (
-    <RequireAuth intent="join-venue">
+    <RequireAuth>
       <StaffPortalPage venueId={venueId} />
     </RequireAuth>
   );

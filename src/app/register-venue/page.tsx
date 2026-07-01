@@ -3,7 +3,7 @@ import { RegisterVenuePage } from "@/modules/venue";
 
 export default function RegisterVenueRoute() {
   return (
-    <RequireAuth intent="register-venue">
+    <RequireAuth>
       <RegisterVenuePage />
     </RequireAuth>
   );
