@@ -1,3 +1,4 @@
+import { RequireAuth } from "@/modules/auth";
 import { StaffPortalPage } from "@/modules/staff";
 
 type StaffRouteProps = {
@@ -7,5 +8,9 @@ type StaffRouteProps = {
 export default async function StaffRoute({ params }: StaffRouteProps) {
   const { venueId } = await params;
 
-  return <StaffPortalPage venueId={venueId} />;
+  return (
+    <RequireAuth>
+      <StaffPortalPage venueId={venueId} />
+    </RequireAuth>
+  );
 }

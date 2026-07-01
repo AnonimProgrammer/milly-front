@@ -8,6 +8,7 @@ import { AuthLayout } from "./AuthLayout";
 import { AuthPageFallback } from "./AuthPageFallback";
 import { IntentBanner } from "./IntentBanner";
 import { OAuthButtons } from "./OAuthButtons";
+import { RedirectIfAuthenticated } from "./RedirectIfAuthenticated";
 import { SignInForm } from "./SignInForm";
 
 function LoginPageContent() {
@@ -15,14 +16,16 @@ function LoginPageContent() {
   const intent = searchParams.get("intent");
 
   return (
-    <AuthLayout>
-      <AuthCard>
-        <IntentBanner intent={intent} />
-        <SignInForm intent={intent} />
-        <AuthDivider />
-        <OAuthButtons />
-      </AuthCard>
-    </AuthLayout>
+    <RedirectIfAuthenticated intent={intent}>
+      <AuthLayout>
+        <AuthCard>
+          <IntentBanner intent={intent} />
+          <SignInForm intent={intent} />
+          <AuthDivider />
+          <OAuthButtons />
+        </AuthCard>
+      </AuthLayout>
+    </RedirectIfAuthenticated>
   );
 }
 
