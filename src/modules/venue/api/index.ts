@@ -1,2 +1,2 @@
-export { getMyVenues } from "./venueApi";
-export type { VenueMembership, VenueRole } from "./types";
+export { createVenue, getMyVenues } from "./venueApi";
+export type { CreateVenueRequest, CreateVenueResponse, VenueMembership, VenueRole } from "./types";
