@@ -7,17 +7,21 @@ import { AuthPageFallback } from "./AuthPageFallback";
 
 type RequireAuthProps = {
   children: React.ReactNode;
+  loginIntent?: string;
 };
 
-export function RequireAuth({ children }: RequireAuthProps) {
+export function RequireAuth({ children, loginIntent }: RequireAuthProps) {
   const { status } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (status === "anonymous") {
-      router.replace("/");
+      const redirectPath = loginIntent
+        ? `/login?intent=${encodeURIComponent(loginIntent)}`
+        : "/";
+      router.replace(redirectPath);
     }
-  }, [status, router]);
+  }, [status, router, loginIntent]);
 
   if (status === "loading") {
     return <AuthPageFallback />;
