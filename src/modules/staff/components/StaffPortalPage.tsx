@@ -150,6 +150,22 @@ export function StaffPortalPage({ venueId }: StaffPortalPageProps) {
     setOrders((prev) => prev.filter((order) => order.id !== orderId));
   };
 
+  // Tables update handlers
+  const handleAddTable = (table: string) => {
+    setTables((prev) =>
+      [...prev, table].sort((a, b) => {
+        const numA = parseInt(a.replace(/\D/g, ""), 10);
+        const numB = parseInt(b.replace(/\D/g, ""), 10);
+        if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+        return a.localeCompare(b);
+      })
+    );
+  };
+
+  const handleRemoveTable = (table: string) => {
+    setTables((prev) => prev.filter((t) => t !== table));
+  };
+
   // Force active tab to orders if WAITER role is selected
   const handleRoleChange = (newRole: "MANAGER" | "WAITER") => {
     setRole(newRole);
@@ -173,11 +189,17 @@ export function StaffPortalPage({ venueId }: StaffPortalPageProps) {
           />
         );
       case "qr":
-        return <QRSection />;
+        return <QRSection tables={tables} />;
       case "menu":
         return <MenuSection />;
       case "tables":
-        return <TablesSection />;
+        return (
+          <TablesSection
+            tables={tables}
+            onAddTable={handleAddTable}
+            onRemoveTable={handleRemoveTable}
+          />
+        );
       default:
         return (
           <OrdersSection
