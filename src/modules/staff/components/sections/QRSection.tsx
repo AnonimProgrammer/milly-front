@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 type QRSectionProps = {
   tables: string[];
@@ -80,19 +80,12 @@ function SVGQRCode() {
 }
 
 export function QRSection({ tables }: QRSectionProps) {
-  const [selectedTable, setSelectedTable] = useState("");
+  const [selectedTableOverride, setSelectedTableOverride] = useState<string | null>(null);
 
-  // Sync selectedTable when tables updates
-  useEffect(() => {
-    if (tables.length > 0) {
-      // Keep selection if still valid, otherwise default to first
-      if (!tables.includes(selectedTable)) {
-        setSelectedTable(tables[0]);
-      }
-    } else {
-      setSelectedTable("");
-    }
-  }, [tables, selectedTable]);
+  // Derive selection during rendering to avoid useEffect and cascading renders
+  const selectedTable = selectedTableOverride && tables.includes(selectedTableOverride)
+    ? selectedTableOverride
+    : tables[0] || "";
 
   // Extract the table ID (digits only) or fallback
   const tableIdNumber = selectedTable.replace(/\D/g, "") || "1";
@@ -122,7 +115,7 @@ export function QRSection({ tables }: QRSectionProps) {
             <select
               id="qr-table-select"
               value={selectedTable}
-              onChange={(e) => setSelectedTable(e.target.value)}
+              onChange={(e) => setSelectedTableOverride(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-zinc-200 bg-white text-sm text-black outline-none focus:border-black transition-all cursor-pointer"
             >
               {tables.map((table) => (

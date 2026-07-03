@@ -2,10 +2,9 @@
 
 type StaffHeaderProps = {
   venueName: string;
-  role: "MANAGER" | "WAITER";
 };
 
-export function StaffHeader({ venueName, role }: StaffHeaderProps) {
+export function StaffHeader({ venueName }: StaffHeaderProps) {
   return (
     <header className="w-full border-b border-zinc-100 bg-white">
       <div className="mx-auto max-w-7xl px-6 py-5 flex items-center justify-between">

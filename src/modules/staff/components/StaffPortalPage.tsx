@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { StaffHeader } from "./StaffHeader";
 import { StaffTabNav } from "./StaffTabNav";
 import { OrdersSection } from "./sections/OrdersSection";
@@ -112,7 +112,7 @@ export function StaffPortalPage({ venueId }: StaffPortalPageProps) {
       ],
       total: 40.00,
       status: "pending",
-      createdAt: new Date(Date.now() - 5 * 60 * 1000) // 5m ago
+      createdAt: new Date("2026-07-03T16:35:00Z") // 5m ago
     },
     {
       id: "ord-102",
@@ -123,7 +123,7 @@ export function StaffPortalPage({ venueId }: StaffPortalPageProps) {
       ],
       total: 18.00,
       status: "approved",
-      createdAt: new Date(Date.now() - 15 * 60 * 1000) // 15m ago
+      createdAt: new Date("2026-07-03T16:25:00Z") // 15m ago
     },
     {
       id: "ord-103",
@@ -135,7 +135,7 @@ export function StaffPortalPage({ venueId }: StaffPortalPageProps) {
       ],
       total: 39.00,
       status: "completed",
-      createdAt: new Date(Date.now() - 45 * 60 * 1000) // 45m ago
+      createdAt: new Date("2026-07-03T15:55:00Z") // 45m ago
     }
   ]);
 
@@ -242,7 +242,7 @@ export function StaffPortalPage({ venueId }: StaffPortalPageProps) {
   return (
     <div className="min-h-screen bg-white text-black font-sans antialiased flex flex-col">
       {/* Header */}
-      <StaffHeader venueName={venueDisplayName} role={role} />
+      <StaffHeader venueName={venueDisplayName} />
 
       {/* Main Container */}
       <main className="flex-1 w-full max-w-7xl mx-auto px-6 py-6 flex flex-col gap-6">
