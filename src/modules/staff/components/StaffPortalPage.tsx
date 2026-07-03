@@ -139,6 +139,17 @@ export function StaffPortalPage({ venueId }: StaffPortalPageProps) {
     }
   ]);
 
+  // Orders update/delete handlers
+  const handleUpdateOrderStatus = (orderId: string, newStatus: OrderStatus) => {
+    setOrders((prev) =>
+      prev.map((order) => (order.id === orderId ? { ...order, status: newStatus } : order))
+    );
+  };
+
+  const handleDeleteOrder = (orderId: string) => {
+    setOrders((prev) => prev.filter((order) => order.id !== orderId));
+  };
+
   // Force active tab to orders if WAITER role is selected
   const handleRoleChange = (newRole: "MANAGER" | "WAITER") => {
     setRole(newRole);
@@ -154,7 +165,13 @@ export function StaffPortalPage({ venueId }: StaffPortalPageProps) {
   const renderTabContent = () => {
     switch (activeTab) {
       case "orders":
-        return <OrdersSection />;
+        return (
+          <OrdersSection
+            orders={orders}
+            onUpdateOrderStatus={handleUpdateOrderStatus}
+            onDeleteOrder={handleDeleteOrder}
+          />
+        );
       case "qr":
         return <QRSection />;
       case "menu":
@@ -162,7 +179,13 @@ export function StaffPortalPage({ venueId }: StaffPortalPageProps) {
       case "tables":
         return <TablesSection />;
       default:
-        return <OrdersSection />;
+        return (
+          <OrdersSection
+            orders={orders}
+            onUpdateOrderStatus={handleUpdateOrderStatus}
+            onDeleteOrder={handleDeleteOrder}
+          />
+        );
     }
   };
 
