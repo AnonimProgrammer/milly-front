@@ -166,6 +166,27 @@ export function StaffPortalPage({ venueId }: StaffPortalPageProps) {
     setTables((prev) => prev.filter((t) => t !== table));
   };
 
+  // Menu items update handlers
+  const handleAddMenuItem = (item: Omit<MenuItem, "id">) => {
+    setMenuItems((prev) => [
+      ...prev,
+      {
+        ...item,
+        id: `menu-${Date.now()}`
+      }
+    ]);
+  };
+
+  const handleUpdateMenuItem = (id: string, updatedItem: Omit<MenuItem, "id">) => {
+    setMenuItems((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, ...updatedItem } : item))
+    );
+  };
+
+  const handleDeleteMenuItem = (id: string) => {
+    setMenuItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
   // Force active tab to orders if WAITER role is selected
   const handleRoleChange = (newRole: "MANAGER" | "WAITER") => {
     setRole(newRole);
@@ -191,7 +212,14 @@ export function StaffPortalPage({ venueId }: StaffPortalPageProps) {
       case "qr":
         return <QRSection tables={tables} />;
       case "menu":
-        return <MenuSection />;
+        return (
+          <MenuSection
+            menuItems={menuItems}
+            onAddMenuItem={handleAddMenuItem}
+            onUpdateMenuItem={handleUpdateMenuItem}
+            onDeleteMenuItem={handleDeleteMenuItem}
+          />
+        );
       case "tables":
         return (
           <TablesSection
