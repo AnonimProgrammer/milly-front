@@ -4,6 +4,7 @@ export { TablesStaffPage } from "./components/TablesStaffPage";
 export {
   createTable,
   deactivateTable,
+  generateTableQr,
   listTables,
   mapTableResponse,
 } from "./api";

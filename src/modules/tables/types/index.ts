@@ -4,5 +4,5 @@ export type VenueTable = {
   id: string;
   label: string;
   status: TableStatus;
-  qrToken: string;
+  qrImageUrl: string | null;
 };
