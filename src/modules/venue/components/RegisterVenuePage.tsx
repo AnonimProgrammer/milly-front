@@ -3,7 +3,8 @@
 import { useState, type SubmitEvent } from "react";
 import { useRouter } from "next/navigation";
 import { ApiError } from "@/modules/shared/api";
-import { BackButton, PageHeader } from "@/modules/shared/ui";
+import { staffPath } from "@/modules/staff/utils/staffRoutes";
+import { BrandBackNav, PageHeader } from "@/modules/shared/ui";
 import { UserAccountNav } from "@/modules/auth/components/UserAccountNav";
 import { createVenue } from "../api";
 import { VenueCard } from "./VenueCard";
@@ -25,7 +26,7 @@ export function RegisterVenuePage() {
         name: name.trim(),
         location: location.trim(),
       });
-      router.replace(`/venue/${venue.id}/staff`);
+      router.replace(staffPath(venue.id, "orders"));
     } catch (submitError) {
       if (submitError instanceof ApiError) {
         setError(submitError.message);
@@ -41,7 +42,7 @@ export function RegisterVenuePage() {
       <div className="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-96 h-96 rounded-full bg-black/5 blur-[80px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-96 h-96 rounded-full bg-black/5 blur-[80px] pointer-events-none" />
 
-      <PageHeader leading={<BackButton />} trailing={<UserAccountNav />} />
+      <PageHeader leading={<BrandBackNav />} trailing={<UserAccountNav />} />
 
       <div className="flex-1 flex items-center justify-center py-8 z-10 w-full max-w-md mx-auto">
         <VenueCard>
