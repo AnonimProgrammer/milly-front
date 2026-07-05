@@ -1,16 +1,11 @@
-import { RequireAuth } from "@/modules/auth";
-import { StaffPortalPage } from "@/modules/staff";
+import { redirect } from "next/navigation";
+import { staffPath } from "@/modules/staff/utils/staffRoutes";
 
-type StaffRouteProps = {
+type StaffIndexRouteProps = {
   params: Promise<{ venueId: string }>;
 };
 
-export default async function StaffRoute({ params }: StaffRouteProps) {
+export default async function StaffIndexRoute({ params }: StaffIndexRouteProps) {
   const { venueId } = await params;
-
-  return (
-    <RequireAuth>
-      <StaffPortalPage venueId={venueId} />
-    </RequireAuth>
-  );
+  redirect(staffPath(venueId, "orders"));
 }
