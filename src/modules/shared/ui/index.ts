@@ -1,4 +1,6 @@
 export { BackButton } from "./BackButton";
+export { BottomSheet } from "./BottomSheet";
+export { Button } from "./Button";
 export { BrandBackNav } from "./BrandBackNav";
 export { MillyMark } from "./MillyMark";
 export { MillyBrand } from "./MillyBrand";
