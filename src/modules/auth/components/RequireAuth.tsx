@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { ServiceUnavailable } from "@/modules/shared/ui/ServiceUnavailable";
 import { useAuth } from "../context/AuthProvider";
 import { AuthPageFallback } from "./AuthPageFallback";
 
@@ -11,7 +12,7 @@ type RequireAuthProps = {
 };
 
 export function RequireAuth({ children, loginIntent }: RequireAuthProps) {
-  const { status } = useAuth();
+  const { status, refreshUser } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -25,6 +26,12 @@ export function RequireAuth({ children, loginIntent }: RequireAuthProps) {
 
   if (status === "loading") {
     return <AuthPageFallback />;
+  }
+
+  if (status === "unavailable") {
+    return (
+      <ServiceUnavailable fullPage onRetry={() => void refreshUser()} />
+    );
   }
 
   if (status === "anonymous") {

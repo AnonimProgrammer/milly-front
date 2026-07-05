@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../context/AuthProvider";
+import { isAuthenticatedStatus, isGuestAuthStatus } from "../utils/authLinks";
 
 function UserIcon() {
   return (
@@ -76,13 +77,13 @@ export function UserAccountNav() {
 
   return (
     <div className="flex items-center gap-3">
-      {status === "authenticated" && user ? (
+      {isAuthenticatedStatus(status) && user ? (
         <span className="text-base font-medium text-black">
           {user.firstName} {user.lastName}
         </span>
       ) : null}
 
-      {status === "anonymous" ? (
+      {isGuestAuthStatus(status) ? (
         <>
           <Link href="/signup" className="text-base font-medium text-black hover:underline">
             Sign Up
@@ -96,7 +97,7 @@ export function UserAccountNav() {
         </>
       ) : null}
 
-      {status === "authenticated" ? (
+      {isAuthenticatedStatus(status) ? (
         <div ref={menuRef} className="relative">
           <button
             type="button"
