@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { FeedbackProvider } from "@/modules/shared/feedback";
 import { AuthProvider } from "../context/AuthProvider";
 
 type AuthWrapperProps = {
@@ -8,5 +9,9 @@ type AuthWrapperProps = {
 };
 
 export function AuthWrapper({ children }: AuthWrapperProps) {
-  return <AuthProvider>{children}</AuthProvider>;
+  return (
+    <AuthProvider>
+      <FeedbackProvider>{children}</FeedbackProvider>
+    </AuthProvider>
+  );
 }
