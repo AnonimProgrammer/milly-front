@@ -8,7 +8,8 @@ type TablesSectionProps = {
   tables: VenueTable[];
   onAddTable: (label: string) => void;
   onDeactivateTable: (tableId: string) => void;
-  onGenerateNewQR: (tableId: string) => void;
+  onGenerateQr: (tableId: string) => void;
+  generatingQrTableId: string | null;
 };
 
 function TableStatusBadge({ status }: { status: VenueTable["status"] }) {
@@ -31,7 +32,8 @@ export function TablesSection({
   tables,
   onAddTable,
   onDeactivateTable,
-  onGenerateNewQR,
+  onGenerateQr,
+  generatingQrTableId,
 }: TablesSectionProps) {
   const [newTable, setNewTable] = useState("");
   const [selectedTableId, setSelectedTableId] = useState<string | null>(null);
@@ -111,8 +113,9 @@ export function TablesSection({
       {selectedTable && (
         <TableDetailModal
           table={selectedTable}
+          isGeneratingQr={generatingQrTableId === selectedTable.id}
           onClose={() => setSelectedTableId(null)}
-          onGenerateNewQR={onGenerateNewQR}
+          onGenerateQr={onGenerateQr}
           onDeactivate={handleDeactivate}
         />
       )}
