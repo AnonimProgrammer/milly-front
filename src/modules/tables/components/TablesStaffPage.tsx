@@ -6,6 +6,7 @@ import {
   TablesSection,
   createTable,
   deactivateTable,
+  generateTableQr,
   listTables,
   mapTableResponse,
   type VenueTable,
@@ -19,6 +20,7 @@ export function TablesStaffPage({ venueId }: TablesStaffPageProps) {
   const [tables, setTables] = useState<VenueTable[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadFailed, setLoadFailed] = useState(false);
+  const [generatingQrTableId, setGeneratingQrTableId] = useState<string | null>(null);
 
   const loadTables = useCallback(async () => {
     setLoadFailed(false);
@@ -67,14 +69,21 @@ export function TablesStaffPage({ venueId }: TablesStaffPageProps) {
     }
   };
 
-  const handleGenerateNewQR = (tableId: string) => {
-    setTables((prev) =>
-      prev.map((table) =>
-        table.id === tableId
-          ? { ...table, qrToken: `${table.id}-${Date.now()}` }
-          : table,
-      ),
-    );
+  const handleGenerateQr = async (tableId: string) => {
+    setGeneratingQrTableId(tableId);
+
+    try {
+      const qr = await generateTableQr(venueId, tableId);
+      setTables((prev) =>
+        prev.map((table) =>
+          table.id === tableId ? { ...table, qrImageUrl: qr.qrImageUrl } : table,
+        ),
+      );
+    } catch {
+      // Error toast is shown globally by the API client.
+    } finally {
+      setGeneratingQrTableId(null);
+    }
   };
 
   if (isLoading) {
@@ -88,9 +97,10 @@ export function TablesStaffPage({ venueId }: TablesStaffPageProps) {
   return (
     <TablesSection
       tables={tables}
+      generatingQrTableId={generatingQrTableId}
       onAddTable={(label) => void handleAddTable(label)}
       onDeactivateTable={(tableId) => void handleDeactivateTable(tableId)}
-      onGenerateNewQR={handleGenerateNewQR}
+      onGenerateQr={(tableId) => void handleGenerateQr(tableId)}
     />
   );
 }

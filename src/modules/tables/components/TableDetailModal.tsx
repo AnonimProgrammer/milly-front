@@ -1,13 +1,15 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect } from "react";
+import { showToast } from "@/modules/shared/feedback/toast";
 import type { VenueTable } from "../types";
-import { TableQRCode } from "./TableQRCode";
 
 type TableDetailModalProps = {
   table: VenueTable;
+  isGeneratingQr: boolean;
   onClose: () => void;
-  onGenerateNewQR: (tableId: string) => void;
+  onGenerateQr: (tableId: string) => void;
   onDeactivate: (tableId: string) => void;
 };
 
@@ -29,11 +31,13 @@ function TableStatusBadge({ status }: { status: VenueTable["status"] }) {
 
 export function TableDetailModal({
   table,
+  isGeneratingQr,
   onClose,
-  onGenerateNewQR,
+  onGenerateQr,
   onDeactivate,
 }: TableDetailModalProps) {
   const customerUrl = `/table/${table.id}`;
+  const hasQr = Boolean(table.qrImageUrl);
 
   useEffect(() => {
     function handleEscape(event: KeyboardEvent) {
@@ -45,6 +49,10 @@ export function TableDetailModal({
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
   }, [onClose]);
+
+  function handleExportQr() {
+    showToast("Export QR coming soon.", "success");
+  }
 
   return (
     <div
@@ -70,20 +78,52 @@ export function TableDetailModal({
         </div>
 
         <div className="mt-6 flex flex-col items-center gap-4">
-          <div className="rounded-2xl border border-zinc-100 bg-white p-4 shadow-sm">
-            <TableQRCode size={180} />
+          <div className="flex h-[180px] w-[180px] items-center justify-center rounded-2xl border border-zinc-100 bg-white p-4 shadow-sm">
+            {hasQr ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={table.qrImageUrl!}
+                alt={`QR code for ${table.label}`}
+                width={180}
+                height={180}
+                className="h-full w-full object-contain"
+              />
+            ) : (
+              <p className="px-2 text-center text-sm font-light text-zinc-400">
+                Generated QR will be displayed here
+              </p>
+            )}
           </div>
-          <p className="break-all text-center font-mono text-xs text-zinc-400">{customerUrl}</p>
+
+          <Link
+            href={customerUrl}
+            className="break-all text-center font-mono text-xs text-zinc-500 underline-offset-2 hover:text-black hover:underline"
+          >
+            {customerUrl}
+          </Link>
         </div>
 
         <div className="mt-6 flex flex-col gap-3">
-          <button
-            type="button"
-            onClick={() => onGenerateNewQR(table.id)}
-            className="w-full cursor-pointer rounded-xl bg-black px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
-          >
-            Generate new QR
-          </button>
+          {hasQr ? (
+            <button
+              type="button"
+              onClick={handleExportQr}
+              className="w-full cursor-pointer rounded-xl bg-black px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
+            >
+              Export QR
+            </button>
+          ) : (
+            table.status === "active" && (
+              <button
+                type="button"
+                onClick={() => onGenerateQr(table.id)}
+                disabled={isGeneratingQr}
+                className="w-full cursor-pointer rounded-xl bg-black px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-400"
+              >
+                {isGeneratingQr ? "Generating..." : "Generate QR"}
+              </button>
+            )
+          )}
           {table.status === "active" && (
             <button
               type="button"

@@ -6,6 +6,6 @@ export function mapTableResponse(table: TableResponse): VenueTable {
     id: table.id,
     label: table.label,
     status: table.status === "ACTIVE" ? "active" : "inactive",
-    qrToken: table.id,
+    qrImageUrl: table.qrImageUrl,
   };
 }
