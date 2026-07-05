@@ -1,2 +1,1 @@
-/** Bill view, payments, payment progress — to be implemented */
-export {};
+export { OrderPaymentDetails } from "./components/OrderPaymentDetails";
