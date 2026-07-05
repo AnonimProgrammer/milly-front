@@ -1,5 +1,6 @@
 import { HomeUserNav } from "@/modules/auth/components/HomeUserNav";
 import { VenueEntryButtons } from "@/modules/auth/components/VenueEntryButtons";
+import { MillyMark } from "@/modules/shared/ui/MillyMark";
 
 export default function Home() {
   return (
@@ -15,11 +16,7 @@ export default function Home() {
         {/* SVG Brand Mark */}
         <div className="mb-8 relative flex items-center justify-center">
           <div className="absolute inset-0 bg-black/10 rounded-full blur-xl scale-75 animate-pulse" />
-          <svg className="w-16 h-16 relative" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="28" cy="28" r="16" fill="#E5E7EB" />
-            <circle cx="36" cy="36" r="16" fill="#000000" fillOpacity="0.85" />
-            <rect x="28" y="28" width="8" height="8" fill="#000000" className="mix-blend-multiply" />
-          </svg>
+          <MillyMark className="relative h-16 w-16" />
         </div>
 
         {/* Welcome Title */}
