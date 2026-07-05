@@ -1,2 +1,9 @@
-/** Table CRUD and QR generation (Manager) — to be implemented */
-export {};
+export type { TableStatus, VenueTable } from "./types";
+export { TablesSection } from "./components/TablesSection";
+export { TablesStaffPage } from "./components/TablesStaffPage";
+export {
+  createTable,
+  deactivateTable,
+  listTables,
+  mapTableResponse,
+} from "./api";
