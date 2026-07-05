@@ -1,4 +1,5 @@
-export { apiRequest } from "./client";
+export { apiRequest, apiRequestNoContent } from "./client";
+export { endUiActivity, startUiActivity } from "./apiActivity";
 export { getApiBaseUrl } from "./config";
 export { clearSessionHandlers, setSessionHandlers } from "./sessionHandlers";
-export { ApiError, type ApiResponse } from "./types";
+export { ApiError, NetworkError, getRequestErrorMessage, isNetworkError, isServiceUnavailable, type ApiResponse } from "./types";
