@@ -1,17 +1,20 @@
-export { CustomerTablePage } from "./components/CustomerTablePage";
-export { TableClient } from "./components/TableClient";
 export {
   addPublicOrderItems,
   createPublicOrder,
   getPublicTable,
   listPublicMenuItems,
   listPublicOrders,
+} from "./customerApi";
+export {
   mapPublicMenuItem,
   mapPublicOrder,
   mapPublicOrders,
-} from "./api";
+  toMenuLookup,
+} from "./mappers";
 export type {
+  AddPublicOrderItemsRequest,
   CreatePublicOrderRequest,
+  PublicMenuItemResponse,
   PublicOrderResponse,
   PublicTableResponse,
-} from "./api";
+} from "./types";
