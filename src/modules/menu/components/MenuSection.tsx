@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MenuItem } from "../StaffPortalPage";
+import type { MenuItem } from "../types";
 
 type MenuSectionProps = {
   menuItems: MenuItem[];
@@ -18,8 +18,6 @@ export function MenuSection({
 }: MenuSectionProps) {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
-
-  // Form fields state
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("Mains");
@@ -75,60 +73,57 @@ export function MenuSection({
   };
 
   return (
-    <div className="flex flex-col gap-6 max-w-4xl relative">
-      {/* Top Header & Trigger */}
+    <div className="relative mx-auto flex w-full max-w-4xl flex-col gap-6">
       <div className="flex items-start justify-between">
         <div>
           <h2 className="text-xl font-bold tracking-tight">Menu</h2>
-          <p className="text-sm text-zinc-500 font-light mt-1">
+          <p className="mt-1 text-sm font-light text-zinc-500">
             Manage menu items shown to customers.
           </p>
         </div>
         <button
           onClick={handleOpenAdd}
-          className="text-sm font-semibold text-black hover:opacity-75 transition-opacity cursor-pointer border-b border-black pb-0.5"
+          className="cursor-pointer border-b border-black pb-0.5 text-sm font-semibold text-black transition-opacity hover:opacity-75"
         >
           Add item
         </button>
       </div>
 
-      {/* Menu Items List */}
-      <div className="border border-zinc-200 rounded-2xl overflow-hidden bg-white divide-y divide-zinc-200">
+      <div className="divide-y divide-zinc-200 overflow-hidden rounded-2xl border border-zinc-200 bg-white">
         {menuItems.length === 0 ? (
           <div className="p-12 text-center">
-            <p className="text-sm text-zinc-400 font-light">No menu items found. Add some to get started.</p>
+            <p className="text-sm font-light text-zinc-400">
+              No menu items found. Add some to get started.
+            </p>
           </div>
         ) : (
           menuItems.map((item) => (
             <div
               key={item.id}
-              className="flex items-center justify-between px-6 py-5 hover:bg-zinc-50/50 transition-colors"
+              className="flex items-center justify-between px-6 py-5 transition-colors hover:bg-zinc-50/50"
             >
               <div className="flex flex-col gap-1 pr-6">
-                <span className="font-bold text-sm text-black">
-                  {item.name}
-                </span>
-                <span className="text-xs text-zinc-500 font-light line-clamp-2">
+                <span className="text-sm font-bold text-black">{item.name}</span>
+                <span className="line-clamp-2 text-xs font-light text-zinc-500">
                   {item.description}
                 </span>
-                <span className="text-xs text-zinc-400 font-light mt-1">
+                <span className="mt-1 text-xs font-light text-zinc-400">
                   {item.category} &middot; {item.price.toFixed(2)} ₼
                 </span>
               </div>
 
-              {/* Row actions */}
-              <div className="flex items-center gap-3 shrink-0">
+              <div className="flex shrink-0 items-center gap-3">
                 <button
                   type="button"
                   onClick={() => handleOpenEdit(item)}
-                  className="text-xs text-zinc-400 hover:text-black transition-colors cursor-pointer font-light"
+                  className="cursor-pointer text-xs font-light text-zinc-400 transition-colors hover:text-black"
                 >
                   Edit
                 </button>
                 <button
                   type="button"
                   onClick={() => onDeleteMenuItem(item.id)}
-                  className="text-xs text-zinc-400 hover:text-black transition-colors cursor-pointer font-light"
+                  className="cursor-pointer text-xs font-light text-zinc-400 transition-colors hover:text-black"
                 >
                   Delete
                 </button>
@@ -138,11 +133,10 @@ export function MenuSection({
         )}
       </div>
 
-      {/* Add/Edit Modal Form Overlay */}
       {isFormOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-xs">
           <div
-            className="w-full max-w-lg bg-white border border-zinc-200 rounded-3xl p-6 sm:p-8 shadow-2xl flex flex-col gap-5 animate-in fade-in zoom-in-95 duration-200"
+            className="animate-in fade-in zoom-in-95 flex w-full max-w-lg flex-col gap-5 rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl duration-200 sm:p-8"
             role="dialog"
             aria-modal="true"
           >
@@ -150,14 +144,14 @@ export function MenuSection({
               <h3 className="text-lg font-bold text-black">
                 {editingItem ? "Edit menu item" : "Add menu item"}
               </h3>
-              <p className="text-xs text-zinc-500 font-light mt-1">
+              <p className="mt-1 text-xs font-light text-zinc-500">
                 Configure details for the item shown in client menu.
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="item-name" className="text-xs font-semibold text-zinc-500 uppercase">
+                <label htmlFor="item-name" className="text-xs font-semibold uppercase text-zinc-500">
                   Item Name
                 </label>
                 <input
@@ -166,13 +160,13 @@ export function MenuSection({
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Pepperoni Pizza"
-                  className="w-full px-4 py-3 rounded-xl border border-zinc-200 bg-white text-sm text-black outline-none focus:border-black transition-all"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-black outline-none transition-all focus:border-black"
                   required
                 />
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="item-desc" className="text-xs font-semibold text-zinc-500 uppercase">
+                <label htmlFor="item-desc" className="text-xs font-semibold uppercase text-zinc-500">
                   Description
                 </label>
                 <textarea
@@ -181,20 +175,20 @@ export function MenuSection({
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="e.g. Tomato sauce, spicy pepperoni, fresh mozzarella"
                   rows={3}
-                  className="w-full px-4 py-3 rounded-xl border border-zinc-200 bg-white text-sm text-black outline-none focus:border-black transition-all resize-none"
+                  className="w-full resize-none rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-black outline-none transition-all focus:border-black"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-1.5">
-                  <label htmlFor="item-cat" className="text-xs font-semibold text-zinc-500 uppercase">
+                  <label htmlFor="item-cat" className="text-xs font-semibold uppercase text-zinc-500">
                     Category
                   </label>
                   <select
                     id="item-cat"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-zinc-200 bg-white text-sm text-black outline-none focus:border-black transition-all cursor-pointer"
+                    className="w-full cursor-pointer rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-black outline-none transition-all focus:border-black"
                   >
                     <option value="Starters">Starters</option>
                     <option value="Mains">Mains</option>
@@ -204,7 +198,7 @@ export function MenuSection({
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label htmlFor="item-price" className="text-xs font-semibold text-zinc-500 uppercase">
+                  <label htmlFor="item-price" className="text-xs font-semibold uppercase text-zinc-500">
                     Price (₼)
                   </label>
                   <input
@@ -215,24 +209,23 @@ export function MenuSection({
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
                     placeholder="e.g. 18.00"
-                    className="w-full px-4 py-3 rounded-xl border border-zinc-200 bg-white text-sm text-black outline-none focus:border-black transition-all"
+                    className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-black outline-none transition-all focus:border-black"
                     required
                   />
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-zinc-100">
+              <div className="mt-4 flex justify-end gap-3 border-t border-zinc-100 pt-4">
                 <button
                   type="button"
                   onClick={handleCloseForm}
-                  className="px-5 py-2.5 rounded-xl border border-zinc-200 text-zinc-500 hover:text-black text-sm font-medium hover:bg-zinc-50 transition-all cursor-pointer"
+                  className="cursor-pointer rounded-xl border border-zinc-200 px-5 py-2.5 text-sm font-medium text-zinc-500 transition-all hover:bg-zinc-50 hover:text-black"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 rounded-xl bg-black text-white text-sm font-medium hover:bg-zinc-800 transition-colors cursor-pointer"
+                  className="cursor-pointer rounded-xl bg-black px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
                 >
                   Save
                 </button>

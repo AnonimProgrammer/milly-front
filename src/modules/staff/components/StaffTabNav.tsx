@@ -1,45 +1,55 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import type { VenueRole } from "@/modules/venue/api/types";
+import {
+  getStaffSectionFromPath,
+  staffPath,
+  type StaffSection,
+} from "../utils/staffRoutes";
+
 type TabOption = {
-  id: "orders" | "qr" | "menu" | "tables";
+  id: StaffSection;
   label: string;
   managerOnly: boolean;
 };
 
 type StaffTabNavProps = {
-  activeTab: "orders" | "qr" | "menu" | "tables";
-  setActiveTab: (tab: "orders" | "qr" | "menu" | "tables") => void;
-  role: "MANAGER" | "WAITER";
+  venueId: string;
+  role: VenueRole;
 };
 
 const tabs: TabOption[] = [
   { id: "orders", label: "Orders", managerOnly: false },
-  { id: "qr", label: "QR codes", managerOnly: true },
   { id: "menu", label: "Menu", managerOnly: true },
   { id: "tables", label: "Tables", managerOnly: true },
+  { id: "members", label: "Staff", managerOnly: true },
 ];
 
-export function StaffTabNav({ activeTab, setActiveTab, role }: StaffTabNavProps) {
-  // Filter tabs: Waiter sees only non-managerOnly tabs (Orders)
+export function StaffTabNav({ venueId, role }: StaffTabNavProps) {
+  const pathname = usePathname();
+  const activeTab = getStaffSectionFromPath(pathname) ?? "orders";
   const visibleTabs = tabs.filter((tab) => !tab.managerOnly || role === "MANAGER");
 
   return (
     <div className="w-full border-b border-zinc-100 pb-4">
-      <nav className="flex flex-wrap gap-2.5" aria-label="Staff Portal Tabs">
+      <nav className="flex flex-wrap justify-center gap-2.5" aria-label="Staff Portal Tabs">
         {visibleTabs.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
-            <button
+            <Link
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`px-6 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer ${
+              href={staffPath(venueId, tab.id)}
+              className={`rounded-xl px-6 py-2.5 text-sm font-medium transition-all duration-200 ${
                 isActive
                   ? "bg-black text-white shadow-sm"
                   : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 hover:text-black"
               }`}
+              aria-current={isActive ? "page" : undefined}
             >
               {tab.label}
-            </button>
+            </Link>
           );
         })}
       </nav>

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthProvider";
+import { isAuthenticatedStatus } from "../utils/authLinks";
 import { resolvePostAuthRedirect } from "../utils/postAuthRedirect";
 import { AuthPageFallback } from "./AuthPageFallback";
 
@@ -16,12 +17,12 @@ export function RedirectIfAuthenticated({ intent, children }: RedirectIfAuthenti
   const router = useRouter();
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (isAuthenticatedStatus(status)) {
       router.replace(resolvePostAuthRedirect(intent));
     }
   }, [status, intent, router]);
 
-  if (status === "loading" || status === "authenticated") {
+  if (status === "loading" || isAuthenticatedStatus(status)) {
     return <AuthPageFallback />;
   }
 

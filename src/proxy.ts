@@ -49,6 +49,6 @@ export const config = {
     "/signup",
     "/join-venue",
     "/register-venue",
-    "/venue/:venueId/staff",
+    "/venue/:venueId/staff/:path*",
   ],
 };

@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ApiError } from "@/modules/shared/api";
+import { getRequestErrorMessage, startUiActivity } from "@/modules/shared/api";
+import { staffPath } from "@/modules/staff/utils/staffRoutes";
 import { getMyVenues } from "../api/venueApi";
 import type { VenueMembership } from "../api/types";
 import { VenueCard } from "./VenueCard";
@@ -39,11 +40,31 @@ function VenueListSkeleton() {
   );
 }
 
+function VenueRowSpinner() {
+  return (
+    <div
+      className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-200 border-t-black"
+      aria-hidden="true"
+    />
+  );
+}
+
 export function MyVenuesSection() {
   const router = useRouter();
   const [venues, setVenues] = useState<VenueMembership[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [navigatingVenueId, setNavigatingVenueId] = useState<string | null>(null);
+
+  const handleVenueSelect = (venueId: string) => {
+    if (navigatingVenueId) {
+      return;
+    }
+
+    setNavigatingVenueId(venueId);
+    startUiActivity();
+    router.push(staffPath(venueId, "orders"));
+  };
 
   const loadVenues = useCallback(async () => {
     setLoading(true);
@@ -53,9 +74,7 @@ export function MyVenuesSection() {
       const data = await getMyVenues();
       setVenues(data);
     } catch (err) {
-      const message =
-        err instanceof ApiError ? err.message : "Couldn't load your venues. Please try again.";
-      setError(message);
+      setError(getRequestErrorMessage(err));
     } finally {
       setLoading(false);
     }
@@ -90,11 +109,18 @@ export function MyVenuesSection() {
             <button
               key={venue.venueId}
               type="button"
-              onClick={() => router.push(`/venue/${venue.venueId}/staff`)}
-              className="flex items-center justify-between p-3.5 rounded-2xl border border-black/10 bg-black/[0.02] hover:bg-black/5 hover:border-black/20 transition-all duration-200 text-left w-full"
+              disabled={navigatingVenueId !== null}
+              onClick={() => handleVenueSelect(venue.venueId)}
+              className={`flex items-center justify-between p-3.5 rounded-2xl border border-black/10 bg-black/[0.02] hover:bg-black/5 hover:border-black/20 transition-all duration-200 text-left w-full disabled:cursor-wait ${
+                navigatingVenueId === venue.venueId ? "opacity-70" : ""
+              }`}
             >
               <span className="text-sm font-medium text-black">{venue.venueName}</span>
-              <RoleBadge role={venue.role} />
+              {navigatingVenueId === venue.venueId ? (
+                <VenueRowSpinner />
+              ) : (
+                <RoleBadge role={venue.role} />
+              )}
             </button>
           ))}
         </div>
