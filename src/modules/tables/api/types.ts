@@ -5,8 +5,15 @@ export type TableResponse = {
   venueId: string;
   label: string;
   status: TableStatus;
+  qrImageUrl: string | null;
   createdAt: string;
   updatedAt: string;
+};
+
+export type TableQrResponse = {
+  tableId: string;
+  customerUrl: string;
+  qrImageUrl: string;
 };
 
 export type CreateTableRequest = {

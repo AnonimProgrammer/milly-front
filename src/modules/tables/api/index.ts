@@ -1,3 +1,8 @@
-export { createTable, deactivateTable, listTables } from "./tableApi";
+export { createTable, deactivateTable, generateTableQr, listTables } from "./tableApi";
 export { mapTableResponse } from "./mappers";
-export type { CreateTableRequest, TableResponse, TableStatus } from "./types";
+export type {
+  CreateTableRequest,
+  TableQrResponse,
+  TableResponse,
+  TableStatus,
+} from "./types";
