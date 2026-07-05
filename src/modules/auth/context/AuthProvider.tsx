@@ -10,13 +10,13 @@ import {
   type ReactNode,
 } from "react";
 import { useRouter } from "next/navigation";
-import { ApiError, clearSessionHandlers, setSessionHandlers } from "@/modules/shared/api";
+import { ApiError, clearSessionHandlers, isServiceUnavailable, setSessionHandlers } from "@/modules/shared/api";
 import { continueWithPassword, getCurrentUser, logout } from "../api/authApi";
 import { attemptRefreshSession } from "../api/refreshSessionMutex";
 import type { CurrentUser, PasswordProfile } from "../api/types";
 import { isProtectedRoute } from "../utils/protectedRoutes";
 
-export type AuthStatus = "loading" | "authenticated" | "anonymous";
+export type AuthStatus = "loading" | "authenticated" | "anonymous" | "unavailable";
 
 type AuthContextValue = {
   user: CurrentUser | null;
@@ -50,7 +50,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      throw error;
+      if (isServiceUnavailable(error)) {
+        setStatus("unavailable");
+        return;
+      }
+
+      setStatus("unavailable");
     }
   }, [clearSession]);
 
@@ -68,10 +73,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [clearSession]);
 
   useEffect(() => {
-    void refreshUser().catch(() => {
-      clearSession();
-    });
-  }, [refreshUser, clearSession]);
+    void refreshUser();
+  }, [refreshUser]);
 
   const signIn = useCallback(
     async (email: string, password: string) => {
