@@ -8,6 +8,7 @@ export async function continueWithPassword(params: {
 }): Promise<ContinueResponse> {
   return apiRequest<ContinueResponse>("/api/v1/auth/continue", {
     method: "POST",
+    silent: true,
     body: {
       provider: "PASSWORD",
       credentials: {
@@ -20,11 +21,11 @@ export async function continueWithPassword(params: {
 }
 
 export async function getCurrentUser(): Promise<CurrentUser> {
-  return apiRequest<CurrentUser>("/api/v1/auth/me");
+  return apiRequest<CurrentUser>("/api/v1/auth/me", { silent: true });
 }
 
 export async function refreshSession(): Promise<void> {
-  await apiRequest<null>("/api/v1/auth/refresh", { method: "POST" });
+  await apiRequest<null>("/api/v1/auth/refresh", { method: "POST", silent: true });
 }
 
 export async function logout(): Promise<void> {
