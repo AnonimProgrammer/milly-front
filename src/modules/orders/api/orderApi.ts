@@ -5,8 +5,14 @@ function ordersPath(venueId: string) {
   return `/api/v1/venues/${venueId}/orders`;
 }
 
-export async function listOrders(venueId: string): Promise<StaffOrderResponse[]> {
-  return apiRequest<StaffOrderResponse[]>(ordersPath(venueId));
+export async function listOrders(
+  venueId: string,
+  options?: { background?: boolean },
+): Promise<StaffOrderResponse[]> {
+  return apiRequest<StaffOrderResponse[]>(ordersPath(venueId), {
+    background: options?.background,
+    silent: options?.background,
+  });
 }
 
 export async function approveOrder(

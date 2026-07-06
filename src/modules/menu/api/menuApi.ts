@@ -9,8 +9,14 @@ function menuItemsPath(venueId: string) {
   return `/api/v1/venues/${venueId}/menu/items`;
 }
 
-export async function listMenuItems(venueId: string): Promise<MenuItemResponse[]> {
-  return apiRequest<MenuItemResponse[]>(menuItemsPath(venueId));
+export async function listMenuItems(
+  venueId: string,
+  options?: { background?: boolean },
+): Promise<MenuItemResponse[]> {
+  return apiRequest<MenuItemResponse[]>(menuItemsPath(venueId), {
+    background: options?.background,
+    silent: options?.background,
+  });
 }
 
 export async function createMenuItem(
