@@ -1,6 +1,6 @@
 "use client";
 
-import { ServiceUnavailable } from "@/modules/shared/ui/ServiceUnavailable";
+import { ServiceUnavailable } from "@/modules/shared/ui";
 
 type ErrorPageProps = {
   error: Error & { digest?: string };
@@ -11,6 +11,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
   return (
     <ServiceUnavailable
       fullPage
+      code="500"
       title="Something went wrong"
       message={error.message || "An unexpected error occurred. Please try again."}
       onRetry={reset}
