@@ -29,6 +29,14 @@ export function buildStaffWsUrl(ticketId: string): string {
   return `${getWsBaseUrl()}/ws?ticket=${encodeURIComponent(ticketId)}`;
 }
 
+export function buildCustomerWsUrl(): string {
+  return `${getWsBaseUrl()}/ws`;
+}
+
+export function tableTopic(tableId: string): string {
+  return `/topic/table/${tableId}`;
+}
+
 export function venueStaffTopic(venueId: string): string {
   return `/topic/venue/${venueId}/staff`;
 }
