@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { LoadFailedMessage } from "@/modules/staff/components/LoadFailedMessage";
+import { LoadFailedMessage, StaffPageLoading } from "@/modules/staff";
 import {
   TablesSection,
   createTable,
@@ -27,7 +27,7 @@ export function TablesStaffPage({ venueId }: TablesStaffPageProps) {
     setIsLoading(true);
 
     try {
-      const tableResponses = await listTables(venueId);
+      const tableResponses = await listTables(venueId, { background: true });
       setTables(tableResponses.map(mapTableResponse));
     } catch {
       setLoadFailed(true);
@@ -87,7 +87,7 @@ export function TablesStaffPage({ venueId }: TablesStaffPageProps) {
   };
 
   if (isLoading) {
-    return null;
+    return <StaffPageLoading />;
   }
 
   if (loadFailed) {

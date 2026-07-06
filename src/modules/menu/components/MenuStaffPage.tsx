@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { LoadFailedMessage } from "@/modules/staff/components/LoadFailedMessage";
+import { LoadFailedMessage, StaffPageLoading } from "@/modules/staff";
 import {
   MenuSection,
   createMenuItem,
@@ -26,7 +26,7 @@ export function MenuStaffPage({ venueId }: MenuStaffPageProps) {
     setIsLoading(true);
 
     try {
-      const menuResponses = await listMenuItems(venueId);
+      const menuResponses = await listMenuItems(venueId, { background: true });
       setMenuItems(menuResponses.map(mapMenuItemResponse));
     } catch {
       setLoadFailed(true);
@@ -81,7 +81,7 @@ export function MenuStaffPage({ venueId }: MenuStaffPageProps) {
   };
 
   if (isLoading) {
-    return null;
+    return <StaffPageLoading />;
   }
 
   if (loadFailed) {
