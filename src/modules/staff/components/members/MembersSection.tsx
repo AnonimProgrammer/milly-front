@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { VenueMember } from "../types";
+import type { VenueMember } from "../../types/members";
 import { InviteMemberModal } from "./InviteMemberModal";
 import { MemberRoleBadge } from "./MemberRoleBadge";
 import { MemberStatusBadge } from "./MemberStatusBadge";

@@ -1,5 +1,5 @@
-import { MembersStaffPage } from "@/modules/members";
-import { RequireManagerRole } from "@/modules/venue/components/RequireManagerRole";
+import { MembersStaffPage } from "@/modules/staff";
+import { RequireManagerRole } from "@/modules/venue";
 
 type MembersStaffRouteProps = {
   params: Promise<{ venueId: string }>;
