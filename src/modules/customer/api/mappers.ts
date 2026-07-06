@@ -1,6 +1,5 @@
-import type { MenuItem } from "@/modules/menu/types";
-import type { Order, OrderStatus } from "@/modules/orders/types";
-import type { ApiOrderStatus } from "@/modules/orders/api/types";
+import type { MenuItem } from "@/modules/menu";
+import type { ApiOrderStatus, Order, OrderStatus } from "@/modules/orders";
 import type { PublicMenuItemResponse, PublicOrderResponse } from "./types";
 
 function mapOrderStatus(status: ApiOrderStatus): OrderStatus | null {

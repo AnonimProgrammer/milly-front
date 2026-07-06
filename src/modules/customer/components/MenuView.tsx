@@ -2,9 +2,9 @@
 
 import { useMemo, useState } from "react";
 import { Button } from "@/modules/shared/ui";
-import type { MenuItem } from "@/modules/menu/types";
-import type { Order } from "@/modules/orders/types";
-import { formatAmount, getOrderTotal } from "@/modules/orders/utils/order.helpers";
+import type { MenuItem } from "@/modules/menu";
+import type { Order } from "@/modules/orders";
+import { formatAmount, getOrderTotal } from "@/modules/orders";
 
 type MenuViewProps = {
   tableLabel: string;

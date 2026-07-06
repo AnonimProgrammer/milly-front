@@ -1,7 +1,7 @@
 "use client";
 
 import { formatAmount, formatDateTime, formatOrderId, getOrderTotal } from "@/modules/orders";
-import type { Order } from "@/modules/orders/types";
+import type { Order } from "@/modules/orders";
 
 type OrderPendingViewProps = {
   order: Order;

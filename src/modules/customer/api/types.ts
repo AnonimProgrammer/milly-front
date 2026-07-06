@@ -1,4 +1,4 @@
-import type { ApiOrderStatus } from "@/modules/orders/api/types";
+import type { ApiOrderStatus } from "@/modules/orders";
 
 export type PublicTableResponse = {
   id: string;
