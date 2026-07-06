@@ -1,14 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { resolvePostAuthRedirect } from "@/modules/auth/utils/postAuthRedirect";
-import {
-  ACCESS_TOKEN_COOKIE,
-  getLoginIntent,
-  isProtectedRoute,
-} from "@/modules/auth/utils/protectedRoutes";
+import { ACCESS_TOKEN_COOKIE, getLoginIntent, isProtectedRoute } from "@/modules/auth";
 
 const API_PREFIX = "/api/v1";
-const AUTH_PAGES = new Set(["/login", "/signup"]);
 
 function getBackendUrl(): string {
   return (process.env.API_URL ?? "http://localhost:8080").replace(/\/$/, "");
@@ -26,10 +20,8 @@ export function proxy(request: NextRequest) {
     return NextResponse.rewrite(backendUrl);
   }
 
-  if (AUTH_PAGES.has(pathname) && hasAccessToken(request)) {
-    const intent = request.nextUrl.searchParams.get("intent");
-    return NextResponse.redirect(new URL(resolvePostAuthRedirect(intent), request.url));
-  }
+  // Login/signup access is decided client-side (RedirectIfAuthenticated) so stale
+  // cookies do not block auth pages when the backend is down or the session expired.
 
   if (isProtectedRoute(pathname)) {
     if (!hasAccessToken(request)) {
@@ -45,8 +37,6 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     "/api/v1/:path*",
-    "/login",
-    "/signup",
     "/join-venue",
     "/register-venue",
     "/venue/:venueId/staff/:path*",

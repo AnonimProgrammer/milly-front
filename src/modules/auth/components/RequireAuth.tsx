@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ServiceUnavailable } from "@/modules/shared/ui/ServiceUnavailable";
+import { ServiceUnavailable } from "@/modules/shared/ui";
 import { useAuth } from "../context/AuthProvider";
 import { AuthPageFallback } from "./AuthPageFallback";
 

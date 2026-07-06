@@ -1,4 +1,4 @@
-import type { VenueRole } from "@/modules/venue/api/types";
+import type { VenueRole } from "@/modules/venue";
 
 type MemberRoleBadgeProps = {
   role: VenueRole;

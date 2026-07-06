@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { VenueRole } from "@/modules/venue/api/types";
+import type { VenueRole } from "@/modules/venue";
 
 type InviteMemberModalProps = {
   venueId: string;

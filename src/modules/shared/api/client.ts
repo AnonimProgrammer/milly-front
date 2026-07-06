@@ -13,6 +13,8 @@ type RequestOptions = Omit<RequestInit, "body"> & {
   body?: unknown;
   /** Skip automatic error toast (e.g. auth bootstrap, handled forbidden states). */
   silent?: boolean;
+  /** Skip global loading indicator (e.g. background WS refresh). */
+  background?: boolean;
 };
 
 function notifyRequestError(error: unknown, silent?: boolean): void {
@@ -29,15 +31,25 @@ function notifyRequestError(error: unknown, silent?: boolean): void {
   showErrorToast(message);
 }
 
-async function withApiActivity<T>(fn: () => Promise<T>, silent?: boolean): Promise<T> {
-  startApiRequest();
+async function withApiActivity<T>(
+  fn: () => Promise<T>,
+  options?: { silent?: boolean; background?: boolean },
+): Promise<T> {
+  const trackActivity = !options?.background;
+
+  if (trackActivity) {
+    startApiRequest();
+  }
+
   try {
     return await fn();
   } catch (error) {
-    notifyRequestError(error, silent);
+    notifyRequestError(error, options?.silent);
     throw error;
   } finally {
-    endApiRequest();
+    if (trackActivity) {
+      endApiRequest();
+    }
   }
 }
 
@@ -156,17 +168,20 @@ async function executeNoContentRequest(
 }
 
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  const { silent, ...requestOptions } = options;
-  return withApiActivity(() => executeRequest<T>(path, requestOptions, false), silent);
+  const { silent, background, ...requestOptions } = options;
+  return withApiActivity(() => executeRequest<T>(path, requestOptions, false), {
+    silent,
+    background,
+  });
 }
 
 export async function apiRequestNoContent(
   path: string,
   options: RequestOptions = {},
 ): Promise<void> {
-  const { silent, ...requestOptions } = options;
-  return withApiActivity(
-    () => executeNoContentRequest(path, requestOptions, false),
+  const { silent, background, ...requestOptions } = options;
+  return withApiActivity(() => executeNoContentRequest(path, requestOptions, false), {
     silent,
-  );
+    background,
+  });
 }

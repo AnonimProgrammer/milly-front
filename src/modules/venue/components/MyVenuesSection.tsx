@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getRequestErrorMessage, startUiActivity } from "@/modules/shared/api";
-import { staffPath } from "@/modules/staff/utils/staffRoutes";
+import { staffPath } from "@/modules/staff";
 import { getMyVenues } from "../api/venueApi";
 import type { VenueMembership } from "../api/types";
 import { VenueCard } from "./VenueCard";

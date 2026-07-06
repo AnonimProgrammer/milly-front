@@ -1,5 +1,5 @@
 import { Client } from "@stomp/stompjs";
-import { buildCustomerWsUrl, tableTopic } from "./config";
+import { buildCustomerWsUrl, tableTopic } from "@/modules/shared/ws";
 
 const RECONNECT_DELAY_MS = 1_500;
 

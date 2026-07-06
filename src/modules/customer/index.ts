@@ -1,5 +1,6 @@
 export { CustomerTablePage } from "./components/CustomerTablePage";
 export { TableClient } from "./components/TableClient";
+export { useCustomerTableWs } from "./ws";
 export {
   addPublicOrderItems,
   createPublicOrder,

@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/modules/auth/context/AuthProvider";
-import { getSessionHandlers } from "../api/sessionHandlers";
+import { useAuth } from "@/modules/auth";
+import { getSessionHandlers } from "@/modules/shared/api";
 import { StaffVenueWsClient } from "./staffVenueWsClient";
 import { issueWsTicket } from "./wsTicketApi";
 

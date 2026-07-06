@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { RequireAuth } from "@/modules/auth";
-import { RequireVenueMembership } from "@/modules/venue/components/RequireVenueMembership";
-import { StaffLayout } from "@/modules/staff/components/StaffLayout";
+import { RequireVenueMembership } from "@/modules/venue";
+import { StaffLayout } from "@/modules/staff";
 
 type StaffLayoutRouteProps = {
   children: ReactNode;

@@ -1,6 +1,6 @@
 "use client";
 
-import { UserAccountNav } from "@/modules/auth/components/UserAccountNav";
+import { UserAccountNav } from "@/modules/auth";
 import { BrandBackNav, PageHeader } from "@/modules/shared/ui";
 import { JoinVenueSection } from "./JoinVenueSection";
 import { MyVenuesSection } from "./MyVenuesSection";

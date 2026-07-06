@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useStaffVenueWs } from "@/modules/shared/ws";
-import { useVenueMembership } from "@/modules/venue/context/VenueMembershipContext";
-import { LoadFailedMessage } from "@/modules/staff/components/LoadFailedMessage";
+import { useStaffVenueWs } from "@/modules/staff";
+import { useVenueMembership } from "@/modules/venue";
+import { LoadFailedMessage, StaffPageLoading } from "@/modules/staff";
 import { listMenuItems, mapMenuItemResponse, type MenuItem } from "@/modules/menu";
 import { listTables, mapTableResponse, type VenueTable } from "@/modules/tables";
 import {
@@ -30,24 +30,20 @@ export function OrdersStaffPage({ venueId }: OrdersStaffPageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [loadFailed, setLoadFailed] = useState(false);
 
-  const loadOrders = useCallback(async (options?: { silent?: boolean }) => {
-    const silent = options?.silent ?? false;
-
-    if (!silent) {
-      setLoadFailed(false);
-      setIsLoading(true);
-    }
+  const loadPageData = useCallback(async () => {
+    setLoadFailed(false);
+    setIsLoading(true);
 
     try {
-      const orderResponses = await listOrders(venueId);
+      const orderResponses = await listOrders(venueId, { background: true });
 
       let nextMenuItems: MenuItem[] = [];
       let nextTables: VenueTable[] = [];
 
       if (isManager) {
         const [menuResponses, tableResponses] = await Promise.all([
-          listMenuItems(venueId),
-          listTables(venueId),
+          listMenuItems(venueId, { background: true }),
+          listTables(venueId, { background: true }),
         ]);
         nextMenuItems = menuResponses.map(mapMenuItemResponse);
         nextTables = tableResponses.map(mapTableResponse);
@@ -61,23 +57,30 @@ export function OrdersStaffPage({ venueId }: OrdersStaffPageProps) {
 
       setOrders(mapStaffOrders(orderResponses, menuById, tableById));
     } catch {
-      if (!silent) {
-        setLoadFailed(true);
-      }
+      setLoadFailed(true);
     } finally {
-      if (!silent) {
-        setIsLoading(false);
-      }
+      setIsLoading(false);
     }
   }, [venueId, isManager]);
 
+  const refreshOrdersFromWs = useCallback(async () => {
+    try {
+      const orderResponses = await listOrders(venueId, { background: true });
+      const menuById = new Map(menuItems.map((item) => [item.id, item]));
+      const tableById = new Map(tables.map((table) => [table.id, table]));
+      setOrders(mapStaffOrders(orderResponses, menuById, tableById));
+    } catch {
+      // Keep current UI when a background refresh fails.
+    }
+  }, [venueId, menuItems, tables]);
+
   useStaffVenueWs(venueId, () => {
-    void loadOrders({ silent: true });
+    void refreshOrdersFromWs();
   });
 
   useEffect(() => {
-    void loadOrders();
-  }, [loadOrders]);
+    void loadPageData();
+  }, [loadPageData]);
 
   const getLookups = useCallback(() => {
     const menuById = new Map(menuItems.map((item) => [item.id, item]));
@@ -126,11 +129,11 @@ export function OrdersStaffPage({ venueId }: OrdersStaffPageProps) {
   };
 
   if (isLoading) {
-    return null;
+    return <StaffPageLoading />;
   }
 
   if (loadFailed) {
-    return <LoadFailedMessage onRetry={() => void loadOrders()} />;
+    return <LoadFailedMessage onRetry={() => void loadPageData()} />;
   }
 
   return (

@@ -1,8 +1,7 @@
 "use client";
 
-import type { Order } from "@/modules/orders/types";
-import { formatAmount, getOrderTotal } from "@/modules/orders/utils/order.helpers";
-import { OrderActionButton } from "@/modules/orders/components/OrderActionButton";
+import type { Order } from "@/modules/orders";
+import { formatAmount, getOrderTotal, OrderActionButton } from "@/modules/orders";
 
 type OrderPaymentDetailsProps = {
   order: Order;

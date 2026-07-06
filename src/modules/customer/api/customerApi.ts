@@ -19,8 +19,14 @@ export async function listPublicMenuItems(tableId: string): Promise<PublicMenuIt
   return apiRequest<PublicMenuItemResponse[]>(`${tablePath(tableId)}/menu`);
 }
 
-export async function listPublicOrders(tableId: string): Promise<PublicOrderResponse[]> {
-  return apiRequest<PublicOrderResponse[]>(`${tablePath(tableId)}/orders`);
+export async function listPublicOrders(
+  tableId: string,
+  options?: { background?: boolean },
+): Promise<PublicOrderResponse[]> {
+  return apiRequest<PublicOrderResponse[]>(`${tablePath(tableId)}/orders`, {
+    background: options?.background,
+    silent: options?.background,
+  });
 }
 
 export async function createPublicOrder(

@@ -1,5 +1,5 @@
-import type { OrderItem } from "@/modules/orders/types";
-import { formatAmount } from "@/modules/orders/utils/order.helpers";
+import type { OrderItem } from "@/modules/orders";
+import { formatAmount } from "@/modules/orders";
 
 type OrderDetailsProps = {
   items: OrderItem[];

@@ -1,6 +1,10 @@
 "use client";
 
+import { BrandBackNav } from "./BrandBackNav";
+import { PageHeader } from "./PageHeader";
+
 type ServiceUnavailableProps = {
+  code?: string;
   title?: string;
   message?: string;
   onRetry?: () => void;
@@ -8,34 +12,32 @@ type ServiceUnavailableProps = {
 };
 
 export function ServiceUnavailable({
+  code = "503",
   title = "Service unavailable",
   message = "We couldn't reach the server. Check your connection and try again.",
   onRetry,
   fullPage = false,
 }: ServiceUnavailableProps) {
   const content = (
-    <div className="flex flex-col items-center gap-4 text-center">
-      <div className="flex h-12 w-12 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-400">
-        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
-          />
-        </svg>
-      </div>
-
-      <div className="space-y-2">
-        <h2 className="text-lg font-semibold text-black">{title}</h2>
-        <p className="max-w-sm text-sm font-light text-zinc-500">{message}</p>
-      </div>
-
+    <div className="flex flex-col items-center text-center">
+      {fullPage ? (
+        <p className="text-6xl font-light tracking-tight text-black sm:text-7xl">{code}</p>
+      ) : null}
+      <h1
+        className={
+          fullPage
+            ? "mt-4 text-xl font-semibold text-black sm:text-2xl"
+            : "text-xl font-semibold text-black sm:text-2xl"
+        }
+      >
+        {title}
+      </h1>
+      <p className="mt-2 max-w-sm text-sm font-light leading-relaxed text-zinc-500">{message}</p>
       {onRetry ? (
         <button
           type="button"
           onClick={onRetry}
-          className="rounded-full bg-black px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
+          className="mt-8 rounded-full bg-black px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
         >
           Try again
         </button>
@@ -45,8 +47,10 @@ export function ServiceUnavailable({
 
   if (fullPage) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center bg-white p-6">
-        {content}
+      <main className="relative flex min-h-screen flex-col overflow-hidden bg-white p-6 font-sans text-black antialiased selection:bg-black selection:text-white">
+        <PageHeader leading={<BrandBackNav href="/" />} />
+
+        <div className="z-10 flex flex-1 flex-col items-center justify-center py-10">{content}</div>
       </main>
     );
   }

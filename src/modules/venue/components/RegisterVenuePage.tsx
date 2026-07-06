@@ -3,9 +3,9 @@
 import { useState, type SubmitEvent } from "react";
 import { useRouter } from "next/navigation";
 import { ApiError } from "@/modules/shared/api";
-import { staffPath } from "@/modules/staff/utils/staffRoutes";
+import { staffPath } from "@/modules/staff";
 import { BrandBackNav, PageHeader } from "@/modules/shared/ui";
-import { UserAccountNav } from "@/modules/auth/components/UserAccountNav";
+import { UserAccountNav } from "@/modules/auth";
 import { createVenue } from "../api";
 import { VenueCard } from "./VenueCard";
 

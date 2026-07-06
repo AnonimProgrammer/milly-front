@@ -1,4 +1,4 @@
-import { isStaffRoute } from "@/modules/staff/utils/staffRoutes";
+import { isStaffRoute } from "@/modules/staff";
 
 export const ACCESS_TOKEN_COOKIE = "access-token";
 

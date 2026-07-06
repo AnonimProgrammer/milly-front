@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { BottomSheet, Button } from "@/modules/shared/ui";
-import { formatAmount } from "@/modules/orders/utils/order.helpers";
+import { formatAmount } from "@/modules/orders";
 import type { PaymentType } from "../types/payment";
 
 type PaymentSheetProps = {

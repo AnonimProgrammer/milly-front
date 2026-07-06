@@ -1,4 +1,4 @@
-import type { VenueRole } from "@/modules/venue/api/types";
+import type { VenueRole } from "@/modules/venue";
 
 export type MemberStatus = "active" | "inactive" | "invited";
 

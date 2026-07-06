@@ -2,8 +2,8 @@
 
 import { useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { AuthPageFallback } from "@/modules/auth/components/AuthPageFallback";
-import { staffPath } from "@/modules/staff/utils/staffRoutes";
+import { AuthPageFallback } from "@/modules/auth";
+import { staffPath } from "@/modules/staff";
 import { useVenueMembership } from "../context/VenueMembershipContext";
 
 type RequireManagerRoleProps = {

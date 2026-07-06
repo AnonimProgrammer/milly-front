@@ -1,4 +1,4 @@
-import type { Order } from "@/modules/orders/types";
+import type { Order } from "@/modules/orders";
 
 export function selectActiveOrderForTable(orders: Order[], tableId: string): Order | null {
   const active = orders.filter(

@@ -5,8 +5,14 @@ function tablesPath(venueId: string) {
   return `/api/v1/venues/${venueId}/tables`;
 }
 
-export async function listTables(venueId: string): Promise<TableResponse[]> {
-  return apiRequest<TableResponse[]>(tablesPath(venueId));
+export async function listTables(
+  venueId: string,
+  options?: { background?: boolean },
+): Promise<TableResponse[]> {
+  return apiRequest<TableResponse[]>(tablesPath(venueId), {
+    background: options?.background,
+    silent: options?.background,
+  });
 }
 
 export async function createTable(

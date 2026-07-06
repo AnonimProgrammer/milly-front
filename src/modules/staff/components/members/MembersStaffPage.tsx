@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { MOCK_VENUE_MEMBERS } from "../mock/mockMembers";
+import { MOCK_VENUE_MEMBERS } from "../../mock/mockMembers";
 import { MembersSection } from "./MembersSection";
 
 type MembersStaffPageProps = {

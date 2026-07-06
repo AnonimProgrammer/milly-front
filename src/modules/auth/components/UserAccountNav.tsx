@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../context/AuthProvider";
-import { isAuthenticatedStatus, isGuestAuthStatus } from "../utils/authLinks";
+import { isAuthenticatedStatus } from "../utils/authLinks";
 
 function UserIcon() {
   return (
@@ -83,7 +83,7 @@ export function UserAccountNav() {
         </span>
       ) : null}
 
-      {isGuestAuthStatus(status) ? (
+      {!isAuthenticatedStatus(status) ? (
         <>
           <Link href="/signup" className="text-base font-medium text-black hover:underline">
             Sign Up

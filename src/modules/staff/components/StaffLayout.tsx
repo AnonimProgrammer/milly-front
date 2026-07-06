@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useVenueMembership } from "@/modules/venue/context/VenueMembershipContext";
+import { useVenueMembership } from "@/modules/venue";
 import { StaffHeader } from "./StaffHeader";
 import { StaffTabNav } from "./StaffTabNav";
 

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/modules/shared/ui";
 import { formatAmount, getOrderTotal } from "@/modules/orders";
-import type { Order } from "@/modules/orders/types";
+import type { Order } from "@/modules/orders";
 import type { PaymentType } from "../types/payment";
 import { OrderDetails } from "./OrderDetails";
 import { PaymentProgress } from "./PaymentProgress";
