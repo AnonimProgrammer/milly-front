@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useStaffVenueWs } from "@/modules/shared/ws";
 import { useVenueMembership } from "@/modules/venue/context/VenueMembershipContext";
 import { LoadFailedMessage } from "@/modules/staff/components/LoadFailedMessage";
 import { listMenuItems, mapMenuItemResponse, type MenuItem } from "@/modules/menu";
@@ -29,9 +30,13 @@ export function OrdersStaffPage({ venueId }: OrdersStaffPageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [loadFailed, setLoadFailed] = useState(false);
 
-  const loadOrders = useCallback(async () => {
-    setLoadFailed(false);
-    setIsLoading(true);
+  const loadOrders = useCallback(async (options?: { silent?: boolean }) => {
+    const silent = options?.silent ?? false;
+
+    if (!silent) {
+      setLoadFailed(false);
+      setIsLoading(true);
+    }
 
     try {
       const orderResponses = await listOrders(venueId);
@@ -56,11 +61,19 @@ export function OrdersStaffPage({ venueId }: OrdersStaffPageProps) {
 
       setOrders(mapStaffOrders(orderResponses, menuById, tableById));
     } catch {
-      setLoadFailed(true);
+      if (!silent) {
+        setLoadFailed(true);
+      }
     } finally {
-      setIsLoading(false);
+      if (!silent) {
+        setIsLoading(false);
+      }
     }
   }, [venueId, isManager]);
+
+  useStaffVenueWs(venueId, () => {
+    void loadOrders({ silent: true });
+  });
 
   useEffect(() => {
     void loadOrders();
