@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { ApiError, endUiActivity, isServiceUnavailable } from "@/modules/shared/api";
-import { ServiceUnavailable } from "@/modules/shared/ui/ServiceUnavailable";
-import { AuthPageFallback } from "@/modules/auth/components/AuthPageFallback";
+import { ServiceUnavailable } from "@/modules/shared/ui";
+import { AuthPageFallback } from "@/modules/auth";
 import { getVenueMembership } from "../api/venueApi";
 import { VenueMembershipProvider } from "../context/VenueMembershipContext";
 
