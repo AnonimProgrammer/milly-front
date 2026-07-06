@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCustomerTableWs } from "@/modules/shared/ws";
 import { ServiceUnavailable } from "@/modules/shared/ui";
 import type { MenuItem } from "@/modules/menu/types";
 import type { Order } from "@/modules/orders/types";
@@ -61,6 +62,28 @@ export function TableClient({ tableId }: TableClientProps) {
       setLoading(false);
     }
   }, [tableId]);
+
+  const refreshOrders = useCallback(async () => {
+    try {
+      const ordersResponse = await listPublicOrders(tableId);
+      setState((prev) => {
+        if (!prev) {
+          return prev;
+        }
+
+        return {
+          ...prev,
+          orders: mapPublicOrders(ordersResponse, prev.menuItems, prev.tableLabel),
+        };
+      });
+    } catch {
+      // Keep current UI when a background refresh fails.
+    }
+  }, [tableId]);
+
+  useCustomerTableWs(tableId, () => {
+    void refreshOrders();
+  });
 
   useEffect(() => {
     void loadTableData();
