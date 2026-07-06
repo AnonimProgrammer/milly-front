@@ -1,6 +1,6 @@
 "use client";
 
-import { ServiceUnavailable } from "@/modules/shared/ui/ServiceUnavailable";
+import { ServiceUnavailable } from "@/modules/shared/ui";
 
 type LoadFailedMessageProps = {
   onRetry?: () => void;
