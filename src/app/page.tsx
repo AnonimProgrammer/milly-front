@@ -1,6 +1,5 @@
-import { HomeUserNav } from "@/modules/auth/components/HomeUserNav";
-import { VenueEntryButtons } from "@/modules/auth/components/VenueEntryButtons";
-import { MillyMark } from "@/modules/shared/ui/MillyMark";
+import { HomeUserNav, VenueEntryButtons } from "@/modules/auth";
+import { MillyMark } from "@/modules/shared/ui";
 
 export default function Home() {
   return (

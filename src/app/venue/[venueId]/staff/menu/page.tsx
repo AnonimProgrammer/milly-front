@@ -1,5 +1,5 @@
 import { MenuStaffPage } from "@/modules/menu";
-import { RequireManagerRole } from "@/modules/venue/components/RequireManagerRole";
+import { RequireManagerRole } from "@/modules/venue";
 
 type MenuStaffRouteProps = {
   params: Promise<{ venueId: string }>;

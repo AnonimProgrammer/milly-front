@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { staffPath } from "@/modules/staff/utils/staffRoutes";
+import { staffPath } from "@/modules/staff";
 
 type StaffIndexRouteProps = {
   params: Promise<{ venueId: string }>;

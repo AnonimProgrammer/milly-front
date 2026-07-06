@@ -1,5 +1,5 @@
 import { TablesStaffPage } from "@/modules/tables";
-import { RequireManagerRole } from "@/modules/venue/components/RequireManagerRole";
+import { RequireManagerRole } from "@/modules/venue";
 
 type TablesStaffRouteProps = {
   params: Promise<{ venueId: string }>;
