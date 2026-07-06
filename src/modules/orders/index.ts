@@ -1,4 +1,5 @@
 export type { Order, OrderAddition, OrderItem, OrderStatus } from "./types";
+export type { ApiOrderStatus } from "./api";
 export { OrdersSection } from "./components/OrdersSection";
 export { OrdersStaffPage } from "./components/OrdersStaffPage";
 export { OrderActionButton } from "./components/OrderActionButton";
