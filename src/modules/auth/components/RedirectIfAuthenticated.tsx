@@ -22,7 +22,7 @@ export function RedirectIfAuthenticated({ intent, children }: RedirectIfAuthenti
     }
   }, [status, intent, router]);
 
-  if (status === "loading" || isAuthenticatedStatus(status)) {
+  if (isAuthenticatedStatus(status)) {
     return <AuthPageFallback />;
   }
 
