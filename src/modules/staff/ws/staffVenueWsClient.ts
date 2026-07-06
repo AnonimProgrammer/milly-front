@@ -1,6 +1,6 @@
 import { Client } from "@stomp/stompjs";
-import { ApiError } from "../api";
-import { buildStaffWsUrl, venueStaffTopic } from "./config";
+import { ApiError } from "@/modules/shared/api";
+import { buildStaffWsUrl, venueStaffTopic } from "@/modules/shared/ws";
 
 const RECONNECT_DELAY_MS = 1_500;
 
