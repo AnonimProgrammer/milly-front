@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
-import { showToast } from "@/modules/shared/feedback/toast";
+import { showToast } from "@/modules/shared/feedback";
 import type { VenueTable } from "../types";
 
 type TableDetailModalProps = {
