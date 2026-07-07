@@ -22,7 +22,7 @@ function SignUpPageContent() {
           <IntentBanner intent={intent} />
           <SignUpForm intent={intent} />
           <AuthDivider />
-          <OAuthButtons />
+          <OAuthButtons intent={intent} />
         </AuthCard>
       </AuthLayout>
     </RedirectIfAuthenticated>
