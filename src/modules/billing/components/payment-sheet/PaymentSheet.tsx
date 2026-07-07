@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { BottomSheet } from "@/modules/shared/ui";
-import type { PaymentType, PaymentProvider } from "../types/payment";
-import { PaymentAmountStep } from "./payment-sheet/PaymentAmountStep";
-import { PaymentErrorStep } from "./payment-sheet/PaymentErrorStep";
-import { PaymentProcessingStep } from "./payment-sheet/PaymentProcessingStep";
-import { PaymentProviderStep } from "./payment-sheet/PaymentProviderStep";
-import { PaymentSuccessStep } from "./payment-sheet/PaymentSuccessStep";
-import { getSheetTitle } from "./payment-sheet/paymentSheet.utils";
-import type { PaymentStep } from "./payment-sheet/types";
+import type { PaymentType, PaymentProvider } from "../../types/payment";
+import { PaymentAmountStep } from "./PaymentAmountStep";
+import { PaymentErrorStep } from "./PaymentErrorStep";
+import { PaymentProcessingStep } from "./PaymentProcessingStep";
+import { PaymentProviderStep } from "./PaymentProviderStep";
+import { PaymentSuccessStep } from "./PaymentSuccessStep";
+import { getSheetTitle } from "./paymentSheet.utils";
+import type { PaymentStep } from "./types";
 
 type PaymentSheetProps = {
   open: boolean;
@@ -25,18 +25,13 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
   const [activeType, setActiveType] = useState<PaymentType | null>(null);
   const [selectedAmount, setSelectedAmount] = useState(0);
   const [selectedProvider, setSelectedProvider] = useState<PaymentProvider | null>(null);
-  
-  // Credit Card Form mock states
   const [cardNumber, setCardNumber] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvc, setCardCvc] = useState("");
-
   const [error, setError] = useState("");
-  
-  // Simulation testing states
   const [simulateFailure, setSimulateFailure] = useState(false);
 
-  function handleClose() {
+  function resetState() {
     setStep("amount");
     setActiveType(null);
     setCustomAmount("");
@@ -46,6 +41,10 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
     setCardExpiry("");
     setCardCvc("");
     setError("");
+  }
+
+  function handleClose() {
+    resetState();
     onClose();
   }
 
@@ -54,46 +53,42 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
       setSelectedAmount(remaining);
       setActiveType("full");
       setStep("provider");
-    } else {
-      setActiveType(type);
+      return;
     }
+    setActiveType(type);
   }
 
   function handleCustomAmountSubmit() {
-    const amt = parseFloat(customAmount);
-    if (isNaN(amt) || amt <= 0 || amt > remaining) {
+    const amount = parseFloat(customAmount);
+    if (isNaN(amount) || amount <= 0 || amount > remaining) {
       setError("Invalid payment amount");
       return;
     }
     setError("");
-    setSelectedAmount(amt);
+    setSelectedAmount(amount);
     setStep("provider");
   }
 
   function handleSplitAmountSubmit() {
     const people = Math.max(2, parseInt(splitPeople, 10) || 2);
-    const share = remaining / people;
-    setSelectedAmount(share);
+    setSelectedAmount(remaining / people);
     setStep("provider");
   }
 
   function handlePay() {
     if (!activeType || !selectedProvider) return;
-    
+
     setStep("processing");
     setError("");
 
     setTimeout(() => {
       if (simulateFailure) {
         setStep("error");
-      } else {
-        const success = onPay(selectedAmount, activeType);
-        if (success) {
-          setStep("success");
-        } else {
-          setStep("error");
-        }
+        return;
       }
+
+      const success = onPay(selectedAmount, activeType);
+      setStep(success ? "success" : "error");
     }, 1500);
   }
 
@@ -152,9 +147,8 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
           />
         )}
 
-        {error && <p className="text-sm text-red-600 text-center font-medium mt-1">{error}</p>}
+        {error && <p className="mt-1 text-center text-sm font-medium text-red-600">{error}</p>}
       </div>
     </BottomSheet>
   );
 }
-
