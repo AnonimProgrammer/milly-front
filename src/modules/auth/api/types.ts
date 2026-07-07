@@ -2,7 +2,6 @@ export type PasswordProfile = {
   firstName: string;
   lastName: string;
   email: string;
-  birthDate: string;
 };
 
 export type CurrentUser = {

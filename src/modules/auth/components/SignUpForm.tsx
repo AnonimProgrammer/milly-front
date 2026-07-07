@@ -18,7 +18,6 @@ export function SignUpForm({ intent }: SignUpFormProps) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [birthDate, setBirthDate] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,7 +34,6 @@ export function SignUpForm({ intent }: SignUpFormProps) {
         firstName: firstName.trim(),
         lastName: lastName.trim(),
         email: trimmedEmail,
-        birthDate,
       });
       router.replace(resolvePostAuthRedirect(intent));
     } catch (submitError) {
@@ -104,22 +102,6 @@ export function SignUpForm({ intent }: SignUpFormProps) {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             placeholder="name@example.com"
-            className="w-full px-4 py-3 rounded-xl border border-black/10 bg-white text-sm text-black transition-all focus:border-black focus:ring-1 focus:ring-black outline-none"
-          />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="birthDate" className="text-xs font-medium text-zinc-600">
-            Date of Birth
-          </label>
-          <input
-            id="birthDate"
-            name="birthDate"
-            type="date"
-            autoComplete="bday"
-            required
-            value={birthDate}
-            onChange={(event) => setBirthDate(event.target.value)}
             className="w-full px-4 py-3 rounded-xl border border-black/10 bg-white text-sm text-black transition-all focus:border-black focus:ring-1 focus:ring-black outline-none"
           />
         </div>
