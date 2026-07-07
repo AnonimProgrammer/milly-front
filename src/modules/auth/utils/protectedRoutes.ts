@@ -1,6 +1,7 @@
 import { isStaffRoute } from "@/modules/staff";
 
 export const ACCESS_TOKEN_COOKIE = "access-token";
+export const REFRESH_TOKEN_COOKIE = "refresh-token";
 
 export function isProtectedRoute(pathname: string): boolean {
   if (pathname === "/join-venue" || pathname === "/register-venue") {

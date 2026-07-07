@@ -81,12 +81,6 @@ export function SignInForm({ intent }: SignInFormProps) {
           />
         </div>
 
-        <div className="flex items-center justify-end">
-          <button type="button" className="text-xs font-medium text-black hover:underline">
-            Forgot password?
-          </button>
-        </div>
-
         {error ? (
           <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
             {error}

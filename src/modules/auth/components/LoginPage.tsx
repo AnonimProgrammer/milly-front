@@ -22,7 +22,7 @@ function LoginPageContent() {
           <IntentBanner intent={intent} />
           <SignInForm intent={intent} />
           <AuthDivider />
-          <OAuthButtons />
+          <OAuthButtons intent={intent} />
         </AuthCard>
       </AuthLayout>
     </RedirectIfAuthenticated>

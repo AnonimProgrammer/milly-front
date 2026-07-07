@@ -21,6 +21,24 @@ export async function continueWithPassword(params: {
   });
 }
 
+export async function continueWithGoogle(params: {
+  idToken: string;
+  profile?: PasswordProfile;
+}): Promise<ContinueResponse> {
+  return apiRequest<ContinueResponse>("/api/v1/auth/continue", {
+    method: "POST",
+    silent: true,
+    background: true,
+    body: {
+      provider: "GOOGLE",
+      credentials: {
+        idToken: params.idToken,
+      },
+      ...(params.profile ? { profile: params.profile } : {}),
+    },
+  });
+}
+
 export async function getCurrentUser(): Promise<CurrentUser> {
   return apiRequest<CurrentUser>("/api/v1/auth/me", { silent: true, background: true });
 }

@@ -11,7 +11,7 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import { ApiError, clearSessionHandlers, isServiceUnavailable, setSessionHandlers } from "@/modules/shared/api";
-import { continueWithPassword, getCurrentUser, logout } from "../api/authApi";
+import { continueWithGoogle, continueWithPassword, getCurrentUser, logout } from "../api/authApi";
 import { attemptRefreshSession } from "../api/refreshSessionMutex";
 import type { CurrentUser, PasswordProfile } from "../api/types";
 import { isProtectedRoute } from "../utils/protectedRoutes";
@@ -23,6 +23,7 @@ type AuthContextValue = {
   status: AuthStatus;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, profile: PasswordProfile) => Promise<void>;
+  signInWithGoogle: (idToken: string, profile?: PasswordProfile) => Promise<void>;
   signOut: () => Promise<void>;
   refreshUser: () => Promise<void>;
 };
@@ -92,6 +93,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [refreshUser],
   );
 
+  const signInWithGoogle = useCallback(
+    async (idToken: string, profile?: PasswordProfile) => {
+      await continueWithGoogle({ idToken, profile });
+      await refreshUser();
+    },
+    [refreshUser],
+  );
+
   const signOut = useCallback(async () => {
     try {
       await logout();
@@ -112,10 +121,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       status,
       signIn,
       signUp,
+      signInWithGoogle,
       signOut,
       refreshUser,
     }),
-    [user, status, signIn, signUp, signOut, refreshUser],
+    [user, status, signIn, signUp, signInWithGoogle, signOut, refreshUser],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
