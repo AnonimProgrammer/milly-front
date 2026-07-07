@@ -18,3 +18,17 @@ export type CreateVenueResponse = {
   location: string;
   role: VenueRole;
 };
+
+export type CreateVenueInvitationRequest = {
+  role: VenueRole;
+};
+
+export type CreateVenueInvitationResponse = {
+  token: string;
+  inviteUrl: string;
+  role: VenueRole;
+};
+
+export type RedeemVenueInvitationRequest = {
+  token: string;
+};
