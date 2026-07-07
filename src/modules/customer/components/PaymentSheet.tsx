@@ -5,6 +5,7 @@ import { BottomSheet, Button } from "@/modules/shared/ui";
 import { formatAmount } from "@/modules/orders";
 import type { PaymentType, PaymentProvider } from "../types/payment";
 
+
 type PaymentSheetProps = {
   open: boolean;
   onClose: () => void;
@@ -12,7 +13,7 @@ type PaymentSheetProps = {
   onPay: (amount: number, type: PaymentType) => boolean;
 };
 
-type PaymentStep = "amount" | "provider";
+type PaymentStep = "amount" | "provider" | "processing" | "success" | "error";
 
 const AppleIcon = () => (
   <svg className="mr-2 h-4 w-4 fill-current text-white" viewBox="0 0 170 170">
@@ -63,6 +64,12 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
   const [activeType, setActiveType] = useState<PaymentType | null>(null);
   const [selectedAmount, setSelectedAmount] = useState(0);
   const [selectedProvider, setSelectedProvider] = useState<PaymentProvider | null>(null);
+  
+  // Credit Card Form mock states
+  const [cardNumber, setCardNumber] = useState("");
+  const [cardExpiry, setCardExpiry] = useState("");
+  const [cardCvc, setCardCvc] = useState("");
+
   const [error, setError] = useState("");
 
   function handleClose() {
@@ -71,6 +78,9 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
     setCustomAmount("");
     setSelectedAmount(0);
     setSelectedProvider(null);
+    setCardNumber("");
+    setCardExpiry("");
+    setCardCvc("");
     setError("");
     onClose();
   }
@@ -104,7 +114,8 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
   }
 
   function handlePay() {
-    if (!activeType || !selectedProvider) return;
+    // Placeholder pay logic for Commit 2
+    if (!activeType) return;
     const success = onPay(selectedAmount, activeType);
     if (!success) {
       setError("Payment failed");
@@ -114,11 +125,7 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
   }
 
   return (
-    <BottomSheet
-      open={open}
-      onClose={handleClose}
-      title={step === "amount" ? "Pay the bill" : `Pay ${formatAmount(selectedAmount)}`}
-    >
+    <BottomSheet open={open} onClose={handleClose} title={step === "amount" ? "Pay the bill" : `Pay ${formatAmount(selectedAmount)}`}>
       <div className="flex flex-col gap-3">
         {step === "amount" && (
           <>
@@ -177,14 +184,16 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
                   onChange={(e) => setSplitPeople(e.target.value)}
                   className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-black outline-none focus:border-black"
                 />
-                <p className="text-sm font-medium text-neutral-600">
+                <p className="text-sm text-neutral-600 font-medium">
                   Your share:{" "}
                   {formatAmount(
                     remaining / Math.max(2, parseInt(splitPeople, 10) || 2),
                   )}
                 </p>
                 <div className="flex flex-col gap-2 pt-2">
-                  <Button onClick={handleSplitAmountSubmit}>Continue</Button>
+                  <Button onClick={handleSplitAmountSubmit}>
+                    Continue
+                  </Button>
                   <Button variant="ghost" onClick={() => setActiveType(null)}>
                     Back
                   </Button>
@@ -196,9 +205,7 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
 
         {step === "provider" && (
           <div className="space-y-4">
-            <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
-              Select Payment Method
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">Select Payment Method</p>
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
@@ -239,8 +246,54 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
               <span>Credit or Debit Card</span>
             </button>
 
+            {selectedProvider === "card" && (
+              <div className="space-y-2 rounded-xl border border-neutral-100 bg-neutral-50/50 p-4 transition-all duration-300">
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-neutral-500">Card Number</label>
+                  <input
+                    type="text"
+                    maxLength={19}
+                    placeholder="•••• •••• •••• ••••"
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value)}
+                    className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-black outline-none focus:border-black"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="mb-1 block text-xs font-medium text-neutral-500">Expiry Date</label>
+                    <input
+                      type="text"
+                      maxLength={5}
+                      placeholder="MM/YY"
+                      value={cardExpiry}
+                      onChange={(e) => setCardExpiry(e.target.value)}
+                      className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-black outline-none focus:border-black"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs font-medium text-neutral-500">CVC</label>
+                    <input
+                      type="text"
+                      maxLength={3}
+                      placeholder="•••"
+                      value={cardCvc}
+                      onChange={(e) => setCardCvc(e.target.value)}
+                      className="w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-black outline-none focus:border-black"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="flex flex-col gap-2 pt-2">
-              <Button onClick={handlePay} disabled={!selectedProvider}>
+              <Button
+                onClick={handlePay}
+                disabled={
+                  !selectedProvider ||
+                  (selectedProvider === "card" && (!cardNumber || !cardExpiry || !cardCvc))
+                }
+              >
                 {selectedProvider === "apple-pay" && "Pay with Apple Pay"}
                 {selectedProvider === "google-pay" && "Pay with Google Pay"}
                 {selectedProvider === "card" && "Pay with Card"}
@@ -253,8 +306,9 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
           </div>
         )}
 
-        {error && <p className="mt-1 text-center text-sm font-medium text-red-600">{error}</p>}
+        {error && <p className="text-sm text-red-600 text-center font-medium mt-1">{error}</p>}
       </div>
     </BottomSheet>
   );
 }
+
