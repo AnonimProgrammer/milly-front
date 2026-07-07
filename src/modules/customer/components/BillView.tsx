@@ -4,10 +4,9 @@ import { useEffect, useState } from "react";
 import { Button } from "@/modules/shared/ui";
 import { formatAmount, getOrderTotal } from "@/modules/orders";
 import type { Order } from "@/modules/orders";
-import type { PaymentType } from "../types/payment";
+import { PaymentProgress, PaymentSheet, type PaymentType } from "@/modules/billing";
 import { OrderDetails } from "./OrderDetails";
-import { PaymentProgress } from "./PaymentProgress";
-import { PaymentSheet } from "./PaymentSheet";
+import { showToast } from "@/modules/shared/feedback";
 
 type BillViewProps = {
   tableLabel: string;
@@ -32,8 +31,10 @@ export function BillView({ tableLabel, order, onAddMore }: BillViewProps) {
     }
 
     setPaidAmount((current) => current + amount);
+    showToast(`Payment of ${formatAmount(amount)} processed successfully!`, "success");
     return true;
   }
+
 
   return (
     <div className="mx-auto flex min-h-full w-full max-w-lg flex-col bg-white px-5 py-6">
