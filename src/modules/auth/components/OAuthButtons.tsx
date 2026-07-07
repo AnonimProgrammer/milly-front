@@ -1,11 +1,15 @@
 "use client";
 
-import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ApiError } from "@/modules/shared/api";
 import { showToast } from "@/modules/shared/feedback";
 import { useAuth } from "../context/AuthProvider";
+import {
+  ensureGoogleIdentityInitialized,
+  renderGoogleSignInButton,
+  setGoogleCredentialCallback,
+} from "../utils/googleGsi";
 import { getGoogleClientId, parseGoogleIdToken } from "../utils/googleIdToken";
 import { resolvePostAuthRedirect } from "../utils/postAuthRedirect";
 
@@ -19,40 +23,65 @@ export function OAuthButtons({ intent }: OAuthButtonsProps) {
   const googleButtonRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGoogleReady, setIsGoogleReady] = useState(false);
 
   const googleClientId = getGoogleClientId();
   const isGoogleEnabled = Boolean(googleClientId);
 
-  async function handleGoogleSuccess(credentialResponse: CredentialResponse) {
-    const idToken = credentialResponse.credential;
+  const intentRef = useRef(intent);
+  intentRef.current = intent;
 
-    if (!idToken) {
-      setError("Google sign-in did not return a valid credential.");
+  useEffect(() => {
+    if (!isGoogleEnabled) {
       return;
     }
 
-    setError(null);
-    setIsSubmitting(true);
+    let cancelled = false;
 
-    try {
-      const profile = parseGoogleIdToken(idToken);
-      await signInWithGoogle(idToken, profile);
-      router.replace(resolvePostAuthRedirect(intent));
-    } catch (submitError) {
-      if (submitError instanceof ApiError) {
-        setError(submitError.message);
-      } else if (submitError instanceof Error) {
-        setError(submitError.message);
-      } else {
-        setError("Something went wrong. Please try again.");
+    setGoogleCredentialCallback(async (idToken) => {
+      setError(null);
+      setIsSubmitting(true);
+
+      try {
+        const profile = parseGoogleIdToken(idToken);
+        await signInWithGoogle(idToken, profile);
+        router.replace(resolvePostAuthRedirect(intentRef.current));
+      } catch (submitError) {
+        if (submitError instanceof ApiError) {
+          setError(submitError.message);
+        } else if (submitError instanceof Error) {
+          setError(submitError.message);
+        } else {
+          setError("Something went wrong. Please try again.");
+        }
+      } finally {
+        setIsSubmitting(false);
       }
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
+    });
+
+    void ensureGoogleIdentityInitialized(googleClientId)
+      .then(() => {
+        if (cancelled || !googleButtonRef.current) {
+          return;
+        }
+
+        renderGoogleSignInButton(googleButtonRef.current);
+        setIsGoogleReady(true);
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setError("Google sign-in is unavailable right now.");
+        }
+      });
+
+    return () => {
+      cancelled = true;
+      setGoogleCredentialCallback(null);
+    };
+  }, [googleClientId, isGoogleEnabled, router, signInWithGoogle]);
 
   function handleGoogleClick() {
-    if (!isGoogleEnabled || isSubmitting) {
+    if (!isGoogleEnabled || isSubmitting || !isGoogleReady) {
       return;
     }
 
@@ -69,19 +98,13 @@ export function OAuthButtons({ intent }: OAuthButtonsProps) {
       <div className="grid grid-cols-2 gap-3">
         <div className="relative">
           {isGoogleEnabled ? (
-            <div ref={googleButtonRef} className="absolute h-0 w-0 overflow-hidden" aria-hidden>
-              <GoogleLogin
-                onSuccess={handleGoogleSuccess}
-                onError={() => setError("Google sign-in was cancelled or failed.")}
-                useOneTap={false}
-              />
-            </div>
+            <div ref={googleButtonRef} className="absolute h-0 w-0 overflow-hidden" aria-hidden />
           ) : null}
 
           <button
             type="button"
             onClick={handleGoogleClick}
-            disabled={!isGoogleEnabled || isSubmitting}
+            disabled={!isGoogleEnabled || isSubmitting || !isGoogleReady}
             className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-black/30 px-4 py-2.5 text-sm font-medium text-black transition-colors hover:border-black/60 hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>

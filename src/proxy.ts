@@ -60,7 +60,7 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     "/api/v1/:path*",
-    "/join-venue",
+    "/join-venue/:path*",
     "/register-venue",
     "/venue/:venueId/staff/:path*",
   ],
