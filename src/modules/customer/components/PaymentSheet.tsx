@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { BottomSheet, Button } from "@/modules/shared/ui";
 import { formatAmount } from "@/modules/orders";
-import type { PaymentType } from "../types/payment";
+import type { PaymentType, PaymentProvider } from "../types/payment";
 
 type PaymentSheetProps = {
   open: boolean;
@@ -14,12 +14,55 @@ type PaymentSheetProps = {
 
 type PaymentStep = "amount" | "provider";
 
+const AppleIcon = () => (
+  <svg className="mr-2 h-4 w-4 fill-current text-white" viewBox="0 0 170 170">
+    <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.34.13-9.14-1.92-14.38-6.17-3.35-2.74-7.24-7.46-11.69-14.15-8.49-12.87-14.81-28.72-18.96-47.53-2.91-13.2-4.36-25.13-4.36-35.79 0-15.7 3.73-28.32 11.2-37.88 7.47-9.56 16.73-14.37 27.77-14.43 5.41 0 10.98 1.44 16.69 4.31 5.71 2.87 9.38 4.31 10.99 4.31 1.73 0 5.66-1.57 11.78-4.71 6.13-3.14 11.89-4.63 17.29-4.49 13.62.48 24.3 5.56 32.06 15.22-12.43 7.55-18.52 17.6-18.28 30.13.25 9.87 3.93 18.06 11.04 24.58 7.12 6.52 15.61 9.94 25.48 10.25-2.58 7.63-5.75 14.83-9.5 21.61zM119.22 35.63c0-8.32 2.92-15.77 8.76-21.36 5.84-5.59 12.85-8.62 21.03-9.08.1 1.02.16 1.94.16 2.76 0 8.01-2.97 15.35-8.91 21.01-5.94 5.66-13.06 8.78-21.37 9.37-.11-1.02-.17-1.92-.17-2.7z" />
+  </svg>
+);
+
+const GoogleIcon = () => (
+  <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+    <path
+      fill="#4285F4"
+      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+    />
+    <path
+      fill="#34A853"
+      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+    />
+    <path
+      fill="#FBBC05"
+      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22c-.22-.67-.35-1.37-.35-2.09z"
+    />
+    <path
+      fill="#EA4335"
+      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+    />
+  </svg>
+);
+
+const CardIcon = () => (
+  <svg
+    className="mr-2 h-4 w-4"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <rect x="2" y="5" width="20" height="14" rx="2" />
+    <line x1="2" y1="10" x2="22" y2="10" />
+  </svg>
+);
+
 export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetProps) {
   const [step, setStep] = useState<PaymentStep>("amount");
   const [customAmount, setCustomAmount] = useState("");
   const [splitPeople, setSplitPeople] = useState("2");
   const [activeType, setActiveType] = useState<PaymentType | null>(null);
   const [selectedAmount, setSelectedAmount] = useState(0);
+  const [selectedProvider, setSelectedProvider] = useState<PaymentProvider | null>(null);
   const [error, setError] = useState("");
 
   function handleClose() {
@@ -27,6 +70,7 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
     setActiveType(null);
     setCustomAmount("");
     setSelectedAmount(0);
+    setSelectedProvider(null);
     setError("");
     onClose();
   }
@@ -60,7 +104,7 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
   }
 
   function handlePay() {
-    if (!activeType) return;
+    if (!activeType || !selectedProvider) return;
     const success = onPay(selectedAmount, activeType);
     if (!success) {
       setError("Payment failed");
@@ -152,11 +196,56 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
 
         {step === "provider" && (
           <div className="space-y-4">
-            <p className="text-sm text-neutral-600">
-              Confirm payment of {formatAmount(selectedAmount)}
+            <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
+              Select Payment Method
             </p>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => setSelectedProvider("apple-pay")}
+                className={`flex items-center justify-center rounded-xl py-3 text-sm font-medium transition-all ${
+                  selectedProvider === "apple-pay"
+                    ? "bg-black text-white ring-2 ring-black ring-offset-2"
+                    : "border border-neutral-200 bg-neutral-50 text-black hover:bg-neutral-100"
+                }`}
+              >
+                <AppleIcon />
+                <span>Apple Pay</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedProvider("google-pay")}
+                className={`flex items-center justify-center rounded-xl py-3 text-sm font-medium transition-all ${
+                  selectedProvider === "google-pay"
+                    ? "bg-black text-white ring-2 ring-black ring-offset-2"
+                    : "border border-neutral-200 bg-neutral-50 text-black hover:bg-neutral-100"
+                }`}
+              >
+                <GoogleIcon />
+                <span>Google Pay</span>
+              </button>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setSelectedProvider("card")}
+              className={`flex w-full items-center justify-center rounded-xl py-3 text-sm font-medium transition-all ${
+                selectedProvider === "card"
+                  ? "bg-black text-white ring-2 ring-black ring-offset-2"
+                  : "border border-neutral-200 bg-neutral-50 text-black hover:bg-neutral-100"
+              }`}
+            >
+              <CardIcon />
+              <span>Credit or Debit Card</span>
+            </button>
+
             <div className="flex flex-col gap-2 pt-2">
-              <Button onClick={handlePay}>Pay now</Button>
+              <Button onClick={handlePay} disabled={!selectedProvider}>
+                {selectedProvider === "apple-pay" && "Pay with Apple Pay"}
+                {selectedProvider === "google-pay" && "Pay with Google Pay"}
+                {selectedProvider === "card" && "Pay with Card"}
+                {!selectedProvider && "Select a payment option"}
+              </Button>
               <Button variant="ghost" onClick={() => setStep("amount")}>
                 Back
               </Button>
