@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { BottomSheet, Button } from "@/modules/shared/ui";
-import { formatAmount } from "@/modules/orders";
+import { BottomSheet } from "@/modules/shared/ui";
 import type { PaymentType, PaymentProvider } from "../types/payment";
 import { PaymentAmountStep } from "./payment-sheet/PaymentAmountStep";
+import { PaymentErrorStep } from "./payment-sheet/PaymentErrorStep";
+import { PaymentProcessingStep } from "./payment-sheet/PaymentProcessingStep";
 import { PaymentProviderStep } from "./payment-sheet/PaymentProviderStep";
+import { PaymentSuccessStep } from "./payment-sheet/PaymentSuccessStep";
 import { getSheetTitle } from "./payment-sheet/paymentSheet.utils";
 import type { PaymentStep } from "./payment-sheet/types";
 
@@ -95,19 +97,6 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
     }, 1500);
   }
 
-  const getProviderName = (provider: PaymentProvider | null) => {
-    switch (provider) {
-      case "apple-pay":
-        return "Apple Pay";
-      case "google-pay":
-        return "Google Pay";
-      case "card":
-        return "Credit Card";
-      default:
-        return "";
-    }
-  };
-
   return (
     <BottomSheet open={open} onClose={handleClose} title={getSheetTitle(step, selectedAmount)}>
       <div className="flex flex-col gap-3">
@@ -143,79 +132,24 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
           />
         )}
 
-        {step === "processing" && (
-          <div className="flex flex-col items-center justify-center py-10 text-center">
-            <div className="mb-4 h-12 w-12 animate-spin rounded-full border-4 border-neutral-100 border-t-black" />
-            <p className="text-sm font-semibold text-black">Contacting {getProviderName(selectedProvider)}...</p>
-            <p className="text-xs text-neutral-400 mt-1">Please secure your connection. Do not close this page.</p>
-          </div>
-        )}
+        {step === "processing" && <PaymentProcessingStep provider={selectedProvider} />}
 
         {step === "success" && (
-          <div className="flex flex-col items-center justify-center py-8 text-center">
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-black text-white">
-              <svg
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-bold text-black">Payment Successful!</h3>
-            <div className="my-4 w-full rounded-xl border border-neutral-100 bg-neutral-50 p-4 text-left text-sm space-y-2 text-neutral-600">
-              <div className="flex justify-between">
-                <span>Amount Paid:</span>
-                <span className="font-semibold text-black">{formatAmount(selectedAmount)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Method:</span>
-                <span className="font-semibold text-black">{getProviderName(selectedProvider)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Status:</span>
-                <span className="font-semibold text-black">Settled</span>
-              </div>
-            </div>
-            <Button onClick={handleClose}>Done</Button>
-          </div>
+          <PaymentSuccessStep
+            amount={selectedAmount}
+            provider={selectedProvider}
+            onDone={handleClose}
+          />
         )}
 
         {step === "error" && (
-          <div className="flex flex-col items-center justify-center py-8 text-center">
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-neutral-100 text-black">
-              <svg
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </div>
-            <h3 className="text-lg font-bold text-black font-semibold">Payment Declined</h3>
-            <p className="text-xs text-neutral-500 max-w-xs mt-2 mb-6">
-              Your bank or payment provider declined this transaction. Please try another card or check your provider settings.
-            </p>
-            <div className="flex flex-col gap-2 w-full">
-              <Button onClick={() => { setStep("provider"); setError(""); }}>
-                Try Again
-              </Button>
-              <Button variant="ghost" onClick={handleClose}>
-                Cancel
-              </Button>
-            </div>
-          </div>
+          <PaymentErrorStep
+            onTryAgain={() => {
+              setStep("provider");
+              setError("");
+            }}
+            onCancel={handleClose}
+          />
         )}
 
         {error && <p className="text-sm text-red-600 text-center font-medium mt-1">{error}</p>}
