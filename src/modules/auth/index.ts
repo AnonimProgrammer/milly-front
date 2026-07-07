@@ -10,6 +10,7 @@ export { useAuth } from "./context/AuthProvider";
 export { resolvePostAuthRedirect } from "./utils/postAuthRedirect";
 export {
   ACCESS_TOKEN_COOKIE,
+  REFRESH_TOKEN_COOKIE,
   getLoginIntent,
   isProtectedRoute,
 } from "./utils/protectedRoutes";
