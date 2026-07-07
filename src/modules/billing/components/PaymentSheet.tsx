@@ -4,6 +4,7 @@ import { useState } from "react";
 import { BottomSheet, Button } from "@/modules/shared/ui";
 import { formatAmount } from "@/modules/orders";
 import type { PaymentType, PaymentProvider } from "../types/payment";
+import { PaymentAmountStep } from "./payment-sheet/PaymentAmountStep";
 import { PaymentProviderStep } from "./payment-sheet/PaymentProviderStep";
 import { getSheetTitle } from "./payment-sheet/paymentSheet.utils";
 import type { PaymentStep } from "./payment-sheet/types";
@@ -111,79 +112,18 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
     <BottomSheet open={open} onClose={handleClose} title={getSheetTitle(step, selectedAmount)}>
       <div className="flex flex-col gap-3">
         {step === "amount" && (
-          <>
-            {!activeType && (
-              <>
-                <Button onClick={() => handleSelectAmountType("full")}>
-                  Full amount — {formatAmount(remaining)}
-                </Button>
-                <Button variant="secondary" onClick={() => handleSelectAmountType("custom")}>
-                  Custom amount
-                </Button>
-                <Button variant="secondary" onClick={() => handleSelectAmountType("split")}>
-                  Split the bill
-                </Button>
-              </>
-            )}
-
-            {activeType === "custom" && (
-              <div className="space-y-3">
-                <label className="block text-sm text-neutral-600">
-                  Amount to pay (max {formatAmount(remaining)})
-                </label>
-                <input
-                  type="number"
-                  min="0.01"
-                  max={remaining}
-                  step="0.01"
-                  value={customAmount}
-                  onChange={(e) => setCustomAmount(e.target.value)}
-                  className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-black transition-all outline-none focus:ring-1 focus:ring-black focus:border-black"
-                  placeholder="0.00"
-                />
-                <div className="flex flex-col gap-2 pt-2">
-                  <Button
-                    onClick={handleCustomAmountSubmit}
-                    disabled={!customAmount || parseFloat(customAmount) <= 0}
-                  >
-                    Continue
-                  </Button>
-                  <Button variant="ghost" onClick={() => setActiveType(null)}>
-                    Back
-                  </Button>
-                </div>
-              </div>
-            )}
-
-            {activeType === "split" && (
-              <div className="space-y-3">
-                <label className="block text-sm text-neutral-600">
-                  Number of people splitting
-                </label>
-                <input
-                  type="number"
-                  min="2"
-                  value={splitPeople}
-                  onChange={(e) => setSplitPeople(e.target.value)}
-                  className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-black transition-all outline-none focus:ring-1 focus:ring-black focus:border-black"
-                />
-                <p className="text-sm text-neutral-600 font-medium">
-                  Your share:{" "}
-                  {formatAmount(
-                    remaining / Math.max(2, parseInt(splitPeople, 10) || 2),
-                  )}
-                </p>
-                <div className="flex flex-col gap-2 pt-2">
-                  <Button onClick={handleSplitAmountSubmit}>
-                    Continue
-                  </Button>
-                  <Button variant="ghost" onClick={() => setActiveType(null)}>
-                    Back
-                  </Button>
-                </div>
-              </div>
-            )}
-          </>
+          <PaymentAmountStep
+            remaining={remaining}
+            activeType={activeType}
+            customAmount={customAmount}
+            splitPeople={splitPeople}
+            onSelectAmountType={handleSelectAmountType}
+            onCustomAmountChange={setCustomAmount}
+            onSplitPeopleChange={setSplitPeople}
+            onCustomAmountSubmit={handleCustomAmountSubmit}
+            onSplitAmountSubmit={handleSplitAmountSubmit}
+            onBack={() => setActiveType(null)}
+          />
         )}
 
         {step === "provider" && (
