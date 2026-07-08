@@ -3,7 +3,8 @@ export type OrderEventType =
   | "ORDER_APPROVED"
   | "ORDER_REJECTED"
   | "ORDER_CLOSED"
-  | "ORDER_UPDATED";
+  | "ORDER_UPDATED"
+  | "PAYMENT_RECEIVED";
 
 export type OrderEvent = {
   type: OrderEventType;

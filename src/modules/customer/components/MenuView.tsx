@@ -102,8 +102,8 @@ export function MenuView({
             onClick={() => setActiveCategory(category)}
             className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
               activeCategory === category
-                ? "bg-black text-white"
-                : "bg-neutral-100 text-black"
+                ? "bg-black text-white hover:bg-neutral-800"
+                : "bg-neutral-100 text-black hover:bg-neutral-200"
             }`}
           >
             {category}
@@ -139,7 +139,7 @@ export function MenuView({
                 <button
                   type="button"
                   onClick={() => updateQuantity(item.id, 1)}
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-white"
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-white transition-colors hover:bg-neutral-800"
                 >
                   +
                 </button>

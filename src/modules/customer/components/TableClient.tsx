@@ -1,6 +1,6 @@
 "use client";
 
-import { ServiceUnavailable } from "@/modules/shared/ui";
+import { ChatbotIconButton, MillyBrand, ServiceUnavailable } from "@/modules/shared/ui";
 import { useTableClientState } from "../hooks/useTableClientState";
 import { BillView } from "./BillView";
 import { MenuView } from "./MenuView";
@@ -9,6 +9,15 @@ import { OrderPendingView } from "./OrderPendingView";
 type TableClientProps = {
   tableId: string;
 };
+
+function CustomerTableHeader() {
+  return (
+    <header className="mx-auto flex w-full max-w-7xl items-center justify-between py-2">
+      <MillyBrand />
+      <ChatbotIconButton />
+    </header>
+  );
+}
 
 export function TableClient({ tableId }: TableClientProps) {
   const {
@@ -19,14 +28,20 @@ export function TableClient({ tableId }: TableClientProps) {
     setForceMenu,
     activeOrder,
     loadTableData,
+    refreshOrders,
     handlePlaceOrder,
   } = useTableClientState(tableId);
 
   if (loading) {
     return (
-      <div className="mx-auto flex min-h-full w-full max-w-lg items-center justify-center bg-white py-24">
-        <div className="h-10 w-10 animate-pulse rounded-full border-2 border-neutral-300 border-t-black" />
-      </div>
+      <main className="min-h-screen bg-white text-black font-sans antialiased p-6">
+        <CustomerTableHeader />
+        <div className="relative z-10 mx-auto w-full flex-1 py-4">
+          <div className="mx-auto flex min-h-full w-full max-w-lg items-center justify-center bg-white py-24">
+            <div className="h-10 w-10 animate-pulse rounded-full border-2 border-neutral-300 border-t-black" />
+          </div>
+        </div>
+      </main>
     );
   }
 
@@ -42,27 +57,45 @@ export function TableClient({ tableId }: TableClientProps) {
     );
   }
 
-  if (activeOrder?.status === "pending" && !forceMenu) {
-    return <OrderPendingView order={activeOrder} tableLabel={state.tableLabel} />;
-  }
-
   if (activeOrder?.status === "approved" && !forceMenu) {
     return (
-      <BillView
-        tableLabel={state.tableLabel}
-        order={activeOrder}
-        onAddMore={() => setForceMenu(true)}
-      />
+      <main className="min-h-screen bg-white text-black font-sans antialiased p-6">
+        <CustomerTableHeader />
+        <div className="relative z-10 mx-auto w-full flex-1 py-4">
+          <BillView
+            tableLabel={state.tableLabel}
+            order={activeOrder}
+            onAddMore={() => setForceMenu(true)}
+            onPaymentProcessed={refreshOrders}
+          />
+        </div>
+      </main>
+    );
+  }
+
+  if (activeOrder?.status === "pending" && !forceMenu) {
+    return (
+      <main className="min-h-screen bg-white text-black font-sans antialiased p-6">
+        <CustomerTableHeader />
+        <div className="relative z-10 mx-auto w-full flex-1 py-4">
+          <OrderPendingView order={activeOrder} tableLabel={state.tableLabel} />
+        </div>
+      </main>
     );
   }
 
   return (
-    <MenuView
-      tableLabel={state.tableLabel}
-      menuItems={state.menuItems}
-      activeOrder={activeOrder}
-      onPlaceOrder={handlePlaceOrder}
-      onOrderPlaced={() => setForceMenu(false)}
-    />
+    <main className="min-h-screen bg-white text-black font-sans antialiased p-6">
+      <CustomerTableHeader />
+      <div className="relative z-10 mx-auto w-full flex-1 py-4">
+        <MenuView
+          tableLabel={state.tableLabel}
+          menuItems={state.menuItems}
+          activeOrder={activeOrder}
+          onPlaceOrder={handlePlaceOrder}
+          onOrderPlaced={() => setForceMenu(false)}
+        />
+      </div>
+    </main>
   );
 }

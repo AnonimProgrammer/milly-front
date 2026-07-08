@@ -42,7 +42,7 @@ export function mapStaffOrderResponse(
     updatedAt: new Date(order.updatedAt),
     pendingAddition: null,
     rejectedAdditions: [],
-    paidAmount: 0,
+    paidAmount: order.paidAmount ?? 0,
   };
 }
 

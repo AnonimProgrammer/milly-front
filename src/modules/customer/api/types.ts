@@ -30,6 +30,8 @@ export type PublicOrderResponse = {
   tableId: string;
   status: ApiOrderStatus;
   items: PublicOrderItemResponse[];
+  paidAmount: number;
+  remaining: number;
   createdAt: string;
 };
 

@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { BottomSheet } from "@/modules/shared/ui";
-import type { PaymentType, PaymentProvider } from "../../types/payment";
+import { detectCardBrand, extractLast4, parseCardExpiry } from "../../api";
+import type { PaymentIntent, PaymentResult } from "../../api";
+import type { PaymentProvider, PaymentType } from "../../types/payment";
 import { PaymentAmountStep } from "./PaymentAmountStep";
 import { PaymentErrorStep } from "./PaymentErrorStep";
 import { PaymentProcessingStep } from "./PaymentProcessingStep";
@@ -15,8 +17,11 @@ type PaymentSheetProps = {
   open: boolean;
   onClose: () => void;
   remaining: number;
-  onPay: (amount: number, type: PaymentType) => boolean;
+  onPay: (intent: PaymentIntent) => Promise<PaymentResult>;
 };
+
+const SIMULATED_FAILURE_MESSAGE =
+  "Simulated failure enabled — this is a dev-only test path.";
 
 export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetProps) {
   const [step, setStep] = useState<PaymentStep>("amount");
@@ -29,6 +34,7 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvc, setCardCvc] = useState("");
   const [error, setError] = useState("");
+  const [payError, setPayError] = useState<string>("");
   const [simulateFailure, setSimulateFailure] = useState(false);
 
   function resetState() {
@@ -41,6 +47,7 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
     setCardExpiry("");
     setCardCvc("");
     setError("");
+    setPayError("");
   }
 
   function handleClose() {
@@ -75,21 +82,59 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
     setStep("provider");
   }
 
-  function handlePay() {
-    if (!activeType || !selectedProvider) return;
+  function buildIntent(): PaymentIntent | null {
+    if (!activeType || !selectedProvider) {
+      return null;
+    }
+
+    const intent: PaymentIntent = {
+      amount: Number(selectedAmount.toFixed(2)),
+      type: activeType,
+      provider: selectedProvider,
+    };
+
+    if (selectedProvider === "card") {
+      const { expiryMonth, expiryYear } = parseCardExpiry(cardExpiry);
+      intent.card = {
+        last4: extractLast4(cardNumber),
+        brand: detectCardBrand(cardNumber),
+        expiryMonth: expiryMonth ?? 0,
+        expiryYear: expiryYear ?? 0,
+      };
+    }
+
+    if (activeType === "split") {
+      intent.splitPeople = Math.max(2, parseInt(splitPeople, 10) || 2);
+    }
+
+    return intent;
+  }
+
+  async function handlePay() {
+    const intent = buildIntent();
+    if (!intent) return;
 
     setStep("processing");
     setError("");
+    setPayError("");
 
-    setTimeout(() => {
-      if (simulateFailure) {
+    if (simulateFailure) {
+      setTimeout(() => {
+        setPayError(SIMULATED_FAILURE_MESSAGE);
         setStep("error");
-        return;
-      }
+      }, 800);
+      return;
+    }
 
-      const success = onPay(selectedAmount, activeType);
-      setStep(success ? "success" : "error");
-    }, 1500);
+    const result = await onPay(intent);
+
+    if (result.success) {
+      setStep("success");
+      return;
+    }
+
+    setPayError(result.errorMessage);
+    setStep("error");
   }
 
   return (
@@ -139,9 +184,11 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
 
         {step === "error" && (
           <PaymentErrorStep
+            message={payError}
             onTryAgain={() => {
               setStep("provider");
               setError("");
+              setPayError("");
             }}
             onCancel={handleClose}
           />
