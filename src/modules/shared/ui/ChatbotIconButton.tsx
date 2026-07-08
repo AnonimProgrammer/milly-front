@@ -10,7 +10,7 @@ export function ChatbotIconButton({ className = "" }: ChatbotIconButtonProps) {
     <button
       type="button"
       aria-label="AI chat"
-      className={`inline-flex h-12 w-12 items-center justify-center rounded-full border border-neutral-200 bg-white text-black shadow-sm transition active:scale-95 ${className}`}
+      className={`inline-flex h-12 items-center justify-center gap-2 rounded-full border border-neutral-200 bg-white px-4 text-black shadow-sm transition active:scale-95 ${className}`}
     >
       <Image
         src={aiChatbotIcon}
@@ -18,8 +18,9 @@ export function ChatbotIconButton({ className = "" }: ChatbotIconButtonProps) {
         aria-hidden="true"
         width={32}
         height={32}
-        className="h-8 w-8 object-contain"
+        className="h-7 w-7 object-contain"
       />
+      <span className="text-sm font-medium leading-none">Ask AI</span>
     </button>
   );
 }
