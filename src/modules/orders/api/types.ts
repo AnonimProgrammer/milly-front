@@ -15,4 +15,6 @@ export type StaffOrderResponse = {
   updatedAt: string;
   closedAt: string | null;
   items: OrderItemResponse[];
+  paidAmount: number;
+  remaining: number;
 };

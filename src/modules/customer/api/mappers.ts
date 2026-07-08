@@ -50,7 +50,7 @@ export function mapPublicOrder(
     updatedAt: new Date(order.createdAt),
     pendingAddition: null,
     rejectedAdditions: [],
-    paidAmount: 0,
+    paidAmount: order.paidAmount ?? 0,
   };
 }
 
