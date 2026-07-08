@@ -1,10 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/modules/shared/ui";
 import { formatAmount, getOrderTotal } from "@/modules/orders";
 import type { Order } from "@/modules/orders";
-import { PaymentProgress, PaymentSheet, type PaymentType } from "@/modules/billing";
+import {
+  PaymentProgress,
+  PaymentSheet,
+  processPayment,
+  type PaymentIntent,
+  type PaymentResult,
+} from "@/modules/billing";
 import { OrderDetails } from "./OrderDetails";
 import { showToast } from "@/modules/shared/feedback";
 
@@ -12,27 +18,33 @@ type BillViewProps = {
   tableLabel: string;
   order: Order;
   onAddMore?: () => void;
+  onPaymentProcessed?: () => void | Promise<void>;
 };
 
-export function BillView({ tableLabel, order, onAddMore }: BillViewProps) {
+export function BillView({
+  tableLabel,
+  order,
+  onAddMore,
+  onPaymentProcessed,
+}: BillViewProps) {
   const [paymentOpen, setPaymentOpen] = useState(false);
-  const [paidAmount, setPaidAmount] = useState(0);
-
-  useEffect(() => {
-    setPaidAmount(0);
-  }, [order.id]);
 
   const total = getOrderTotal(order.items);
+  const paidAmount = order.paidAmount;
   const remaining = Math.max(0, total - paidAmount);
 
-  function handlePay(amount: number, _type: PaymentType): boolean {
-    if (amount <= 0 || amount > remaining) {
-      return false;
+  async function handlePay(intent: PaymentIntent): Promise<PaymentResult> {
+    const result = await processPayment(order.tableId, order.id, intent);
+
+    if (result.success) {
+      showToast(
+        `Payment of ${formatAmount(result.payment.amount)} processed successfully!`,
+        "success",
+      );
+      await onPaymentProcessed?.();
     }
 
-    setPaidAmount((current) => current + amount);
-    showToast(`Payment of ${formatAmount(amount)} processed successfully!`, "success");
-    return true;
+    return result;
   }
 
 

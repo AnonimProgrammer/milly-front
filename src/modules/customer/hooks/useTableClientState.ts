@@ -135,6 +135,7 @@ export function useTableClientState(tableId: string) {
     setForceMenu,
     activeOrder,
     loadTableData,
+    refreshOrders,
     handlePlaceOrder,
   };
 }
