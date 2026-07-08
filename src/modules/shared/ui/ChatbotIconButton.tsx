@@ -10,7 +10,7 @@ export function ChatbotIconButton({ className = "" }: ChatbotIconButtonProps) {
     <button
       type="button"
       aria-label="AI chat"
-      className={`inline-flex h-12 items-center justify-center gap-2 rounded-full border border-neutral-200 bg-white px-4 text-black shadow-sm transition active:scale-95 ${className}`}
+      className={`inline-flex h-11 items-center justify-center gap-1.5 rounded-full border border-neutral-200 bg-white pl-2.5 pr-3.5 text-black shadow-sm transition hover:border-neutral-300 hover:bg-neutral-50 hover:shadow active:scale-95 ${className}`}
     >
       <Image
         src={aiChatbotIcon}
