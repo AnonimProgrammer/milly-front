@@ -1,11 +1,15 @@
 import { Button } from "@/modules/shared/ui";
 
 type PaymentErrorStepProps = {
+  message?: string;
   onTryAgain: () => void;
   onCancel: () => void;
 };
 
-export function PaymentErrorStep({ onTryAgain, onCancel }: PaymentErrorStepProps) {
+const DEFAULT_ERROR_MESSAGE =
+  "Your bank or payment provider declined this transaction. Please try another card or check your provider settings.";
+
+export function PaymentErrorStep({ message, onTryAgain, onCancel }: PaymentErrorStepProps) {
   return (
     <div className="flex flex-col items-center justify-center py-8 text-center">
       <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-neutral-100 text-black">
@@ -25,8 +29,7 @@ export function PaymentErrorStep({ onTryAgain, onCancel }: PaymentErrorStepProps
       </div>
       <h3 className="text-lg font-bold font-semibold text-black">Payment Declined</h3>
       <p className="mt-2 mb-6 max-w-xs text-xs text-neutral-500">
-        Your bank or payment provider declined this transaction. Please try another card or
-        check your provider settings.
+        {message ?? DEFAULT_ERROR_MESSAGE}
       </p>
       <div className="flex w-full flex-col gap-2">
         <Button onClick={onTryAgain}>Try Again</Button>
