@@ -1,6 +1,7 @@
 "use client";
 
-import { ChatbotIconButton, MillyBrand, ServiceUnavailable } from "@/modules/shared/ui";
+import { ChatbotIconButton } from "@/modules/chatbot";
+import { MillyBrand, ServiceUnavailable } from "@/modules/shared/ui";
 import { useTableClientState } from "../hooks/useTableClientState";
 import { BillView } from "./BillView";
 import { MenuView } from "./MenuView";
@@ -10,11 +11,11 @@ type TableClientProps = {
   tableId: string;
 };
 
-function CustomerTableHeader() {
+function CustomerTableHeader({ tableId }: { tableId: string }) {
   return (
     <header className="mx-auto flex w-full max-w-7xl items-center justify-between py-2">
       <MillyBrand />
-      <ChatbotIconButton />
+      <ChatbotIconButton tableId={tableId} />
     </header>
   );
 }
@@ -35,7 +36,7 @@ export function TableClient({ tableId }: TableClientProps) {
   if (loading) {
     return (
       <main className="min-h-screen bg-white text-black font-sans antialiased p-6">
-        <CustomerTableHeader />
+        <CustomerTableHeader tableId={tableId} />
         <div className="relative z-10 mx-auto w-full flex-1 py-4">
           <div className="mx-auto flex min-h-full w-full max-w-lg items-center justify-center bg-white py-24">
             <div className="h-10 w-10 animate-pulse rounded-full border-2 border-neutral-300 border-t-black" />
@@ -60,7 +61,7 @@ export function TableClient({ tableId }: TableClientProps) {
   if (activeOrder?.status === "approved" && !forceMenu) {
     return (
       <main className="min-h-screen bg-white text-black font-sans antialiased p-6">
-        <CustomerTableHeader />
+        <CustomerTableHeader tableId={tableId} />
         <div className="relative z-10 mx-auto w-full flex-1 py-4">
           <BillView
             tableLabel={state.tableLabel}
@@ -76,7 +77,7 @@ export function TableClient({ tableId }: TableClientProps) {
   if (activeOrder?.status === "pending" && !forceMenu) {
     return (
       <main className="min-h-screen bg-white text-black font-sans antialiased p-6">
-        <CustomerTableHeader />
+        <CustomerTableHeader tableId={tableId} />
         <div className="relative z-10 mx-auto w-full flex-1 py-4">
           <OrderPendingView order={activeOrder} tableLabel={state.tableLabel} />
         </div>
@@ -86,7 +87,7 @@ export function TableClient({ tableId }: TableClientProps) {
 
   return (
     <main className="min-h-screen bg-white text-black font-sans antialiased p-6">
-      <CustomerTableHeader />
+      <CustomerTableHeader tableId={tableId} />
       <div className="relative z-10 mx-auto w-full flex-1 py-4">
         <MenuView
           tableLabel={state.tableLabel}
