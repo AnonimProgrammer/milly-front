@@ -4,4 +4,5 @@ export type MenuItem = {
   description: string;
   category: string;
   price: number;
+  approximatePreparationMinutes: number;
 };
