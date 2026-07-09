@@ -22,6 +22,9 @@ export type Order = {
   status: OrderStatus;
   createdAt: Date;
   updatedAt: Date;
+  approvedAt: Date | null;
+  estimatedPreparationMinutes: number | null;
+  estimatedPreparationDisplay: string | null;
   pendingAddition: OrderAddition | null;
   rejectedAdditions: OrderAddition[];
   paidAmount: number;
