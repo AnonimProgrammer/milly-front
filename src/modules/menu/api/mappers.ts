@@ -10,5 +10,6 @@ export function mapMenuItemResponse(item: MenuItemResponse): MenuItem {
     description: item.description ?? "",
     category: DEFAULT_CATEGORY,
     price: item.price,
+    approximatePreparationMinutes: item.approximatePreparationMinutes,
   };
 }

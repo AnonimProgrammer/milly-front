@@ -60,6 +60,37 @@ export function BillView({
         </div>
       </header>
 
+      {order.estimatedPreparationDisplay && (
+        <section className="mb-6 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-sm font-medium text-neutral-500">Kitchen preparation</p>
+              <p className="mt-1 text-lg font-semibold text-black">
+                Estimated {order.estimatedPreparationDisplay}
+              </p>
+            </div>
+            <div
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-black"
+              aria-hidden="true"
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 7v5l3 2" />
+              </svg>
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className="mb-8 rounded-xl border border-neutral-200 p-4">
         <div className="mb-3 flex items-end justify-between">
           <div>

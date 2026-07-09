@@ -14,6 +14,9 @@ export type StaffOrderResponse = {
   createdAt: string;
   updatedAt: string;
   closedAt: string | null;
+  approvedAt: string | null;
+  estimatedPreparationMinutes: number | null;
+  estimatedPreparationDisplay: string | null;
   items: OrderItemResponse[];
   paidAmount: number;
   remaining: number;

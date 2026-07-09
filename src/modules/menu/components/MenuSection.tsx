@@ -22,6 +22,7 @@ export function MenuSection({
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("Mains");
   const [price, setPrice] = useState("");
+  const [approximatePreparationMinutes, setApproximatePreparationMinutes] = useState("15");
 
   const handleOpenAdd = () => {
     setEditingItem(null);
@@ -29,6 +30,7 @@ export function MenuSection({
     setDescription("");
     setCategory("Mains");
     setPrice("");
+    setApproximatePreparationMinutes("15");
     setIsFormOpen(true);
   };
 
@@ -38,6 +40,7 @@ export function MenuSection({
     setDescription(item.description);
     setCategory(item.category);
     setPrice(item.price.toString());
+    setApproximatePreparationMinutes(item.approximatePreparationMinutes.toString());
     setIsFormOpen(true);
   };
 
@@ -51,8 +54,13 @@ export function MenuSection({
     if (!name.trim() || !price.trim()) return;
 
     const priceNum = parseFloat(price);
+    const prepMinutes = parseInt(approximatePreparationMinutes, 10);
     if (isNaN(priceNum) || priceNum < 0) {
       alert("Please enter a valid price.");
+      return;
+    }
+    if (isNaN(prepMinutes) || prepMinutes < 1 || prepMinutes > 480) {
+      alert("Please enter a preparation time between 1 and 480 minutes.");
       return;
     }
 
@@ -61,6 +69,7 @@ export function MenuSection({
       description: description.trim(),
       category: category.trim(),
       price: priceNum,
+      approximatePreparationMinutes: prepMinutes,
     };
 
     if (editingItem) {
@@ -108,7 +117,7 @@ export function MenuSection({
                   {item.description}
                 </span>
                 <span className="mt-1 text-xs font-light text-zinc-400">
-                  {item.category} &middot; {item.price.toFixed(2)} ₼
+                  {item.category} &middot; {item.price.toFixed(2)} ₼ &middot; ~{item.approximatePreparationMinutes} min prep
                 </span>
               </div>
 
@@ -213,6 +222,23 @@ export function MenuSection({
                     required
                   />
                 </div>
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="item-prep" className="text-xs font-semibold uppercase text-zinc-500">
+                  Approx. preparation time (minutes)
+                </label>
+                <input
+                  id="item-prep"
+                  type="number"
+                  min="1"
+                  max="480"
+                  value={approximatePreparationMinutes}
+                  onChange={(e) => setApproximatePreparationMinutes(e.target.value)}
+                  placeholder="e.g. 15"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-black outline-none transition-all focus:border-black"
+                  required
+                />
               </div>
 
               <div className="mt-4 flex justify-end gap-3 border-t border-zinc-100 pt-4">
