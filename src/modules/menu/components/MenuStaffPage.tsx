@@ -45,6 +45,7 @@ export function MenuStaffPage({ venueId }: MenuStaffPageProps) {
         name: item.name,
         description: item.description,
         price: item.price,
+        approximatePreparationMinutes: item.approximatePreparationMinutes,
       });
       setMenuItems((prev) => [...prev, mapMenuItemResponse(created)]);
     } catch {
@@ -58,6 +59,7 @@ export function MenuStaffPage({ venueId }: MenuStaffPageProps) {
         name: updatedItem.name,
         description: updatedItem.description,
         price: updatedItem.price,
+        approximatePreparationMinutes: updatedItem.approximatePreparationMinutes,
       });
       setMenuItems((prev) =>
         prev.map((item) =>
