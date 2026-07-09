@@ -40,6 +40,9 @@ export function OrderCard({
             <div className="mt-1.5 space-y-0.5 text-sm text-zinc-500">
               <p>Created {formatDateTime(order.createdAt)}</p>
               {showUpdated && <p>Updated {formatDateTime(order.updatedAt)}</p>}
+              {order.status === "approved" && order.estimatedPreparationDisplay && (
+                <p>Prep estimate: {order.estimatedPreparationDisplay}</p>
+              )}
             </div>
           </div>
           {order.status === "completed" && (
