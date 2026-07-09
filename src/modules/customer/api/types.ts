@@ -13,6 +13,7 @@ export type PublicMenuItemResponse = {
   name: string;
   description: string | null;
   price: number;
+  approximatePreparationMinutes: number;
   status: "ACTIVE" | "DELETED";
   createdAt: string;
   updatedAt: string;
@@ -33,6 +34,9 @@ export type PublicOrderResponse = {
   paidAmount: number;
   remaining: number;
   createdAt: string;
+  approvedAt: string | null;
+  estimatedPreparationMinutes: number | null;
+  estimatedPreparationDisplay: string | null;
 };
 
 export type CreatePublicOrderRequest = {
