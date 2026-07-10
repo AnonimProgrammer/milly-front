@@ -1,7 +1,7 @@
 "use client";
 
 import { ChatbotIconButton } from "@/modules/chatbot";
-import { MillyBrand, ServiceUnavailable } from "@/modules/shared/ui";
+import { BrandBackNav, MillyBrand, PageHeader, ServiceUnavailable } from "@/modules/shared/ui";
 import { useTableClientState } from "../hooks/useTableClientState";
 import { BillView } from "./BillView";
 import { MenuView } from "./MenuView";
@@ -11,12 +11,18 @@ type TableClientProps = {
   tableId: string;
 };
 
-function CustomerTableHeader({ tableId }: { tableId: string }) {
+function CustomerTableHeader({
+  tableId,
+  onBack,
+}: {
+  tableId: string;
+  onBack?: () => void;
+}) {
   return (
-    <header className="mx-auto flex w-full max-w-7xl items-center justify-between py-2">
-      <MillyBrand />
-      <ChatbotIconButton tableId={tableId} />
-    </header>
+    <PageHeader
+      leading={onBack ? <BrandBackNav onClick={onBack} /> : <MillyBrand />}
+      trailing={<ChatbotIconButton tableId={tableId} />}
+    />
   );
 }
 
@@ -87,7 +93,10 @@ export function TableClient({ tableId }: TableClientProps) {
 
   return (
     <main className="min-h-screen bg-white text-black font-sans antialiased p-6">
-      <CustomerTableHeader tableId={tableId} />
+      <CustomerTableHeader
+        tableId={tableId}
+        onBack={activeOrder?.status === "approved" ? () => setForceMenu(false) : undefined}
+      />
       <div className="relative z-10 mx-auto w-full flex-1 py-4">
         <MenuView
           tableLabel={state.tableLabel}
