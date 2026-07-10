@@ -41,6 +41,8 @@ export function mapStaffOrderResponse(
     createdAt: new Date(order.createdAt),
     updatedAt: new Date(order.updatedAt),
     approvedAt: order.approvedAt ? new Date(order.approvedAt) : null,
+    estimatedPreparationMinutes: order.estimatedPreparationMinutes ?? null,
+    estimatedPreparationDisplay: order.estimatedPreparationDisplay ?? null,
     pendingAddition: null,
     rejectedAdditions: [],
     paidAmount: order.paidAmount ?? 0,

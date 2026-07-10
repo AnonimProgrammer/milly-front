@@ -22,6 +22,7 @@ export function mapPublicMenuItem(item: PublicMenuItemResponse): MenuItem {
     description: item.description ?? "",
     category: "Mains",
     price: item.price,
+    approximatePreparationMinutes: item.approximatePreparationMinutes,
   };
 }
 
@@ -48,7 +49,9 @@ export function mapPublicOrder(
     status,
     createdAt: new Date(order.createdAt),
     updatedAt: new Date(order.createdAt),
-    approvedAt: null,
+    approvedAt: order.approvedAt ? new Date(order.approvedAt) : null,
+    estimatedPreparationMinutes: order.estimatedPreparationMinutes ?? null,
+    estimatedPreparationDisplay: order.estimatedPreparationDisplay ?? null,
     pendingAddition: null,
     rejectedAdditions: [],
     paidAmount: order.paidAmount ?? 0,
