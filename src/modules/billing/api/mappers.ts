@@ -77,5 +77,9 @@ export function toCreatePaymentRequest(intent: PaymentIntent): CreatePaymentRequ
     request.splitPeople = intent.splitPeople;
   }
 
+  if (intent.tipAmount !== undefined && intent.tipAmount > 0) {
+    request.tipAmount = intent.tipAmount;
+  }
+
   return request;
 }
