@@ -3,7 +3,6 @@ import type { PaymentProvider } from "../../types/payment";
 import { CreditCardForm } from "./CreditCardForm";
 import { PaymentProviderButton } from "./PaymentProviderButton";
 import { ApplePayIcon, CardIcon, GooglePayIcon } from "./PaymentProviderIcons";
-import { getPayButtonLabel } from "./paymentSheet.utils";
 
 type PaymentProviderStepProps = {
   selectedProvider: PaymentProvider | null;
@@ -16,7 +15,7 @@ type PaymentProviderStepProps = {
   onCardExpiryChange: (value: string) => void;
   onCardCvcChange: (value: string) => void;
   onSimulateFailureChange: (value: boolean) => void;
-  onPay: () => void;
+  onContinue: () => void;
   onBack: () => void;
 };
 
@@ -31,7 +30,7 @@ export function PaymentProviderStep({
   onCardExpiryChange,
   onCardCvcChange,
   onSimulateFailureChange,
-  onPay,
+  onContinue,
   onBack,
 }: PaymentProviderStepProps) {
   const cardIncomplete =
@@ -94,8 +93,8 @@ export function PaymentProviderStep({
       </div>
 
       <div className="flex flex-col gap-2 pt-2">
-        <Button onClick={onPay} disabled={!selectedProvider || cardIncomplete}>
-          {getPayButtonLabel(selectedProvider)}
+        <Button onClick={onContinue} disabled={!selectedProvider || cardIncomplete}>
+          Review payment
         </Button>
         <Button variant="ghost" onClick={onBack}>
           Back

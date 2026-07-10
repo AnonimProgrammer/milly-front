@@ -9,6 +9,7 @@ import { PaymentAmountStep } from "./PaymentAmountStep";
 import { PaymentErrorStep } from "./PaymentErrorStep";
 import { PaymentProcessingStep } from "./PaymentProcessingStep";
 import { PaymentProviderStep } from "./PaymentProviderStep";
+import { PaymentReviewStep } from "./PaymentReviewStep";
 import { PaymentSuccessStep } from "./PaymentSuccessStep";
 import { getSheetTitle } from "./paymentSheet.utils";
 import type { PaymentStep } from "./types";
@@ -16,6 +17,7 @@ import type { PaymentStep } from "./types";
 type PaymentSheetProps = {
   open: boolean;
   onClose: () => void;
+  billTotal: number;
   remaining: number;
   onPay: (intent: PaymentIntent) => Promise<PaymentResult>;
 };
@@ -23,7 +25,7 @@ type PaymentSheetProps = {
 const SIMULATED_FAILURE_MESSAGE =
   "Simulated failure enabled — this is a dev-only test path.";
 
-export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetProps) {
+export function PaymentSheet({ open, onClose, billTotal, remaining, onPay }: PaymentSheetProps) {
   const [step, setStep] = useState<PaymentStep>("amount");
   const [customAmount, setCustomAmount] = useState("");
   const [splitPeople, setSplitPeople] = useState("2");
@@ -110,6 +112,14 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
     return intent;
   }
 
+  function handleContinueToReview() {
+    if (!selectedProvider) return;
+    if (selectedProvider === "card" && (!cardNumber || !cardExpiry || !cardCvc)) {
+      return;
+    }
+    setStep("review");
+  }
+
   async function handlePay() {
     const intent = buildIntent();
     if (!intent) return;
@@ -167,8 +177,19 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
             onCardExpiryChange={setCardExpiry}
             onCardCvcChange={setCardCvc}
             onSimulateFailureChange={setSimulateFailure}
-            onPay={handlePay}
+            onContinue={handleContinueToReview}
             onBack={() => setStep("amount")}
+          />
+        )}
+
+        {step === "review" && selectedProvider && (
+          <PaymentReviewStep
+            billTotal={billTotal}
+            amountToPay={selectedAmount}
+            remainingAfterPayment={Math.max(0, remaining - selectedAmount)}
+            provider={selectedProvider}
+            onConfirm={handlePay}
+            onBack={() => setStep("provider")}
           />
         )}
 
@@ -186,7 +207,7 @@ export function PaymentSheet({ open, onClose, remaining, onPay }: PaymentSheetPr
           <PaymentErrorStep
             message={payError}
             onTryAgain={() => {
-              setStep("provider");
+              setStep("review");
               setError("");
               setPayError("");
             }}

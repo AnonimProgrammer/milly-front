@@ -146,6 +146,7 @@ export function BillView({
       <PaymentSheet
         open={paymentOpen}
         onClose={() => setPaymentOpen(false)}
+        billTotal={total}
         remaining={remaining}
         onPay={handlePay}
       />
