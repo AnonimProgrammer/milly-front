@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, type SubmitEvent } from "react";
 import { staffPath } from "@/modules/staff";
+import { inputField, primaryButton, textMuted } from "@/modules/shared/theme/classNames";
 import { redeemVenueInvitation } from "../api/invitationApi";
 import type { VenueMembership } from "../api/types";
 import { parseInvitationToken } from "../utils/parseInvitationToken";
@@ -58,8 +59,8 @@ export function JoinVenueSection({ initialInviteCode = "" }: JoinVenueSectionPro
   return (
     <>
       <VenueCard>
-        <h2 className="text-lg font-semibold tracking-tight text-black dark:text-zinc-100 mb-1">Join a Venue</h2>
-        <p className="text-xs text-zinc-600 dark:text-zinc-400 font-light mb-5">
+        <h2 className="text-lg font-semibold tracking-tight text-foreground mb-1">Join a Venue</h2>
+        <p className={`text-xs font-light mb-5 ${textMuted}`}>
           Paste an invitation link or code from your manager.
         </p>
 
@@ -76,17 +77,17 @@ export function JoinVenueSection({ initialInviteCode = "" }: JoinVenueSectionPro
               }
             }}
             placeholder="e.g. milly.app/join-venue/invite/..."
-            className="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-zinc-700 bg-black/[0.02] dark:bg-white/[0.03] text-sm text-black dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 transition-all focus:border-black/30 dark:focus:border-zinc-500 focus:ring-1 focus:ring-black/20 dark:focus:ring-white/10 outline-none"
+            className={inputField}
           />
 
           {validationError ? (
-            <p className="text-xs text-red-600">{validationError}</p>
+            <p className="text-xs text-red-600 dark:text-red-400">{validationError}</p>
           ) : null}
 
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3 rounded-xl bg-black text-white text-sm font-medium transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
+            className={`w-full py-3 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] disabled:hover:scale-100 ${primaryButton}`}
           >
             {isSubmitting ? "Confirming..." : "Confirm Invite"}
           </button>

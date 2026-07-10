@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { ApiError, endUiActivity, isServiceUnavailable } from "@/modules/shared/api";
+import { pageMain, primaryButton, textMuted } from "@/modules/shared/theme/classNames";
 import { ServiceUnavailable } from "@/modules/shared/ui";
 import { AuthPageFallback } from "@/modules/auth";
 import { getVenueMembership } from "../api/venueApi";
@@ -59,14 +60,14 @@ export function RequireVenueMembership({ venueId, children }: RequireVenueMember
 
   if (status === "forbidden") {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center bg-white p-6 text-center">
-        <h1 className="text-xl font-semibold text-black">Access denied</h1>
-        <p className="mt-2 max-w-sm text-sm font-light text-zinc-500">
+      <main className={`flex min-h-screen flex-col items-center justify-center p-6 text-center ${pageMain}`}>
+        <h1 className="text-xl font-semibold text-foreground">Access denied</h1>
+        <p className={`mt-2 max-w-sm text-sm font-light ${textMuted}`}>
           You are not a member of this venue. Join a venue or pick one from your list.
         </p>
         <Link
           href="/join-venue"
-          className="mt-6 rounded-full bg-black px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
+          className={`mt-6 rounded-full px-6 py-2.5 text-sm font-medium ${primaryButton}`}
         >
           Go to my venues
         </Link>
