@@ -15,14 +15,14 @@ type TablesSectionProps = {
 function TableStatusBadge({ status }: { status: VenueTable["status"] }) {
   if (status === "active") {
     return (
-      <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
+      <span className="rounded-full bg-green-100 dark:bg-green-900/30 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:text-green-400 border border-green-200/80 dark:border-green-800/50">
         Active
       </span>
     );
   }
 
   return (
-    <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-500">
+    <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-2.5 py-0.5 text-xs font-medium text-zinc-500 dark:text-zinc-400">
       Inactive
     </span>
   );
@@ -78,7 +78,7 @@ export function TablesSection({
             value={newTable}
             onChange={(e) => setNewTable(e.target.value)}
             placeholder="Table number (e.g. 9)"
-            className="flex-1 rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-black outline-none transition-all focus:border-black"
+            className="flex-1 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-3 text-sm text-black dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 outline-none transition-all focus:border-black dark:focus:border-zinc-400"
             required
           />
           <button
@@ -90,8 +90,8 @@ export function TablesSection({
         </form>
 
         {tables.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-zinc-200 px-6 py-12 text-center">
-            <p className="text-sm font-light text-zinc-400">No tables configured.</p>
+          <div className="rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-700 px-6 py-12 text-center">
+            <p className="text-sm font-light text-zinc-400 dark:text-zinc-500">No tables configured.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -100,9 +100,9 @@ export function TablesSection({
                 key={table.id}
                 type="button"
                 onClick={() => setSelectedTableId(table.id)}
-                className="flex cursor-pointer items-center justify-between rounded-2xl border border-zinc-200 bg-white px-5 py-4 text-left transition-all hover:border-black hover:shadow-sm"
+                className="flex cursor-pointer items-center justify-between rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/60 px-5 py-4 text-left transition-all hover:border-black dark:hover:border-zinc-500 hover:shadow-sm dark:hover:shadow-none"
               >
-                <span className="text-sm font-semibold text-black">{table.label}</span>
+                <span className="text-sm font-semibold text-black dark:text-zinc-100">{table.label}</span>
                 <TableStatusBadge status={table.status} />
               </button>
             ))}

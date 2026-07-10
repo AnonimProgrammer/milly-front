@@ -7,7 +7,7 @@ type BackButtonProps = {
 };
 
 const defaultLinkClassName =
-  "inline-flex items-center gap-2.5 text-base text-zinc-500 hover:text-black transition-colors font-light";
+  "inline-flex items-center gap-2.5 text-base text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors font-light";
 
 const defaultIconClassName = "h-5 w-5";
 
