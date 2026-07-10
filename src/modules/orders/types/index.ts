@@ -22,7 +22,9 @@ export type Order = {
   status: OrderStatus;
   createdAt: Date;
   updatedAt: Date;
+  approvedAt: Date | null;
   pendingAddition: OrderAddition | null;
   rejectedAdditions: OrderAddition[];
   paidAmount: number;
+  remaining: number;
 };

@@ -40,9 +40,11 @@ export function mapStaffOrderResponse(
     status,
     createdAt: new Date(order.createdAt),
     updatedAt: new Date(order.updatedAt),
+    approvedAt: order.approvedAt ? new Date(order.approvedAt) : null,
     pendingAddition: null,
     rejectedAdditions: [],
     paidAmount: order.paidAmount ?? 0,
+    remaining: order.remaining ?? 0,
   };
 }
 
