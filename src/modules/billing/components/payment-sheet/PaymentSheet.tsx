@@ -4,14 +4,14 @@ import { useState } from "react";
 import { BottomSheet } from "@/modules/shared/ui";
 import { detectCardBrand, extractLast4, parseCardExpiry } from "../../api";
 import type { PaymentIntent, PaymentResult } from "../../api";
-import type { PaymentProvider, PaymentType } from "../../types/payment";
+import type { PaymentProvider, PaymentType, TipOption } from "../../types/payment";
 import { PaymentAmountStep } from "./PaymentAmountStep";
 import { PaymentErrorStep } from "./PaymentErrorStep";
 import { PaymentProcessingStep } from "./PaymentProcessingStep";
 import { PaymentProviderStep } from "./PaymentProviderStep";
 import { PaymentReviewStep } from "./PaymentReviewStep";
 import { PaymentSuccessStep } from "./PaymentSuccessStep";
-import { getSheetTitle } from "./paymentSheet.utils";
+import { calculateTipAmount, getSheetTitle } from "./paymentSheet.utils";
 import type { PaymentStep } from "./types";
 
 type PaymentSheetProps = {
@@ -38,6 +38,10 @@ export function PaymentSheet({ open, onClose, billTotal, remaining, onPay }: Pay
   const [error, setError] = useState("");
   const [payError, setPayError] = useState<string>("");
   const [simulateFailure, setSimulateFailure] = useState(false);
+  const [tipOption, setTipOption] = useState<TipOption>("none");
+  const [customTipAmount, setCustomTipAmount] = useState("");
+
+  const tipAmount = calculateTipAmount(tipOption, selectedAmount, customTipAmount);
 
   function resetState() {
     setStep("amount");
@@ -50,6 +54,8 @@ export function PaymentSheet({ open, onClose, billTotal, remaining, onPay }: Pay
     setCardCvc("");
     setError("");
     setPayError("");
+    setTipOption("none");
+    setCustomTipAmount("");
   }
 
   function handleClose() {
@@ -94,6 +100,11 @@ export function PaymentSheet({ open, onClose, billTotal, remaining, onPay }: Pay
       type: activeType,
       provider: selectedProvider,
     };
+
+    const resolvedTipAmount = calculateTipAmount(tipOption, selectedAmount, customTipAmount);
+    if (resolvedTipAmount > 0) {
+      intent.tipAmount = resolvedTipAmount;
+    }
 
     if (selectedProvider === "card") {
       const { expiryMonth, expiryYear } = parseCardExpiry(cardExpiry);
@@ -187,7 +198,12 @@ export function PaymentSheet({ open, onClose, billTotal, remaining, onPay }: Pay
             billTotal={billTotal}
             amountToPay={selectedAmount}
             remainingAfterPayment={Math.max(0, remaining - selectedAmount)}
+            tipAmount={tipAmount}
+            tipOption={tipOption}
+            customTipAmount={customTipAmount}
             provider={selectedProvider}
+            onSelectTipOption={setTipOption}
+            onCustomTipAmountChange={setCustomTipAmount}
             onConfirm={handlePay}
             onBack={() => setStep("provider")}
           />
