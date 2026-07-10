@@ -8,7 +8,7 @@ import { isAuthenticatedStatus } from "../utils/authLinks";
 function UserIcon() {
   return (
     <svg
-      className="h-6 w-6 text-zinc-700"
+      className="h-6 w-6 text-zinc-700 dark:text-zinc-300"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -26,7 +26,7 @@ function UserIcon() {
 
 function UserIconCircle() {
   return (
-    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-black/10 bg-black/5">
+    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 transition-colors">
       <UserIcon />
     </span>
   );
@@ -78,57 +78,82 @@ export function UserAccountNav() {
   return (
     <div className="flex items-center gap-3">
       {isAuthenticatedStatus(status) && user ? (
-        <span className="text-base font-medium text-black">
+        <span className="text-base font-medium text-black dark:text-zinc-200">
           {user.firstName} {user.lastName}
         </span>
       ) : null}
 
       {!isAuthenticatedStatus(status) ? (
         <>
-          <Link href="/signup" className="text-base font-medium text-black hover:underline">
+          <Link href="/signup" className="text-base font-medium text-black dark:text-zinc-200 hover:underline">
             Sign Up
           </Link>
           <Link
             href="/login"
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-full bg-black px-5 py-2.5 text-base font-medium text-white shadow-lg shadow-black/20 transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02] hover:shadow-xl hover:shadow-black/30 active:scale-[0.98]"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-full bg-black dark:bg-white px-5 py-2.5 text-base font-medium text-white dark:text-black shadow-lg shadow-black/20 dark:shadow-white/5 transition-all duration-300 hover:bg-zinc-800 dark:hover:bg-zinc-200 hover:scale-[1.02] hover:shadow-xl hover:shadow-black/30 active:scale-[0.98]"
           >
             Log In
           </Link>
         </>
       ) : null}
 
-      {isAuthenticatedStatus(status) ? (
-        <div ref={menuRef} className="relative">
-          <button
-            type="button"
-            aria-expanded={menuOpen}
-            aria-haspopup="menu"
-            onClick={() => setMenuOpen((open) => !open)}
-            className="rounded-full transition-opacity hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-black/20"
-          >
-            <UserIconCircle />
-          </button>
+      <div ref={menuRef} className="relative">
+        <button
+          type="button"
+          aria-expanded={menuOpen}
+          aria-haspopup="menu"
+          onClick={() => setMenuOpen((open) => !open)}
+          className="rounded-full transition-opacity hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-black/20 cursor-pointer"
+        >
+          <UserIconCircle />
+        </button>
 
-          {menuOpen ? (
-            <div
-              role="menu"
-              className="absolute right-0 top-[calc(100%+0.5rem)] min-w-36 rounded-xl border border-black/10 bg-white py-1 shadow-lg shadow-black/10"
+        {menuOpen ? (
+          <div
+            role="menu"
+            className="absolute right-0 top-[calc(100%+0.5rem)] min-w-36 rounded-xl border border-black/10 dark:border-zinc-800 bg-white dark:bg-zinc-900 py-1 shadow-lg shadow-black/10 dark:shadow-black/35 z-30"
+          >
+            <Link
+              href="/settings"
+              role="menuitem"
+              onClick={() => setMenuOpen(false)}
+              className="block w-full px-4 py-2.5 text-left text-sm font-medium text-black dark:text-zinc-200 transition-colors hover:bg-black/5 dark:hover:bg-white/5"
             >
+              Settings
+            </Link>
+            {isAuthenticatedStatus(status) ? (
               <button
                 type="button"
                 role="menuitem"
                 disabled={isLoggingOut}
                 onClick={() => void handleLogout()}
-                className="w-full px-4 py-2.5 text-left text-sm font-medium text-black transition-colors hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full px-4 py-2.5 text-left text-sm font-medium text-black dark:text-zinc-200 transition-colors hover:bg-black/5 dark:hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-60 border-t border-black/5 dark:border-zinc-800"
               >
                 {isLoggingOut ? "Logging out..." : "Log out"}
               </button>
-            </div>
-          ) : null}
-        </div>
-      ) : (
-        <UserIconCircle />
-      )}
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  role="menuitem"
+                  onClick={() => setMenuOpen(false)}
+                  className="block w-full px-4 py-2.5 text-left text-sm font-medium text-black dark:text-zinc-200 transition-colors hover:bg-black/5 dark:hover:bg-white/5 border-t border-black/5 dark:border-zinc-800"
+                >
+                  Log In
+                </Link>
+                <Link
+                  href="/signup"
+                  role="menuitem"
+                  onClick={() => setMenuOpen(false)}
+                  className="block w-full px-4 py-2.5 text-left text-sm font-medium text-black dark:text-zinc-200 transition-colors hover:bg-black/5 dark:hover:bg-white/5 border-t border-black/5 dark:border-zinc-800"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

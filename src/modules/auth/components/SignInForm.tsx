@@ -41,14 +41,14 @@ export function SignInForm({ intent }: SignInFormProps) {
 
   return (
     <>
-      <h2 className="text-2xl font-semibold tracking-tight text-black text-center">Sign in</h2>
-      <p className="mt-2 text-sm text-zinc-600 font-light text-center">
+      <h2 className="text-2xl font-semibold tracking-tight text-black dark:text-zinc-100 text-center">Sign in</h2>
+      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400 font-light text-center">
         Welcome back! Please enter your details.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="email" className="text-xs font-medium text-zinc-600">
+          <label htmlFor="email" className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
             Email Address
           </label>
           <input
@@ -60,12 +60,12 @@ export function SignInForm({ intent }: SignInFormProps) {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             placeholder="name@example.com"
-            className="w-full px-4 py-3 rounded-xl border border-black/10 bg-white text-sm text-black transition-all focus:border-black focus:ring-1 focus:ring-black outline-none"
+            className="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm text-black dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 transition-all focus:border-black dark:focus:border-zinc-400 focus:ring-1 focus:ring-black dark:focus:ring-zinc-400 outline-none"
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="password" className="text-xs font-medium text-zinc-600">
+          <label htmlFor="password" className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
             Password
           </label>
           <input
@@ -77,7 +77,7 @@ export function SignInForm({ intent }: SignInFormProps) {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             placeholder="••••••••"
-            className="w-full px-4 py-3 rounded-xl border border-black/10 bg-white text-sm text-black transition-all focus:border-black focus:ring-1 focus:ring-black outline-none"
+            className="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm text-black dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 transition-all focus:border-black dark:focus:border-zinc-400 focus:ring-1 focus:ring-black dark:focus:ring-zinc-400 outline-none"
           />
         </div>
 
@@ -96,9 +96,9 @@ export function SignInForm({ intent }: SignInFormProps) {
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-zinc-600">
+      <p className="mt-6 text-center text-sm text-zinc-600 dark:text-zinc-400">
         Don&apos;t have an account?{" "}
-        <Link href={authLink("/signup", intent)} className="font-medium text-black hover:underline">
+        <Link href={authLink("/signup", intent)} className="font-medium text-black dark:text-zinc-100 hover:underline">
           Sign Up
         </Link>
       </p>
