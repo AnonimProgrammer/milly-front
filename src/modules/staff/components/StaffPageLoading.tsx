@@ -1,3 +1,5 @@
+import { spinnerRing } from "@/modules/shared/theme/classNames";
+
 export function StaffPageLoading() {
   return (
     <div
@@ -6,7 +8,7 @@ export function StaffPageLoading() {
       aria-live="polite"
       role="status"
     >
-      <div className="h-10 w-10 animate-spin rounded-full border-2 border-zinc-200 border-t-black" />
+      <div className={`h-10 w-10 ${spinnerRing}`} />
     </div>
   );
 }
