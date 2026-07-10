@@ -1,57 +1,111 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-
-type Theme = "light" | "dark" | "system";
+import { applyThemeToDocument } from "./applyTheme";
+import {
+  COLOR_MODE_STORAGE_KEY,
+  COLOR_THEME_STORAGE_KEY,
+  LEGACY_COLOR_MODE_STORAGE_KEY,
+  type ColorMode,
+  type ColorTheme,
+  isColorMode,
+  isColorTheme,
+} from "./constants";
 
 interface ThemeContextType {
-  theme: Theme;
+  /** Light/dark appearance preference. */
+  colorMode: ColorMode;
+  /** Accent palette preference. */
+  colorTheme: ColorTheme;
+  /** Resolved light/dark value after applying system preference. */
+  resolvedColorMode: "light" | "dark";
+  setColorMode: (colorMode: ColorMode) => void;
+  setColorTheme: (colorTheme: ColorTheme) => void;
+  /** @deprecated Use `colorMode` instead. */
+  theme: ColorMode;
+  /** @deprecated Use `resolvedColorMode` instead. */
   resolvedTheme: "light" | "dark";
-  setTheme: (theme: Theme) => void;
+  /** @deprecated Use `setColorMode` instead. */
+  setTheme: (colorMode: ColorMode) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("system");
-  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
+function readStoredColorMode(): ColorMode {
+  const stored =
+    localStorage.getItem(COLOR_MODE_STORAGE_KEY) ??
+    localStorage.getItem(LEGACY_COLOR_MODE_STORAGE_KEY);
 
-  // On mount, read the stored theme from localStorage
+  return isColorMode(stored) ? stored : "system";
+}
+
+function readStoredColorTheme(): ColorTheme {
+  const stored = localStorage.getItem(COLOR_THEME_STORAGE_KEY);
+  return isColorTheme(stored) ? stored : "default";
+}
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [colorMode, setColorModeState] = useState<ColorMode>("system");
+  const [colorTheme, setColorThemeState] = useState<ColorTheme>("default");
+  const [resolvedColorMode, setResolvedColorMode] = useState<"light" | "dark">("light");
+
   useEffect(() => {
-    const stored = localStorage.getItem("theme") as Theme | null;
-    if (stored === "dark" || stored === "light" || stored === "system") {
-      setThemeState(stored);
+    const storedColorMode = readStoredColorMode();
+    const storedColorTheme = readStoredColorTheme();
+
+    setColorModeState(storedColorMode);
+    setColorThemeState(storedColorTheme);
+
+    if (localStorage.getItem(LEGACY_COLOR_MODE_STORAGE_KEY) && !localStorage.getItem(COLOR_MODE_STORAGE_KEY)) {
+      localStorage.setItem(COLOR_MODE_STORAGE_KEY, storedColorMode);
     }
   }, []);
 
-  // Apply the theme class to <html> whenever the theme changes
   useEffect(() => {
     const root = document.documentElement;
 
-    function applyTheme() {
-      const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const activeTheme = theme === "system" ? (systemDark ? "dark" : "light") : theme;
-
-      root.classList.toggle("dark", activeTheme === "dark");
-      setResolvedTheme(activeTheme);
+    function syncTheme() {
+      setResolvedColorMode(applyThemeToDocument(root, colorMode, colorTheme));
     }
 
-    applyTheme();
+    syncTheme();
 
-    if (theme === "system") {
+    if (colorMode === "system") {
       const media = window.matchMedia("(prefers-color-scheme: dark)");
-      media.addEventListener("change", applyTheme);
-      return () => media.removeEventListener("change", applyTheme);
+      media.addEventListener("change", syncTheme);
+      return () => media.removeEventListener("change", syncTheme);
     }
-  }, [theme]);
+  }, [colorMode, colorTheme]);
 
-  const setTheme = (newTheme: Theme) => {
-    localStorage.setItem("theme", newTheme);
-    setThemeState(newTheme);
+  const setColorMode = (nextColorMode: ColorMode) => {
+    localStorage.setItem(COLOR_MODE_STORAGE_KEY, nextColorMode);
+    localStorage.removeItem(LEGACY_COLOR_MODE_STORAGE_KEY);
+    setColorModeState(nextColorMode);
+  };
+
+  const setColorTheme = (nextColorTheme: ColorTheme) => {
+    if (nextColorTheme === "default") {
+      localStorage.removeItem(COLOR_THEME_STORAGE_KEY);
+    } else {
+      localStorage.setItem(COLOR_THEME_STORAGE_KEY, nextColorTheme);
+    }
+
+    setColorThemeState(nextColorTheme);
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme }}>
+    <ThemeContext.Provider
+      value={{
+        colorMode,
+        colorTheme,
+        resolvedColorMode,
+        setColorMode,
+        setColorTheme,
+        theme: colorMode,
+        resolvedTheme: resolvedColorMode,
+        setTheme: setColorMode,
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );
@@ -62,5 +116,6 @@ export function useTheme() {
   if (!context) {
     throw new Error("useTheme must be used within a ThemeProvider");
   }
+
   return context;
 }
