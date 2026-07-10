@@ -11,7 +11,7 @@ type OrderPaymentDetailsProps = {
 export function OrderPaymentDetails({ order, onCloseOrder }: OrderPaymentDetailsProps) {
   const total = getOrderTotal(order.items);
   const isFullyPaid = order.status === "completed" || (total > 0 && order.paidAmount >= total);
-  const remaining = order.status === "completed" ? 0 : Math.max(0, total - order.paidAmount);
+  const remaining = order.status === "completed" ? 0 : order.remaining;
   const canClose = order.status === "approved";
 
   return (

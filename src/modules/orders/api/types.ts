@@ -21,3 +21,24 @@ export type StaffOrderResponse = {
   paidAmount: number;
   remaining: number;
 };
+
+export type PaginationMeta = {
+  nextCursor: string | null;
+  previousCursor: string | null;
+  hasNext: boolean;
+  hasPrevious: boolean;
+  limit: number;
+};
+
+export type PageResponse<T> = {
+  data: T[];
+  pagination: PaginationMeta;
+};
+
+export type ListOrdersParams = {
+  status?: ApiOrderStatus;
+  from?: string;
+  to?: string;
+  cursor?: string;
+  limit?: number;
+};

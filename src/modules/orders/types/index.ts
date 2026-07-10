@@ -28,4 +28,5 @@ export type Order = {
   pendingAddition: OrderAddition | null;
   rejectedAdditions: OrderAddition[];
   paidAmount: number;
+  remaining: number;
 };
