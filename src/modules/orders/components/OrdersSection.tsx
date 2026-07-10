@@ -2,11 +2,15 @@
 
 import { useMemo } from "react";
 import type { Order } from "../types";
+import { getTodayOrderDate } from "../utils/order.helpers";
 import { OrderCard } from "./OrderCard";
 import { OrdersGroup } from "./OrdersGroup";
 
 type OrdersSectionProps = {
   orders: Order[];
+  selectedDate: string;
+  onSelectedDateChange: (date: string) => void;
+  isRefreshing?: boolean;
   onApproveOrder: (orderId: string) => void;
   onRejectOrder: (orderId: string) => void;
   onCloseOrder: (orderId: string) => void;
@@ -14,6 +18,9 @@ type OrdersSectionProps = {
 
 export function OrdersSection({
   orders,
+  selectedDate,
+  onSelectedDateChange,
+  isRefreshing = false,
   onApproveOrder,
   onRejectOrder,
   onCloseOrder,
@@ -51,14 +58,33 @@ export function OrdersSection({
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
-      <div>
-        <h2 className="text-xl font-bold tracking-tight">Orders</h2>
-        <p className="mt-1 text-sm font-light text-zinc-500">
-          Review, approve, and close customer orders.
-        </p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h2 className="text-xl font-bold tracking-tight">Orders</h2>
+          <p className="mt-1 text-sm font-light text-zinc-500">
+            Review, approve, and close customer orders.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-1.5 sm:items-end">
+          <label htmlFor="orders-date" className="text-xs font-semibold uppercase text-zinc-500">
+            Date
+          </label>
+          <input
+            id="orders-date"
+            type="date"
+            value={selectedDate}
+            max={getTodayOrderDate()}
+            disabled={isRefreshing}
+            onChange={(event) => onSelectedDateChange(event.target.value)}
+            className="rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-black outline-none transition-all focus:border-black disabled:cursor-wait disabled:opacity-60"
+          />
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-3 lg:gap-0 lg:divide-x lg:divide-zinc-200">
+      <div
+        className={`grid grid-cols-1 gap-10 transition-opacity lg:grid-cols-3 lg:gap-0 lg:divide-x lg:divide-zinc-200 ${isRefreshing ? "opacity-60" : ""}`}
+      >
         <OrdersGroup title="Pending" count={pendingOrders.length} emptyMessage="No pending orders">
           {pendingOrders.map((order) => (
             <OrderCard
