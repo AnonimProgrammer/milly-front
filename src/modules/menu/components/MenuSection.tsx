@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { getCategoriesFromMenu, MENU_CATEGORIES } from "../categories";
 import type { MenuItem } from "../types";
 
 type MenuSectionProps = {
@@ -18,11 +19,19 @@ export function MenuSection({
 }: MenuSectionProps) {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
+  const [activeCategory, setActiveCategory] = useState("All");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("Mains");
   const [price, setPrice] = useState("");
   const [approximatePreparationMinutes, setApproximatePreparationMinutes] = useState("15");
+
+  const categories = useMemo(() => getCategoriesFromMenu(menuItems), [menuItems]);
+
+  const filteredItems = useMemo(() => {
+    if (activeCategory === "All") return menuItems;
+    return menuItems.filter((item) => item.category === activeCategory);
+  }, [activeCategory, menuItems]);
 
   const handleOpenAdd = () => {
     setEditingItem(null);
@@ -98,6 +107,25 @@ export function MenuSection({
         </button>
       </div>
 
+      {menuItems.length > 0 && (
+        <div className="flex gap-2 overflow-x-auto">
+          {categories.map((menuCategory) => (
+            <button
+              key={menuCategory}
+              type="button"
+              onClick={() => setActiveCategory(menuCategory)}
+              className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                activeCategory === menuCategory
+                  ? "bg-black text-white hover:bg-neutral-800"
+                  : "bg-neutral-100 text-black hover:bg-neutral-200"
+              }`}
+            >
+              {menuCategory}
+            </button>
+          ))}
+        </div>
+      )}
+
       <div className="divide-y divide-zinc-200 overflow-hidden rounded-2xl border border-zinc-200 bg-white">
         {menuItems.length === 0 ? (
           <div className="p-12 text-center">
@@ -105,8 +133,14 @@ export function MenuSection({
               No menu items found. Add some to get started.
             </p>
           </div>
+        ) : filteredItems.length === 0 ? (
+          <div className="p-12 text-center">
+            <p className="text-sm font-light text-zinc-400">
+              No items in this category.
+            </p>
+          </div>
         ) : (
-          menuItems.map((item) => (
+          filteredItems.map((item) => (
             <div
               key={item.id}
               className="flex items-center justify-between px-6 py-5 transition-colors hover:bg-zinc-50/50"
@@ -199,10 +233,11 @@ export function MenuSection({
                     onChange={(e) => setCategory(e.target.value)}
                     className="w-full cursor-pointer rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-black outline-none transition-all focus:border-black"
                   >
-                    <option value="Starters">Starters</option>
-                    <option value="Mains">Mains</option>
-                    <option value="Drinks">Drinks</option>
-                    <option value="Desserts">Desserts</option>
+                    {MENU_CATEGORIES.map((menuCategory) => (
+                      <option key={menuCategory} value={menuCategory}>
+                        {menuCategory}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
