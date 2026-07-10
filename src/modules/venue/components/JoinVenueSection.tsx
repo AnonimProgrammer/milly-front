@@ -58,8 +58,8 @@ export function JoinVenueSection({ initialInviteCode = "" }: JoinVenueSectionPro
   return (
     <>
       <VenueCard>
-        <h2 className="text-lg font-semibold tracking-tight text-black mb-1">Join a Venue</h2>
-        <p className="text-xs text-zinc-600 font-light mb-5">
+        <h2 className="text-lg font-semibold tracking-tight text-black dark:text-zinc-100 mb-1">Join a Venue</h2>
+        <p className="text-xs text-zinc-600 dark:text-zinc-400 font-light mb-5">
           Paste an invitation link or code from your manager.
         </p>
 
@@ -76,7 +76,7 @@ export function JoinVenueSection({ initialInviteCode = "" }: JoinVenueSectionPro
               }
             }}
             placeholder="e.g. milly.app/join-venue/invite/..."
-            className="w-full px-4 py-3 rounded-xl border border-black/10 bg-black/[0.02] text-sm text-black transition-all focus:border-black/30 focus:ring-1 focus:ring-black/20 outline-none"
+            className="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-zinc-700 bg-black/[0.02] dark:bg-white/[0.03] text-sm text-black dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 transition-all focus:border-black/30 dark:focus:border-zinc-500 focus:ring-1 focus:ring-black/20 dark:focus:ring-white/10 outline-none"
           />
 
           {validationError ? (

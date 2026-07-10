@@ -17,14 +17,14 @@ function RoleBadge({ role }: { role: VenueMembership["role"] }) {
 
   if (role === "MANAGER") {
     return (
-      <span className="text-sm px-2.5 py-0.5 rounded-full font-medium bg-orange-100 text-orange-800 border border-orange-200/80">
+      <span className="text-sm px-2.5 py-0.5 rounded-full font-medium bg-orange-100 dark:bg-orange-900/20 text-orange-800 dark:text-orange-300 border border-orange-200/80 dark:border-orange-800/40">
         {label}
       </span>
     );
   }
 
   return (
-    <span className="text-sm px-2.5 py-0.5 rounded-full font-medium bg-green-100 text-green-800 border border-green-200/80">
+    <span className="text-sm px-2.5 py-0.5 rounded-full font-medium bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-400 border border-green-200/80 dark:border-green-800/40">
       {label}
     </span>
   );
@@ -34,7 +34,7 @@ function VenueListSkeleton() {
   return (
     <div className="flex flex-col gap-2.5 animate-pulse">
       {[1, 2].map((i) => (
-        <div key={i} className="h-12 rounded-2xl bg-black/5" />
+        <div key={i} className="h-12 rounded-2xl bg-black/5 dark:bg-white/5" />
       ))}
     </div>
   );
@@ -43,7 +43,7 @@ function VenueListSkeleton() {
 function VenueRowSpinner() {
   return (
     <div
-      className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-200 border-t-black"
+      className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-200 dark:border-zinc-700 border-t-black dark:border-t-zinc-300"
       aria-hidden="true"
     />
   );
@@ -86,17 +86,17 @@ export function MyVenuesSection() {
 
   return (
     <VenueCard>
-      <h2 className="text-lg font-semibold tracking-tight text-black mb-4">My Venues</h2>
+      <h2 className="text-lg font-semibold tracking-tight text-black dark:text-zinc-100 mb-4">My Venues</h2>
 
       {loading ? <VenueListSkeleton /> : null}
 
       {!loading && error ? (
         <div className="flex flex-col items-center gap-3 py-4 text-center">
-          <p className="text-sm text-zinc-600">{error}</p>
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">{error}</p>
           <button
             type="button"
             onClick={() => void loadVenues()}
-            className="text-sm font-medium text-black underline underline-offset-2 hover:text-zinc-700"
+            className="text-sm font-medium text-black dark:text-zinc-200 underline underline-offset-2 hover:text-zinc-700 dark:hover:text-zinc-400"
           >
             Retry
           </button>
@@ -111,11 +111,11 @@ export function MyVenuesSection() {
               type="button"
               disabled={navigatingVenueId !== null}
               onClick={() => handleVenueSelect(venue.venueId)}
-              className={`flex items-center justify-between p-3.5 rounded-2xl border border-black/10 bg-black/[0.02] hover:bg-black/5 hover:border-black/20 transition-all duration-200 text-left w-full disabled:cursor-wait ${
+              className={`flex items-center justify-between p-3.5 rounded-2xl border border-black/10 dark:border-zinc-700 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 hover:border-black/20 dark:hover:border-zinc-600 transition-all duration-200 text-left w-full disabled:cursor-wait ${
                 navigatingVenueId === venue.venueId ? "opacity-70" : ""
               }`}
             >
-              <span className="text-sm font-medium text-black">{venue.venueName}</span>
+              <span className="text-sm font-medium text-black dark:text-zinc-200">{venue.venueName}</span>
               {navigatingVenueId === venue.venueId ? (
                 <VenueRowSpinner />
               ) : (
@@ -138,7 +138,7 @@ export function MyVenuesSection() {
               />
             </svg>
           </span>
-          <p className="text-sm text-zinc-600 font-light">You haven&apos;t joined any venues yet.</p>
+          <p className="text-sm text-zinc-600 dark:text-zinc-400 font-light">You haven&apos;t joined any venues yet.</p>
         </div>
       ) : null}
     </VenueCard>

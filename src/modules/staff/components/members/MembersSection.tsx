@@ -18,8 +18,8 @@ export function MembersSection({ venueId, members }: MembersSectionProps) {
     <div className="relative mx-auto flex w-full max-w-4xl flex-col gap-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-black">Members</h2>
-          <p className="mt-1 text-sm font-light text-zinc-500">
+          <h2 className="text-xl font-bold tracking-tight text-black dark:text-zinc-100">Members</h2>
+          <p className="mt-1 text-sm font-light text-zinc-500 dark:text-zinc-400">
             View venue staff, roles, and invite new team members.
           </p>
         </div>
@@ -36,13 +36,13 @@ export function MembersSection({ venueId, members }: MembersSectionProps) {
         {members.map((member) => (
           <div
             key={member.id}
-            className="flex items-center justify-between gap-4 rounded-2xl border border-black/10 bg-black/[0.02] p-4"
+            className="flex items-center justify-between gap-4 rounded-2xl border border-black/10 dark:border-zinc-700/60 bg-black/[0.02] dark:bg-white/[0.03] p-4"
           >
             <div className="min-w-0">
-              <p className="text-sm font-medium text-black">
+              <p className="text-sm font-medium text-black dark:text-zinc-100">
                 {member.firstName} {member.lastName}
               </p>
-              <p className="mt-0.5 truncate text-xs text-zinc-500">{member.email}</p>
+              <p className="mt-0.5 truncate text-xs text-zinc-500 dark:text-zinc-400">{member.email}</p>
             </div>
             <div className="flex shrink-0 items-center gap-2">
               <MemberRoleBadge role={member.role} />
