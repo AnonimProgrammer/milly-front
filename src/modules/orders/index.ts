@@ -15,7 +15,10 @@ export {
 export {
   formatAmount,
   formatDateTime,
+  formatOrderDateInput,
   formatOrderId,
   getOrderTotal,
+  getTodayOrderDate,
   mergeItems,
+  toOrderDateRange,
 } from "./utils/order.helpers";
