@@ -26,7 +26,7 @@ export function CollapsibleOrderItemList({
   itemClassName,
   renderItem,
   getItemKey = getDefaultItemKey,
-  expandButtonClassName = "mt-2 text-sm font-medium text-zinc-500 underline hover:text-zinc-700",
+  expandButtonClassName = "mt-2 text-sm font-medium text-muted-foreground underline hover:text-foreground",
 }: CollapsibleOrderItemListProps) {
   const [expanded, setExpanded] = useState(false);
   const hasOverflow = items.length > collapseThreshold;
