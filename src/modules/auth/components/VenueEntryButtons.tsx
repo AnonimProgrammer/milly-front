@@ -17,7 +17,7 @@ export function VenueEntryButtons() {
       </Link>
       <Link
         href={resolveVenueEntryPath("register-venue", status)}
-        className="flex w-40 items-center justify-center whitespace-nowrap px-4 py-3.5 rounded-full font-medium text-sm text-black border border-black/30 bg-transparent shadow-lg shadow-black/20 transition-all duration-300 hover:bg-black/5 hover:border-black/60 hover:scale-[1.02] hover:shadow-xl hover:shadow-black/30 active:scale-[0.98]"
+        className="flex w-40 items-center justify-center whitespace-nowrap px-4 py-3.5 rounded-full font-medium text-sm text-black dark:text-zinc-100 border border-black/30 dark:border-zinc-600 bg-transparent shadow-lg shadow-black/20 dark:shadow-black/40 transition-all duration-300 hover:bg-black/5 dark:hover:bg-white/10 hover:border-black/60 dark:hover:border-zinc-400 hover:scale-[1.02] hover:shadow-xl hover:shadow-black/30 active:scale-[0.98]"
       >
         Register Venue
       </Link>

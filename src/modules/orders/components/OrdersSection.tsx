@@ -77,13 +77,13 @@ export function OrdersSection({
             max={getTodayOrderDate()}
             disabled={isRefreshing}
             onChange={(event) => onSelectedDateChange(event.target.value)}
-            className="rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-black outline-none transition-all focus:border-black disabled:cursor-wait disabled:opacity-60"
+            className="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-2.5 text-sm text-black dark:text-zinc-100 outline-none transition-all focus:border-black dark:focus:border-zinc-400 disabled:cursor-wait disabled:opacity-60"
           />
         </div>
       </div>
 
       <div
-        className={`grid grid-cols-1 gap-10 transition-opacity lg:grid-cols-3 lg:gap-0 lg:divide-x lg:divide-zinc-200 ${isRefreshing ? "opacity-60" : ""}`}
+        className={`grid grid-cols-1 gap-10 transition-opacity lg:grid-cols-3 lg:gap-0 lg:divide-x lg:divide-zinc-200 dark:lg:divide-zinc-700 ${isRefreshing ? "opacity-60" : ""}`}
       >
         <OrdersGroup title="Pending" count={pendingOrders.length} emptyMessage="No pending orders">
           {pendingOrders.map((order) => (

@@ -21,18 +21,18 @@ export function ServiceUnavailable({
   const content = (
     <div className="flex flex-col items-center text-center">
       {fullPage ? (
-        <p className="text-6xl font-light tracking-tight text-black sm:text-7xl">{code}</p>
+        <p className="text-6xl font-light tracking-tight text-black dark:text-zinc-100 sm:text-7xl">{code}</p>
       ) : null}
       <h1
         className={
           fullPage
-            ? "mt-4 text-xl font-semibold text-black sm:text-2xl"
-            : "text-xl font-semibold text-black sm:text-2xl"
+            ? "mt-4 text-xl font-semibold text-black dark:text-zinc-100 sm:text-2xl"
+            : "text-xl font-semibold text-black dark:text-zinc-100 sm:text-2xl"
         }
       >
         {title}
       </h1>
-      <p className="mt-2 max-w-sm text-sm font-light leading-relaxed text-zinc-500">{message}</p>
+      <p className="mt-2 max-w-sm text-sm font-light leading-relaxed text-zinc-500 dark:text-zinc-400">{message}</p>
       {onRetry ? (
         <button
           type="button"
@@ -47,7 +47,7 @@ export function ServiceUnavailable({
 
   if (fullPage) {
     return (
-      <main className="relative flex min-h-screen flex-col overflow-hidden bg-white p-6 font-sans text-black antialiased selection:bg-black selection:text-white">
+      <main className="relative flex min-h-screen flex-col overflow-hidden bg-white dark:bg-zinc-950 p-6 font-sans text-black dark:text-zinc-50 antialiased selection:bg-black selection:text-white">
         <PageHeader leading={<BrandBackNav href="/" />} />
 
         <div className="z-10 flex flex-1 flex-col items-center justify-center py-10">{content}</div>

@@ -16,14 +16,14 @@ type TableDetailModalProps = {
 function TableStatusBadge({ status }: { status: VenueTable["status"] }) {
   if (status === "active") {
     return (
-      <span className="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800">
+      <span className="rounded-full bg-green-100 dark:bg-green-900/20 border border-green-200/80 dark:border-green-800/40 px-3 py-1 text-sm font-medium text-green-800 dark:text-green-400">
         Active
       </span>
     );
   }
 
   return (
-    <span className="rounded-full bg-zinc-200 px-3 py-1 text-sm font-medium text-zinc-600">
+    <span className="rounded-full bg-zinc-200 dark:bg-zinc-700/60 px-3 py-1 text-sm font-medium text-zinc-600 dark:text-zinc-400">
       Inactive
     </span>
   );
@@ -61,7 +61,7 @@ export function TableDetailModal({
       role="presentation"
     >
       <div
-        className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl sm:p-8"
+        className="w-full max-w-md rounded-3xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-6 shadow-2xl dark:shadow-black/40 sm:p-8"
         role="dialog"
         aria-modal="true"
         aria-labelledby="table-detail-title"
@@ -69,16 +69,16 @@ export function TableDetailModal({
       >
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h3 id="table-detail-title" className="text-xl font-bold text-black">
+            <h3 id="table-detail-title" className="text-xl font-bold text-black dark:text-zinc-100">
               {table.label}
             </h3>
-            <p className="mt-1 font-mono text-xs text-zinc-400">{table.id}</p>
+            <p className="mt-1 font-mono text-xs text-zinc-400 dark:text-zinc-500">{table.id}</p>
           </div>
           <TableStatusBadge status={table.status} />
         </div>
 
         <div className="mt-6 flex flex-col items-center gap-4">
-          <div className="flex h-[180px] w-[180px] items-center justify-center rounded-2xl border border-zinc-100 bg-white p-4 shadow-sm">
+          <div className="flex h-[180px] w-[180px] items-center justify-center rounded-2xl border border-zinc-100 dark:border-zinc-700 bg-white dark:bg-zinc-800 p-4 shadow-sm">
             {hasQr ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -89,7 +89,7 @@ export function TableDetailModal({
                 className="h-full w-full object-contain"
               />
             ) : (
-              <p className="px-2 text-center text-sm font-light text-zinc-400">
+              <p className="px-2 text-center text-sm font-light text-zinc-400 dark:text-zinc-500">
                 Generated QR will be displayed here
               </p>
             )}
@@ -97,7 +97,7 @@ export function TableDetailModal({
 
           <Link
             href={customerUrl}
-            className="break-all text-center font-mono text-xs text-zinc-500 underline-offset-2 hover:text-black hover:underline"
+            className="break-all text-center font-mono text-xs text-zinc-500 dark:text-zinc-400 underline-offset-2 hover:text-black dark:hover:text-zinc-100 hover:underline"
           >
             {customerUrl}
           </Link>
@@ -128,7 +128,7 @@ export function TableDetailModal({
             <button
               type="button"
               onClick={() => onDeactivate(table.id)}
-              className="w-full cursor-pointer rounded-xl border border-zinc-200 px-4 py-3 text-sm font-medium text-zinc-600 transition-colors hover:border-black hover:text-black"
+              className="w-full cursor-pointer rounded-xl border border-zinc-200 dark:border-zinc-700 px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400 transition-colors hover:border-black dark:hover:border-zinc-400 hover:text-black dark:hover:text-zinc-100"
             >
               Deactivate
             </button>
@@ -138,7 +138,7 @@ export function TableDetailModal({
         <button
           type="button"
           onClick={onClose}
-          className="mt-4 w-full cursor-pointer py-2 text-sm font-medium text-zinc-400 transition-colors hover:text-black"
+          className="mt-4 w-full cursor-pointer py-2 text-sm font-medium text-zinc-400 dark:text-zinc-500 transition-colors hover:text-black dark:hover:text-zinc-100"
         >
           Close
         </button>

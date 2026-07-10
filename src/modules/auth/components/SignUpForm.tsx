@@ -49,13 +49,13 @@ export function SignUpForm({ intent }: SignUpFormProps) {
 
   return (
     <>
-      <h2 className="text-2xl font-semibold tracking-tight text-black text-center">Create an account</h2>
-      <p className="mt-2 text-sm text-zinc-600 font-light text-center">Start your journey with Milly.</p>
+      <h2 className="text-2xl font-semibold tracking-tight text-black dark:text-zinc-100 text-center">Create an account</h2>
+      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400 font-light text-center">Start your journey with Milly.</p>
 
       <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="firstName" className="text-xs font-medium text-zinc-600">
+            <label htmlFor="firstName" className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
               First Name
             </label>
             <input
@@ -67,12 +67,12 @@ export function SignUpForm({ intent }: SignUpFormProps) {
               value={firstName}
               onChange={(event) => setFirstName(event.target.value)}
               placeholder="Alex"
-              className="w-full px-4 py-3 rounded-xl border border-black/10 bg-white text-sm text-black transition-all focus:border-black focus:ring-1 focus:ring-black outline-none"
+              className="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm text-black dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 transition-all focus:border-black dark:focus:border-zinc-400 focus:ring-1 focus:ring-black dark:focus:ring-zinc-400 outline-none"
             />
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="lastName" className="text-xs font-medium text-zinc-600">
+            <label htmlFor="lastName" className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
               Last Name
             </label>
             <input
@@ -84,13 +84,13 @@ export function SignUpForm({ intent }: SignUpFormProps) {
               value={lastName}
               onChange={(event) => setLastName(event.target.value)}
               placeholder="Rivera"
-              className="w-full px-4 py-3 rounded-xl border border-black/10 bg-white text-sm text-black transition-all focus:border-black focus:ring-1 focus:ring-black outline-none"
+              className="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm text-black dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 transition-all focus:border-black dark:focus:border-zinc-400 focus:ring-1 focus:ring-black dark:focus:ring-zinc-400 outline-none"
             />
           </div>
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="email" className="text-xs font-medium text-zinc-600">
+          <label htmlFor="email" className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
             Email Address
           </label>
           <input
@@ -102,12 +102,12 @@ export function SignUpForm({ intent }: SignUpFormProps) {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             placeholder="name@example.com"
-            className="w-full px-4 py-3 rounded-xl border border-black/10 bg-white text-sm text-black transition-all focus:border-black focus:ring-1 focus:ring-black outline-none"
+            className="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm text-black dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 transition-all focus:border-black dark:focus:border-zinc-400 focus:ring-1 focus:ring-black dark:focus:ring-zinc-400 outline-none"
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="password" className="text-xs font-medium text-zinc-600">
+          <label htmlFor="password" className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
             Password
           </label>
           <input
@@ -119,7 +119,7 @@ export function SignUpForm({ intent }: SignUpFormProps) {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             placeholder="••••••••"
-            className="w-full px-4 py-3 rounded-xl border border-black/10 bg-white text-sm text-black transition-all focus:border-black focus:ring-1 focus:ring-black outline-none"
+            className="w-full px-4 py-3 rounded-xl border border-black/10 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm text-black dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 transition-all focus:border-black dark:focus:border-zinc-400 focus:ring-1 focus:ring-black dark:focus:ring-zinc-400 outline-none"
           />
         </div>
 
@@ -138,9 +138,9 @@ export function SignUpForm({ intent }: SignUpFormProps) {
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-zinc-600">
+      <p className="mt-6 text-center text-sm text-zinc-600 dark:text-zinc-400">
         Already have an account?{" "}
-        <Link href={authLink("/login", intent)} className="font-medium text-black hover:underline">
+        <Link href={authLink("/login", intent)} className="font-medium text-black dark:text-zinc-100 hover:underline">
           Sign In
         </Link>
       </p>

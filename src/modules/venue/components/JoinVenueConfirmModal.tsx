@@ -31,17 +31,17 @@ export function JoinVenueConfirmModal({
       role="presentation"
     >
       <div
-        className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-6 shadow-2xl sm:p-8"
+        className="w-full max-w-md rounded-3xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-6 shadow-2xl dark:shadow-black/40 sm:p-8"
         role="dialog"
         aria-modal="true"
         aria-labelledby="join-venue-confirm-title"
         onClick={(event) => event.stopPropagation()}
       >
-        <h3 id="join-venue-confirm-title" className="text-xl font-bold text-black">
+        <h3 id="join-venue-confirm-title" className="text-xl font-bold text-black dark:text-zinc-100">
           You&apos;re in!
         </h3>
-        <p className="mt-3 text-sm font-light leading-relaxed text-zinc-600">
-          You&apos;ve joined <span className="font-medium text-black">{venueName}</span>. Would you
+        <p className="mt-3 text-sm font-light leading-relaxed text-zinc-600 dark:text-zinc-400">
+          You&apos;ve joined <span className="font-medium text-black dark:text-zinc-200">{venueName}</span>. Would you
           like to go there now?
         </p>
 
@@ -56,7 +56,7 @@ export function JoinVenueConfirmModal({
         <button
           type="button"
           onClick={onClose}
-          className="mt-3 w-full cursor-pointer py-2 text-sm font-medium text-zinc-400 transition-colors hover:text-black"
+          className="mt-3 w-full cursor-pointer py-2 text-sm font-medium text-zinc-400 dark:text-zinc-500 transition-colors hover:text-black dark:hover:text-zinc-200"
         >
           Stay here
         </button>
