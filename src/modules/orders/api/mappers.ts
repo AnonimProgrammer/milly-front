@@ -50,6 +50,7 @@ export function mapStaffOrderResponse(
     rejectedAdditions: [],
     paidAmount: order.paidAmount ?? 0,
     remaining: order.remaining ?? 0,
+    totalTipAmount: order.totalTipAmount ?? 0,
   };
 }
 

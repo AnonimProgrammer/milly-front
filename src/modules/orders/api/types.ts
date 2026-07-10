@@ -20,6 +20,7 @@ export type StaffOrderResponse = {
   items: OrderItemResponse[];
   paidAmount: number;
   remaining: number;
+  totalTipAmount: number;
 };
 
 export type PaginationMeta = {

@@ -22,11 +22,13 @@ export type CreatePaymentRequest = {
   provider: ApiPaymentProvider;
   providerDetails?: ProviderDetailsRequest;
   splitPeople?: number;
+  tipAmount?: number;
 };
 
 export type PaymentResponse = {
   id: string;
   amount: number;
+  tipAmount: number;
   status: ApiPaymentStatus;
   provider: ApiPaymentProvider;
   paymentType: ApiPaymentType;
@@ -40,6 +42,7 @@ export type BillSummaryResponse = {
   paidAmount: number;
   remaining: number;
   fullyPaid: boolean;
+  totalTipAmount: number;
   payments: PaymentResponse[];
 };
 
@@ -55,6 +58,7 @@ export type ProcessPaymentResponse = {
  */
 export type PaymentIntent = {
   amount: number;
+  tipAmount?: number;
   type: PaymentType;
   provider: PaymentProvider;
   card?: {

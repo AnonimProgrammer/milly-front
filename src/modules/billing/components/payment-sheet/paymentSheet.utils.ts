@@ -1,6 +1,32 @@
 import { formatAmount } from "@/modules/orders";
-import type { PaymentProvider } from "../../types/payment";
+import type { PaymentProvider, TipOption } from "../../types/payment";
 import type { PaymentStep } from "./types";
+
+export function calculateTipAmount(
+  option: TipOption,
+  billAmount: number,
+  customTipInput: string,
+): number {
+  if (option === "none") {
+    return 0;
+  }
+
+  if (option === "custom") {
+    const parsed = Number.parseFloat(customTipInput);
+    if (!Number.isFinite(parsed) || parsed <= 0) {
+      return 0;
+    }
+    return Math.min(Number(parsed.toFixed(2)), billAmount);
+  }
+
+  const percentage = Number.parseInt(option, 10) / 100;
+  return Number((billAmount * percentage).toFixed(2));
+}
+
+export function isCustomTipValid(customTipInput: string, billAmount: number): boolean {
+  const parsed = Number.parseFloat(customTipInput);
+  return Number.isFinite(parsed) && parsed >= 0 && parsed <= billAmount;
+}
 
 export function getProviderName(provider: PaymentProvider | null): string {
   switch (provider) {
