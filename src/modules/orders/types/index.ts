@@ -29,4 +29,5 @@ export type Order = {
   rejectedAdditions: OrderAddition[];
   paidAmount: number;
   remaining: number;
+  totalTipAmount: number;
 };
