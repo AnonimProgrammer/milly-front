@@ -18,31 +18,22 @@ export default function AppleIcon() {
           alignItems: "center",
           justifyContent: "center",
           background: "#ffffff",
-          position: "relative",
         }}
       >
-        <div
-          style={{
-            position: "absolute",
-            left: 34,
-            top: 34,
-            width: 90,
-            height: 90,
-            borderRadius: "50%",
-            background: "#1e3a8a",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            left: 56,
-            top: 56,
-            width: 90,
-            height: 90,
-            borderRadius: "50%",
-            background: "rgba(0, 0, 0, 0.85)",
-          }}
-        />
+        <svg
+          width="120"
+          height="120"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#000000"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M4 10c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2" />
+          <path d="M10 16c-1.1 0-2-.9-2-2v-4c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2" />
+          <rect width="8" height="8" x="14" y="14" rx="2" />
+        </svg>
       </div>
     ),
     size,
