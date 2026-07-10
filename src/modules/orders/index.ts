@@ -21,5 +21,6 @@ export {
   getOrderTotal,
   getTodayOrderDate,
   mergeItems,
+  normalizeOrderItems,
   toOrderDateRange,
 } from "./utils/order.helpers";
