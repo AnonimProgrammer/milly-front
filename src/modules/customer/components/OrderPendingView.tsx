@@ -1,6 +1,12 @@
 "use client";
 
-import { formatAmount, formatDateTime, formatOrderId, getOrderTotal } from "@/modules/orders";
+import {
+  CollapsibleOrderItemList,
+  formatAmount,
+  formatDateTime,
+  formatOrderId,
+  getOrderTotal,
+} from "@/modules/orders";
 import type { Order } from "@/modules/orders";
 
 type OrderPendingViewProps = {
@@ -29,13 +35,16 @@ export function OrderPendingView({ order, tableLabel }: OrderPendingViewProps) {
       </div>
 
       <div className="w-full rounded-xl border border-neutral-200 p-4">
-        <ul className="mb-4 space-y-1 text-left text-sm text-neutral-600">
-          {order.items.map((item) => (
-            <li key={`${item.menuItemId}-${item.name}`}>
+        <CollapsibleOrderItemList
+          items={order.items}
+          listClassName="mb-4 space-y-1 text-left text-sm text-neutral-600"
+          expandButtonClassName="mb-4 text-sm font-medium text-neutral-500 underline hover:text-neutral-700"
+          renderItem={(item) => (
+            <>
               {item.quantity}× {item.name}
-            </li>
-          ))}
-        </ul>
+            </>
+          )}
+        />
         <p className="text-sm text-neutral-500">Total amount</p>
         <p className="text-2xl font-bold text-black">{formatAmount(total)}</p>
       </div>
