@@ -1,4 +1,5 @@
 import type { Order, OrderStatus } from "../types";
+import { normalizeOrderItems } from "../utils/order.helpers";
 import type { ApiOrderStatus, StaffOrderResponse } from "./types";
 
 type MenuLookup = Map<string, { name: string }>;
@@ -31,12 +32,14 @@ export function mapStaffOrderResponse(
     id: order.id,
     tableId: order.tableId,
     tableLabel: tableById.get(order.tableId)?.label ?? "Table",
-    items: order.items.map((item) => ({
-      menuItemId: item.menuItemId,
-      name: menuById.get(item.menuItemId)?.name ?? "Unknown item",
-      price: item.unitPrice,
-      quantity: item.quantity,
-    })),
+    items: normalizeOrderItems(
+      order.items.map((item) => ({
+        menuItemId: item.menuItemId,
+        name: menuById.get(item.menuItemId)?.name ?? "Unknown item",
+        price: item.unitPrice,
+        quantity: item.quantity,
+      })),
+    ),
     status,
     createdAt: new Date(order.createdAt),
     updatedAt: new Date(order.updatedAt),

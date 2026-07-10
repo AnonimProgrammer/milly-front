@@ -138,7 +138,7 @@ function RejectedAddition({ addition }: { addition: OrderAddition }) {
       </p>
       <ul className="space-y-1.5 text-base text-zinc-500">
         {addition.items.map((item) => (
-          <li key={`${item.menuItemId}-${item.name}`} className="line-through">
+          <li key={item.menuItemId} className="line-through">
             {item.quantity}× {item.name}
           </li>
         ))}
