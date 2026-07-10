@@ -6,6 +6,7 @@ export { OrderActionButton } from "./components/OrderActionButton";
 export {
   approveOrder,
   closeOrder,
+  listAllOrders,
   listOrders,
   mapStaffOrderResponse,
   mapStaffOrders,
