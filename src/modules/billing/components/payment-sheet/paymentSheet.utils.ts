@@ -18,6 +18,7 @@ export function getProviderName(provider: PaymentProvider | null): string {
 export function getSheetTitle(step: PaymentStep, selectedAmount: number): string {
   if (step === "amount") return "Pay the bill";
   if (step === "provider") return `Pay ${formatAmount(selectedAmount)}`;
+  if (step === "review") return "Review payment";
   if (step === "processing") return "Processing Payment";
   if (step === "success") return "Payment Successful";
   if (step === "error") return "Payment Failed";

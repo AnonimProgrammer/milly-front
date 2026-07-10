@@ -1,1 +1,1 @@
-export type PaymentStep = "amount" | "provider" | "processing" | "success" | "error";
+export type PaymentStep = "amount" | "provider" | "review" | "processing" | "success" | "error";
