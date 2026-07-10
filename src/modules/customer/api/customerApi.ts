@@ -7,26 +7,46 @@ import type {
   PublicTableResponse,
 } from "./types";
 
+type PublicApiOptions = {
+  background?: boolean;
+};
+
 function tablePath(tableId: string) {
   return `/api/v1/public/tables/${tableId}`;
 }
 
-export async function getPublicTable(tableId: string): Promise<PublicTableResponse> {
-  return apiRequest<PublicTableResponse>(tablePath(tableId));
+function publicRequestOptions(options?: PublicApiOptions) {
+  return {
+    background: options?.background,
+    silent: options?.background,
+  };
 }
 
-export async function listPublicMenuItems(tableId: string): Promise<PublicMenuItemResponse[]> {
-  return apiRequest<PublicMenuItemResponse[]>(`${tablePath(tableId)}/menu`);
+export async function getPublicTable(
+  tableId: string,
+  options?: PublicApiOptions,
+): Promise<PublicTableResponse> {
+  return apiRequest<PublicTableResponse>(tablePath(tableId), publicRequestOptions(options));
+}
+
+export async function listPublicMenuItems(
+  tableId: string,
+  options?: PublicApiOptions,
+): Promise<PublicMenuItemResponse[]> {
+  return apiRequest<PublicMenuItemResponse[]>(
+    `${tablePath(tableId)}/menu`,
+    publicRequestOptions(options),
+  );
 }
 
 export async function listPublicOrders(
   tableId: string,
-  options?: { background?: boolean },
+  options?: PublicApiOptions,
 ): Promise<PublicOrderResponse[]> {
-  return apiRequest<PublicOrderResponse[]>(`${tablePath(tableId)}/orders`, {
-    background: options?.background,
-    silent: options?.background,
-  });
+  return apiRequest<PublicOrderResponse[]>(
+    `${tablePath(tableId)}/orders`,
+    publicRequestOptions(options),
+  );
 }
 
 export async function createPublicOrder(
