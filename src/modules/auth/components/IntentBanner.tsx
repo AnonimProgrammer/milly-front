@@ -5,8 +5,8 @@ type IntentBannerProps = {
 export function IntentBanner({ intent }: IntentBannerProps) {
   if (intent === "join-venue") {
     return (
-      <div className="mb-6 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium text-black bg-black/5 border border-black/10 self-center">
-        <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
+      <div className="mb-6 inline-flex items-center gap-1.5 self-center rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-foreground">
+        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
         Joining Venue
       </div>
     );
@@ -14,8 +14,8 @@ export function IntentBanner({ intent }: IntentBannerProps) {
 
   if (intent === "register-venue") {
     return (
-      <div className="mb-6 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium text-black bg-black/5 border border-black/10 self-center">
-        <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
+      <div className="mb-6 inline-flex items-center gap-1.5 self-center rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-foreground">
+        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
         Registering Venue
       </div>
     );
