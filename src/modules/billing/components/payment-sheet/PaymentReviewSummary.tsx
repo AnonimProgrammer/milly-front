@@ -4,13 +4,17 @@ type PaymentReviewSummaryProps = {
   billTotal: number;
   amountToPay: number;
   remainingAfterPayment: number;
+  tipAmount: number;
 };
 
 export function PaymentReviewSummary({
   billTotal,
   amountToPay,
   remainingAfterPayment,
+  tipAmount,
 }: PaymentReviewSummaryProps) {
+  const totalCharge = Number((amountToPay + tipAmount).toFixed(2));
+
   return (
     <div className="space-y-3 rounded-xl border border-border bg-muted p-4 text-sm">
       <div className="flex items-center justify-between">
@@ -20,6 +24,10 @@ export function PaymentReviewSummary({
       <div className="flex items-center justify-between">
         <span className="text-muted-foreground">Amount to pay</span>
         <span className="font-semibold text-foreground">{formatAmount(amountToPay)}</span>
+      </div>
+      <div className="flex items-center justify-between">
+        <span className="text-muted-foreground">Tip</span>
+        <span className="font-semibold text-foreground">{formatAmount(tipAmount)}</span>
       </div>
       <div className="border-t border-border pt-3">
         <div className="flex items-center justify-between">
@@ -31,6 +39,12 @@ export function PaymentReviewSummary({
         {remainingAfterPayment === 0 && (
           <p className="mt-2 text-xs text-muted-foreground">This payment will settle the full bill.</p>
         )}
+      </div>
+      <div className="border-t border-border pt-3">
+        <div className="flex items-center justify-between">
+          <span className="font-medium text-foreground">Total charge</span>
+          <span className="text-base font-bold text-foreground">{formatAmount(totalCharge)}</span>
+        </div>
       </div>
     </div>
   );
