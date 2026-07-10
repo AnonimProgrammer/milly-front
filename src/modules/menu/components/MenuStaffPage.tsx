@@ -46,6 +46,7 @@ export function MenuStaffPage({ venueId }: MenuStaffPageProps) {
         description: item.description,
         price: item.price,
         approximatePreparationMinutes: item.approximatePreparationMinutes,
+        category: item.category,
       });
       setMenuItems((prev) => [...prev, mapMenuItemResponse(created)]);
     } catch {
@@ -60,12 +61,11 @@ export function MenuStaffPage({ venueId }: MenuStaffPageProps) {
         description: updatedItem.description,
         price: updatedItem.price,
         approximatePreparationMinutes: updatedItem.approximatePreparationMinutes,
+        category: updatedItem.category,
       });
       setMenuItems((prev) =>
         prev.map((item) =>
-          item.id === id
-            ? { ...mapMenuItemResponse(updated), category: updatedItem.category }
-            : item,
+          item.id === id ? mapMenuItemResponse(updated) : item,
         ),
       );
     } catch {
