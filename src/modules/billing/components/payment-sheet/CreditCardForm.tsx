@@ -7,8 +7,9 @@ type CreditCardFormProps = {
   onCardCvcChange: (value: string) => void;
 };
 
-const inputClassName =
-  "w-full rounded-lg border border-neutral-200 px-3 py-2 text-sm text-black transition-all outline-none focus:border-black focus:ring-1 focus:ring-black";
+import { inputField } from "@/modules/shared/theme/classNames";
+
+const inputClassName = `${inputField} py-2 text-sm`;
 
 export function CreditCardForm({
   cardNumber,
@@ -40,9 +41,9 @@ export function CreditCardForm({
   }
 
   return (
-    <div className="space-y-2 rounded-xl border border-neutral-200/60 bg-neutral-50 p-4 transition-all duration-300">
+    <div className="space-y-2 rounded-xl border border-border bg-muted p-4 transition-all duration-300">
       <div>
-        <label className="mb-1 block text-xs font-medium text-neutral-500">Card Number</label>
+        <label className="mb-1 block text-xs font-medium text-muted-foreground">Card Number</label>
         <input
           type="text"
           maxLength={19}
@@ -54,7 +55,7 @@ export function CreditCardForm({
       </div>
       <div className="grid grid-cols-2 gap-2">
         <div>
-          <label className="mb-1 block text-xs font-medium text-neutral-500">Expiry Date</label>
+          <label className="mb-1 block text-xs font-medium text-muted-foreground">Expiry Date</label>
           <input
             type="text"
             maxLength={5}
@@ -65,7 +66,7 @@ export function CreditCardForm({
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-neutral-500">CVC</label>
+          <label className="mb-1 block text-xs font-medium text-muted-foreground">CVC</label>
           <input
             type="text"
             maxLength={3}

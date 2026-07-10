@@ -12,7 +12,7 @@ const DEFAULT_ERROR_MESSAGE =
 export function PaymentErrorStep({ message, onTryAgain, onCancel }: PaymentErrorStepProps) {
   return (
     <div className="flex flex-col items-center justify-center py-8 text-center">
-      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-neutral-100 text-black">
+      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted text-foreground">
         <svg
           width="32"
           height="32"
@@ -27,8 +27,8 @@ export function PaymentErrorStep({ message, onTryAgain, onCancel }: PaymentError
           <line x1="6" y1="6" x2="18" y2="18" />
         </svg>
       </div>
-      <h3 className="text-lg font-bold font-semibold text-black">Payment Declined</h3>
-      <p className="mt-2 mb-6 max-w-xs text-xs text-neutral-500">
+      <h3 className="text-lg font-bold text-foreground">Payment Declined</h3>
+      <p className="mt-2 mb-6 max-w-xs text-xs text-muted-foreground">
         {message ?? DEFAULT_ERROR_MESSAGE}
       </p>
       <div className="flex w-full flex-col gap-2">

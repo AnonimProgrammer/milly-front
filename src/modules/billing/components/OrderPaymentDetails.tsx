@@ -15,26 +15,26 @@ export function OrderPaymentDetails({ order, onCloseOrder }: OrderPaymentDetails
   const canClose = order.status === "approved";
 
   return (
-    <div className="mt-4 border-t border-zinc-200 pt-4">
-      <p className="mb-3 text-xs font-medium uppercase tracking-wide text-zinc-400">
+    <div className="mt-4 border-t border-border pt-4">
+      <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
         Payment
       </p>
       <div className="flex items-center justify-between gap-4">
         <div className="space-y-2">
           <div className="flex items-baseline justify-between gap-8 text-base">
-            <span className="text-zinc-500">Total amount</span>
-            <span className="font-medium text-black">{formatAmount(total)}</span>
+            <span className="text-muted-foreground">Total amount</span>
+            <span className="font-medium text-foreground">{formatAmount(total)}</span>
           </div>
           <div className="flex items-baseline justify-between gap-8 text-base">
-            <span className="text-zinc-500">Left to pay</span>
-            <span className="font-medium text-black">{formatAmount(remaining)}</span>
+            <span className="text-muted-foreground">Left to pay</span>
+            <span className="font-medium text-foreground">{formatAmount(remaining)}</span>
           </div>
         </div>
         <PaymentCompleteIndicator complete={isFullyPaid} />
       </div>
 
       {canClose && (
-        <div className="mt-4 border-t border-zinc-200 pt-4">
+        <div className="mt-4 border-t border-border pt-4">
           <OrderActionButton onClick={() => onCloseOrder(order.id)}>
             Close order
           </OrderActionButton>
@@ -70,7 +70,7 @@ function PaymentCompleteIndicator({ complete }: { complete: boolean }) {
 
   return (
     <div
-      className="h-10 w-10 shrink-0 rounded-full border-2 border-zinc-200"
+      className="h-10 w-10 shrink-0 rounded-full border-2 border-border"
       aria-label="Payment incomplete"
     />
   );

@@ -1,5 +1,6 @@
 import { Button } from "@/modules/shared/ui";
 import { formatAmount } from "@/modules/orders";
+import { inputField } from "@/modules/shared/theme/classNames";
 import type { PaymentType } from "../../types/payment";
 
 type PaymentAmountStepProps = {
@@ -14,9 +15,6 @@ type PaymentAmountStepProps = {
   onSplitAmountSubmit: () => void;
   onBack: () => void;
 };
-
-const inputClassName =
-  "w-full rounded-lg border border-neutral-300 px-3 py-2 text-black transition-all outline-none focus:border-black focus:ring-1 focus:ring-black";
 
 export function PaymentAmountStep({
   remaining,
@@ -49,7 +47,7 @@ export function PaymentAmountStep({
   if (activeType === "custom") {
     return (
       <div className="space-y-3">
-        <label className="block text-sm text-neutral-600">
+        <label className="block text-sm text-muted-foreground">
           Amount to pay (max {formatAmount(remaining)})
         </label>
         <input
@@ -59,7 +57,7 @@ export function PaymentAmountStep({
           step="0.01"
           value={customAmount}
           onChange={(event) => onCustomAmountChange(event.target.value)}
-          className={inputClassName}
+          className={inputField}
           placeholder="0.00"
         />
         <div className="flex flex-col gap-2 pt-2">
@@ -79,15 +77,15 @@ export function PaymentAmountStep({
 
   return (
     <div className="space-y-3">
-      <label className="block text-sm text-neutral-600">Number of people splitting</label>
+      <label className="block text-sm text-muted-foreground">Number of people splitting</label>
       <input
         type="number"
         min="2"
         value={splitPeople}
         onChange={(event) => onSplitPeopleChange(event.target.value)}
-        className={inputClassName}
+        className={inputField}
       />
-      <p className="text-sm font-medium text-neutral-600">
+      <p className="text-sm font-medium text-muted-foreground">
         Your share:{" "}
         {formatAmount(remaining / Math.max(2, parseInt(splitPeople, 10) || 2))}
       </p>
