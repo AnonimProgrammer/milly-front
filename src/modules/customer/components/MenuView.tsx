@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Button } from "@/modules/shared/ui";
+import { getCategoriesFromMenu } from "@/modules/menu/categories";
 import type { MenuItem } from "@/modules/menu";
 import type { Order } from "@/modules/orders";
 import { formatAmount, getOrderTotal } from "@/modules/orders";
@@ -13,11 +14,6 @@ type MenuViewProps = {
   onPlaceOrder: (items: { menuItemId: string; quantity: number }[]) => Promise<void>;
   onOrderPlaced: () => void;
 };
-
-function getCategoriesFromMenu(menuItems: MenuItem[]): string[] {
-  const categories = new Set(menuItems.map((item) => item.category));
-  return ["All", ...Array.from(categories).sort()];
-}
 
 export function MenuView({
   tableLabel,

@@ -20,7 +20,7 @@ export function mapPublicMenuItem(item: PublicMenuItemResponse): MenuItem {
     id: item.id,
     name: item.name,
     description: item.description ?? "",
-    category: "Mains",
+    category: item.category,
     price: item.price,
     approximatePreparationMinutes: item.approximatePreparationMinutes,
   };

@@ -14,6 +14,7 @@ export type PublicMenuItemResponse = {
   description: string | null;
   price: number;
   approximatePreparationMinutes: number;
+  category: string;
   status: "ACTIVE" | "DELETED";
   createdAt: string;
   updatedAt: string;

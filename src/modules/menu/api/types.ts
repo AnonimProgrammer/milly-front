@@ -7,6 +7,7 @@ export type MenuItemResponse = {
   description: string | null;
   price: number;
   approximatePreparationMinutes: number;
+  category: string;
   status: MenuItemStatus;
   createdAt: string;
   updatedAt: string;
@@ -17,6 +18,7 @@ export type CreateMenuItemRequest = {
   description?: string;
   price: number;
   approximatePreparationMinutes: number;
+  category: string;
 };
 
 export type UpdateMenuItemRequest = {
@@ -24,4 +26,5 @@ export type UpdateMenuItemRequest = {
   description?: string;
   price?: number;
   approximatePreparationMinutes?: number;
+  category?: string;
 };
