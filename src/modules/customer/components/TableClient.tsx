@@ -1,6 +1,8 @@
 "use client";
 
 import { ChatbotIconButton } from "@/modules/chatbot";
+import { SettingsMenuButton } from "@/modules/auth";
+import { pageShell, spinnerRing } from "@/modules/shared/theme/classNames";
 import { BrandBackNav, MillyBrand, PageHeader, ServiceUnavailable } from "@/modules/shared/ui";
 import { useTableClientState } from "../hooks/useTableClientState";
 import { BillView } from "./BillView";
@@ -21,7 +23,12 @@ function CustomerTableHeader({
   return (
     <PageHeader
       leading={onBack ? <BrandBackNav onClick={onBack} /> : <MillyBrand />}
-      trailing={<ChatbotIconButton tableId={tableId} />}
+      trailing={
+        <div className="flex items-center gap-2 overflow-visible">
+          <ChatbotIconButton tableId={tableId} />
+          <SettingsMenuButton />
+        </div>
+      }
     />
   );
 }
@@ -41,11 +48,11 @@ export function TableClient({ tableId }: TableClientProps) {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-white text-black font-sans antialiased p-6">
+      <main className={`min-h-screen bg-transparent p-6 ${pageShell}`}>
         <CustomerTableHeader tableId={tableId} />
-        <div className="relative z-10 mx-auto w-full flex-1 py-4">
-          <div className="mx-auto flex min-h-full w-full max-w-lg items-center justify-center bg-white py-24">
-            <div className="h-10 w-10 animate-pulse rounded-full border-2 border-neutral-300 border-t-black" />
+        <div className="relative mx-auto w-full flex-1 py-4">
+          <div className="mx-auto flex min-h-full w-full max-w-lg items-center justify-center bg-card py-24">
+            <div className={`h-10 w-10 ${spinnerRing}`} />
           </div>
         </div>
       </main>
@@ -66,9 +73,9 @@ export function TableClient({ tableId }: TableClientProps) {
 
   if (activeOrder?.status === "approved" && !forceMenu) {
     return (
-      <main className="min-h-screen bg-white text-black font-sans antialiased p-6">
+      <main className={`min-h-screen bg-transparent p-6 ${pageShell}`}>
         <CustomerTableHeader tableId={tableId} />
-        <div className="relative z-10 mx-auto w-full flex-1 py-4">
+        <div className="relative mx-auto w-full flex-1 py-4">
           <BillView
             tableLabel={state.tableLabel}
             order={activeOrder}
@@ -82,9 +89,9 @@ export function TableClient({ tableId }: TableClientProps) {
 
   if (activeOrder?.status === "pending" && !forceMenu) {
     return (
-      <main className="min-h-screen bg-white text-black font-sans antialiased p-6">
+      <main className={`min-h-screen bg-transparent p-6 ${pageShell}`}>
         <CustomerTableHeader tableId={tableId} />
-        <div className="relative z-10 mx-auto w-full flex-1 py-4">
+        <div className="relative mx-auto w-full flex-1 py-4">
           <OrderPendingView order={activeOrder} tableLabel={state.tableLabel} />
         </div>
       </main>
@@ -92,12 +99,12 @@ export function TableClient({ tableId }: TableClientProps) {
   }
 
   return (
-    <main className="min-h-screen bg-white text-black font-sans antialiased p-6">
+    <main className={`min-h-screen bg-transparent p-6 ${pageShell}`}>
       <CustomerTableHeader
         tableId={tableId}
         onBack={activeOrder?.status === "approved" ? () => setForceMenu(false) : undefined}
       />
-      <div className="relative z-10 mx-auto w-full flex-1 py-4">
+      <div className="relative mx-auto w-full flex-1 py-4">
         <MenuView
           tableLabel={state.tableLabel}
           menuItems={state.menuItems}
