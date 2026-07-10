@@ -34,10 +34,10 @@ export function useTableClientState(tableId: string) {
     setError(false);
 
     try {
-      const table = await getPublicTable(tableId);
+      const table = await getPublicTable(tableId, { background: true });
       const [menuResponse, ordersResponse] = await Promise.all([
-        listPublicMenuItems(tableId),
-        listPublicOrders(tableId),
+        listPublicMenuItems(tableId, { background: true }),
+        listPublicOrders(tableId, { background: true }),
       ]);
 
       const menuItems = menuResponse.map(mapPublicMenuItem);

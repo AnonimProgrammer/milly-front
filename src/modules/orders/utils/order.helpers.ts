@@ -19,6 +19,11 @@ export function mergeItems(existing: OrderItem[], incoming: OrderItem[]): OrderI
   return merged;
 }
 
+/** Collapse duplicate menu lines returned by the API into one row per menu item. */
+export function normalizeOrderItems(items: OrderItem[]): OrderItem[] {
+  return mergeItems([], items);
+}
+
 export function formatOrderId(id: string): string {
   return `#${id.replace(/-/g, "").slice(-7).toUpperCase()}`;
 }

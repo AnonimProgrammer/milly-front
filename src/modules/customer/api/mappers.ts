@@ -1,5 +1,6 @@
 import type { MenuItem } from "@/modules/menu";
 import type { ApiOrderStatus, Order, OrderStatus } from "@/modules/orders";
+import { normalizeOrderItems } from "@/modules/orders";
 import type { PublicMenuItemResponse, PublicOrderResponse } from "./types";
 
 function mapOrderStatus(status: ApiOrderStatus): OrderStatus | null {
@@ -40,12 +41,14 @@ export function mapPublicOrder(
     id: order.id,
     tableId: order.tableId,
     tableLabel,
-    items: order.items.map((item) => ({
-      menuItemId: item.menuItemId,
-      name: menuById.get(item.menuItemId)?.name ?? "Unknown item",
-      price: item.unitPrice,
-      quantity: item.quantity,
-    })),
+    items: normalizeOrderItems(
+      order.items.map((item) => ({
+        menuItemId: item.menuItemId,
+        name: menuById.get(item.menuItemId)?.name ?? "Unknown item",
+        price: item.unitPrice,
+        quantity: item.quantity,
+      })),
+    ),
     status,
     createdAt: new Date(order.createdAt),
     updatedAt: new Date(order.createdAt),

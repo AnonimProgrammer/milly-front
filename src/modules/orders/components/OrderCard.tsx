@@ -8,6 +8,7 @@ import {
   formatOrderId,
   getOrderTotal,
 } from "../utils/order.helpers";
+import { CollapsibleOrderItemList } from "./CollapsibleOrderItemList";
 import { OrderActionButton } from "./OrderActionButton";
 
 type OrderCardProps = {
@@ -117,13 +118,15 @@ export function OrderCard({
 
 function ItemList({ items }: { items: OrderItem[] }) {
   return (
-    <ul className="space-y-1.5 text-base text-zinc-700">
-      {items.map((item) => (
-        <li key={`${item.menuItemId}-${item.name}`}>
+    <CollapsibleOrderItemList
+      items={items}
+      listClassName="space-y-1.5 text-base text-zinc-700"
+      renderItem={(item) => (
+        <>
           {item.quantity}× {item.name}
-        </li>
-      ))}
-    </ul>
+        </>
+      )}
+    />
   );
 }
 
@@ -135,7 +138,7 @@ function RejectedAddition({ addition }: { addition: OrderAddition }) {
       </p>
       <ul className="space-y-1.5 text-base text-zinc-500">
         {addition.items.map((item) => (
-          <li key={`${item.menuItemId}-${item.name}`} className="line-through">
+          <li key={item.menuItemId} className="line-through">
             {item.quantity}× {item.name}
           </li>
         ))}
