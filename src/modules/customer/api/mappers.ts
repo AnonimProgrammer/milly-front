@@ -59,6 +59,7 @@ export function mapPublicOrder(
     rejectedAdditions: [],
     paidAmount: order.paidAmount ?? 0,
     remaining: order.remaining ?? 0,
+    totalTipAmount: 0,
   };
 }
 

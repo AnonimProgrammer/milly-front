@@ -29,6 +29,10 @@ export function OrderPaymentDetails({ order, onCloseOrder }: OrderPaymentDetails
             <span className="text-muted-foreground">Left to pay</span>
             <span className="font-medium text-foreground">{formatAmount(remaining)}</span>
           </div>
+          <div className="flex items-baseline justify-between gap-8 text-base">
+            <span className="text-muted-foreground">Left tip</span>
+            <span className="font-medium text-foreground">{formatAmount(order.totalTipAmount)}</span>
+          </div>
         </div>
         <PaymentCompleteIndicator complete={isFullyPaid} />
       </div>
