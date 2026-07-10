@@ -14,7 +14,7 @@ export function PageHeader({ leading, center, trailing, className }: PageHeaderP
     >
       <div className="shrink-0">{leading ?? <span className="sr-only">Navigation</span>}</div>
       <div className="flex min-w-0 flex-1 justify-center">{center}</div>
-      <div className="flex shrink-0 justify-end">{trailing}</div>
+      <div className="flex shrink-0 justify-end overflow-visible">{trailing}</div>
     </header>
   );
 }

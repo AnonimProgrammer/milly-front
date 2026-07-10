@@ -21,8 +21,8 @@ export function PaymentProviderButton({
         fullWidth ? "w-full" : ""
       } ${
         selected
-          ? "bg-black text-white ring-2 ring-black ring-offset-2"
-          : "border border-neutral-200 bg-neutral-50 text-black hover:bg-neutral-100"
+          ? "bg-primary text-primary-foreground ring-2 ring-primary ring-offset-2 ring-offset-card"
+          : "border border-border bg-muted text-foreground hover:bg-accent"
       }`}
     >
       {icon}

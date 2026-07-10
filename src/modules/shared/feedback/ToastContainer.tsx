@@ -20,8 +20,8 @@ export function ToastContainer() {
           key={toast.id}
           className={`pointer-events-auto flex items-start justify-between gap-3 rounded-xl border px-4 py-3 text-sm shadow-lg ${
             toast.type === "error"
-              ? "border-red-200 bg-white text-red-800"
-              : "border-zinc-200 bg-white text-black"
+              ? "border-red-500/30 bg-card text-red-600 dark:text-red-400"
+              : "border-border bg-card text-foreground"
           }`}
           role="alert"
         >
@@ -29,7 +29,7 @@ export function ToastContainer() {
           <button
             type="button"
             onClick={() => dismissToast(toast.id)}
-            className="shrink-0 text-xs font-medium text-zinc-400 transition-colors hover:text-black"
+            className="shrink-0 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
             aria-label="Dismiss"
           >
             ✕

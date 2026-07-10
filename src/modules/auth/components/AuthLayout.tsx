@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { pageMain, selectionTheme, textMuted } from "@/modules/shared/theme/classNames";
 import { BrandBackNav } from "@/modules/shared/ui";
 
 type AuthLayoutProps = {
@@ -7,17 +8,14 @@ type AuthLayoutProps = {
 
 export function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <main className="min-h-screen bg-white dark:bg-zinc-950 text-black dark:text-zinc-50 flex flex-col justify-between selection:bg-black selection:text-white selection:dark:bg-white selection:dark:text-black font-sans antialiased relative overflow-hidden p-6">
-      <div className="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-96 h-96 rounded-full bg-black/5 dark:bg-white/5 blur-[80px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-96 h-96 rounded-full bg-black/5 dark:bg-white/5 blur-[80px] pointer-events-none" />
-
+    <main className={`min-h-screen flex flex-col justify-between p-6 ${pageMain} ${selectionTheme}`}>
       <header className="w-full max-w-7xl mx-auto py-2 z-10">
         <BrandBackNav />
       </header>
 
       <div className="flex-1 flex items-center justify-center py-10 z-10">{children}</div>
 
-      <footer className="w-full max-w-7xl mx-auto py-4 text-center text-xs text-zinc-500 dark:text-zinc-400 z-10 font-light">
+      <footer className={`w-full max-w-7xl mx-auto py-4 text-center text-xs z-10 font-light ${textMuted}`}>
         &copy; {new Date().getFullYear()} Milly. All rights reserved.
       </footer>
     </main>

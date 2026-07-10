@@ -82,10 +82,10 @@ export function MenuView({
   const isAddingToApprovedOrder = activeOrder?.status === "approved";
 
   return (
-    <div className="mx-auto flex min-h-full w-full max-w-lg flex-col bg-white">
-      <header className="border-b border-neutral-200 px-5 py-4">
-        <p className="text-sm text-neutral-500">{tableLabel}</p>
-        <h1 className="text-xl font-bold text-black">
+    <div className="mx-auto flex min-h-full w-full max-w-lg flex-col bg-card text-card-foreground">
+      <header className="border-b border-border px-5 py-4">
+        <p className="text-sm text-muted-foreground">{tableLabel}</p>
+        <h1 className="text-xl font-bold text-foreground">
           {isAddingToApprovedOrder ? "Add items" : "Menu"}
         </h1>
       </header>
@@ -98,8 +98,8 @@ export function MenuView({
             onClick={() => setActiveCategory(category)}
             className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
               activeCategory === category
-                ? "bg-black text-white hover:bg-neutral-800"
-                : "bg-neutral-100 text-black hover:bg-neutral-200"
+                ? "bg-primary text-primary-foreground hover:opacity-90"
+                : "bg-muted text-foreground hover:bg-accent"
             }`}
           >
             {category}
@@ -107,15 +107,15 @@ export function MenuView({
         ))}
       </div>
 
-      <ul className="flex-1 divide-y divide-neutral-100 px-5 pb-32">
+      <ul className="flex-1 divide-y divide-border px-5 pb-32">
         {filteredItems.map((item) => {
           const qty = cart[item.id] ?? 0;
           return (
             <li key={item.id} className="flex items-center justify-between py-4">
               <div className="flex-1 pr-4">
-                <p className="font-medium text-black">{item.name}</p>
-                <p className="text-sm text-neutral-500">{item.description}</p>
-                <p className="mt-1 text-sm font-medium text-black">
+                <p className="font-medium text-foreground">{item.name}</p>
+                <p className="text-sm text-muted-foreground">{item.description}</p>
+                <p className="mt-1 text-sm font-medium text-foreground">
                   {formatAmount(item.price)}
                 </p>
               </div>
@@ -125,7 +125,7 @@ export function MenuView({
                     <button
                       type="button"
                       onClick={() => updateQuantity(item.id, -1)}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-300 text-black"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-foreground"
                     >
                       −
                     </button>
@@ -135,7 +135,7 @@ export function MenuView({
                 <button
                   type="button"
                   onClick={() => updateQuantity(item.id, 1)}
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-white transition-colors hover:bg-neutral-800"
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground transition-colors hover:opacity-90"
                 >
                   +
                 </button>
@@ -146,11 +146,11 @@ export function MenuView({
       </ul>
 
       {cartCount > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 border-t border-neutral-200 bg-white px-5 py-4">
+        <div className="fixed bottom-0 left-0 right-0 border-t border-border bg-card px-5 py-4">
           <div className="mx-auto flex max-w-lg items-center justify-between gap-4">
             <div>
-              <p className="text-sm text-neutral-500">{cartCount} items</p>
-              <p className="font-semibold text-black">{formatAmount(cartTotal)}</p>
+              <p className="text-sm text-muted-foreground">{cartCount} items</p>
+              <p className="font-semibold text-foreground">{formatAmount(cartTotal)}</p>
             </div>
             <Button className="!w-auto px-6" onClick={handlePlaceOrder} disabled={submitting}>
               {isAddingToApprovedOrder ? "Add to order" : "Place order"}

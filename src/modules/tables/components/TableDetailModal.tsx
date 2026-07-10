@@ -3,6 +3,14 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { showToast } from "@/modules/shared/feedback";
+import {
+  modalOverlay,
+  modalPanel,
+  primaryButton,
+  secondaryButton,
+  surfaceCard,
+  textMuted,
+} from "@/modules/shared/theme/classNames";
 import type { VenueTable } from "../types";
 
 type TableDetailModalProps = {
@@ -23,7 +31,7 @@ function TableStatusBadge({ status }: { status: VenueTable["status"] }) {
   }
 
   return (
-    <span className="rounded-full bg-zinc-200 dark:bg-zinc-700/60 px-3 py-1 text-sm font-medium text-zinc-600 dark:text-zinc-400">
+    <span className="rounded-full bg-muted px-3 py-1 text-sm font-medium text-muted-foreground">
       Inactive
     </span>
   );
@@ -55,13 +63,9 @@ export function TableDetailModal({
   }
 
   return (
-    <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4 backdrop-blur-xs"
-      onClick={onClose}
-      role="presentation"
-    >
+    <div className={modalOverlay} onClick={onClose} role="presentation">
       <div
-        className="w-full max-w-md rounded-3xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-6 shadow-2xl dark:shadow-black/40 sm:p-8"
+        className={modalPanel}
         role="dialog"
         aria-modal="true"
         aria-labelledby="table-detail-title"
@@ -69,16 +73,16 @@ export function TableDetailModal({
       >
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h3 id="table-detail-title" className="text-xl font-bold text-black dark:text-zinc-100">
+            <h3 id="table-detail-title" className="text-xl font-bold text-foreground">
               {table.label}
             </h3>
-            <p className="mt-1 font-mono text-xs text-zinc-400 dark:text-zinc-500">{table.id}</p>
+            <p className={`mt-1 font-mono text-xs ${textMuted}`}>{table.id}</p>
           </div>
           <TableStatusBadge status={table.status} />
         </div>
 
         <div className="mt-6 flex flex-col items-center gap-4">
-          <div className="flex h-[180px] w-[180px] items-center justify-center rounded-2xl border border-zinc-100 dark:border-zinc-700 bg-white dark:bg-zinc-800 p-4 shadow-sm">
+          <div className={`flex h-[180px] w-[180px] items-center justify-center p-4 shadow-sm ${surfaceCard}`}>
             {hasQr ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -89,7 +93,7 @@ export function TableDetailModal({
                 className="h-full w-full object-contain"
               />
             ) : (
-              <p className="px-2 text-center text-sm font-light text-zinc-400 dark:text-zinc-500">
+              <p className={`px-2 text-center text-sm font-light ${textMuted}`}>
                 Generated QR will be displayed here
               </p>
             )}
@@ -97,7 +101,7 @@ export function TableDetailModal({
 
           <Link
             href={customerUrl}
-            className="break-all text-center font-mono text-xs text-zinc-500 dark:text-zinc-400 underline-offset-2 hover:text-black dark:hover:text-zinc-100 hover:underline"
+            className={`break-all text-center font-mono text-xs underline-offset-2 hover:text-foreground hover:underline ${textMuted}`}
           >
             {customerUrl}
           </Link>
@@ -108,7 +112,7 @@ export function TableDetailModal({
             <button
               type="button"
               onClick={handleExportQr}
-              className="w-full cursor-pointer rounded-xl bg-black px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
+              className={`w-full cursor-pointer rounded-xl px-4 py-3 text-sm font-medium ${primaryButton}`}
             >
               Export QR
             </button>
@@ -118,7 +122,7 @@ export function TableDetailModal({
                 type="button"
                 onClick={() => onGenerateQr(table.id)}
                 disabled={isGeneratingQr}
-                className="w-full cursor-pointer rounded-xl bg-black px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-400"
+                className={`w-full cursor-pointer rounded-xl px-4 py-3 text-sm font-medium ${primaryButton}`}
               >
                 {isGeneratingQr ? "Generating..." : "Generate QR"}
               </button>
@@ -128,7 +132,7 @@ export function TableDetailModal({
             <button
               type="button"
               onClick={() => onDeactivate(table.id)}
-              className="w-full cursor-pointer rounded-xl border border-zinc-200 dark:border-zinc-700 px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400 transition-colors hover:border-black dark:hover:border-zinc-400 hover:text-black dark:hover:text-zinc-100"
+              className={`w-full cursor-pointer rounded-xl px-4 py-3 text-sm font-medium ${secondaryButton}`}
             >
               Deactivate
             </button>
@@ -138,7 +142,7 @@ export function TableDetailModal({
         <button
           type="button"
           onClick={onClose}
-          className="mt-4 w-full cursor-pointer py-2 text-sm font-medium text-zinc-400 dark:text-zinc-500 transition-colors hover:text-black dark:hover:text-zinc-100"
+          className="mt-4 w-full cursor-pointer py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
         >
           Close
         </button>

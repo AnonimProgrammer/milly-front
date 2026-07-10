@@ -2,7 +2,7 @@ import { apiRequest } from "@/modules/shared/api";
 import type { CreateVenueRequest, CreateVenueResponse, VenueMembership } from "./types";
 
 export async function getMyVenues(): Promise<VenueMembership[]> {
-  return apiRequest<VenueMembership[]>("/api/v1/venues");
+  return apiRequest<VenueMembership[]>("/api/v1/venues", { background: true });
 }
 
 export async function getVenueMembership(venueId: string): Promise<VenueMembership> {

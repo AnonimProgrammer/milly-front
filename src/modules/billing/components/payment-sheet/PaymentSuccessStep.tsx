@@ -12,7 +12,7 @@ type PaymentSuccessStepProps = {
 export function PaymentSuccessStep({ amount, provider, onDone }: PaymentSuccessStepProps) {
   return (
     <div className="flex flex-col items-center justify-center py-8 text-center">
-      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-black text-white">
+      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground">
         <svg
           width="32"
           height="32"
@@ -26,19 +26,19 @@ export function PaymentSuccessStep({ amount, provider, onDone }: PaymentSuccessS
           <path d="M20 6L9 17l-5-5" />
         </svg>
       </div>
-      <h3 className="text-lg font-bold text-black">Payment Successful!</h3>
-      <div className="my-4 w-full space-y-2 rounded-xl border border-neutral-100 bg-neutral-50 p-4 text-left text-sm text-neutral-600">
+      <h3 className="text-lg font-bold text-foreground">Payment Successful!</h3>
+      <div className="my-4 w-full space-y-2 rounded-xl border border-border bg-muted p-4 text-left text-sm text-muted-foreground">
         <div className="flex justify-between">
           <span>Amount Paid:</span>
-          <span className="font-semibold text-black">{formatAmount(amount)}</span>
+          <span className="font-semibold text-foreground">{formatAmount(amount)}</span>
         </div>
         <div className="flex justify-between">
           <span>Method:</span>
-          <span className="font-semibold text-black">{getProviderName(provider)}</span>
+          <span className="font-semibold text-foreground">{getProviderName(provider)}</span>
         </div>
         <div className="flex justify-between">
           <span>Status:</span>
-          <span className="font-semibold text-black">Settled</span>
+          <span className="font-semibold text-foreground">Settled</span>
         </div>
       </div>
       <Button onClick={onDone}>Done</Button>

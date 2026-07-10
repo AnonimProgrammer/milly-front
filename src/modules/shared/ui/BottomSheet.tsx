@@ -34,9 +34,9 @@ export function BottomSheet({
         className="absolute inset-0 bg-black/50"
         onClick={onClose}
       />
-      <div className="relative z-10 w-full rounded-t-2xl bg-white px-5 pb-6 pt-5 shadow-xl">
+      <div className="relative z-10 w-full rounded-t-2xl bg-card px-5 pb-6 pt-5 text-card-foreground shadow-xl">
         {title && (
-          <h2 className="mb-4 text-lg font-semibold text-black">{title}</h2>
+          <h2 className="mb-4 text-lg font-semibold text-foreground">{title}</h2>
         )}
         {children}
       </div>

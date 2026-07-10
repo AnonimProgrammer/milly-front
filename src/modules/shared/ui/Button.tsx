@@ -11,9 +11,9 @@ export function Button({
   const base =
     "h-auto shrink-0 w-full rounded-lg px-4 py-3 text-sm font-medium transition-colors disabled:opacity-40";
   const variants = {
-    primary: "bg-black text-white hover:bg-neutral-800",
-    secondary: "border border-black text-black hover:bg-neutral-100",
-    ghost: "text-black hover:bg-neutral-100",
+    primary: "bg-primary text-primary-foreground hover:opacity-90",
+    secondary: "border border-border text-foreground hover:bg-muted",
+    ghost: "text-foreground hover:bg-muted",
   };
 
   return (

@@ -2,6 +2,7 @@ export { LoginPage } from "./components/LoginPage";
 export { SignUpPage } from "./components/SignUpPage";
 export { AuthWrapper } from "./components/AuthWrapper";
 export { RequireAuth } from "./components/RequireAuth";
+export { SettingsMenuButton } from "./components/SettingsMenuButton";
 export { UserAccountNav } from "./components/UserAccountNav";
 export { AuthPageFallback } from "./components/AuthPageFallback";
 export { HomeUserNav } from "./components/HomeUserNav";

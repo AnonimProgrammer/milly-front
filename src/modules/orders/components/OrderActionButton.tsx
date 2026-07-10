@@ -11,8 +11,8 @@ export function OrderActionButton({
   const base =
     "w-full rounded-lg px-4 py-3 text-sm font-medium transition-colors cursor-pointer disabled:opacity-40";
   const variants = {
-    primary: "bg-black text-white hover:bg-zinc-800",
-    secondary: "border border-black text-black hover:bg-zinc-100",
+    primary: "bg-primary text-primary-foreground hover:opacity-90",
+    secondary: "border border-border bg-card text-foreground hover:bg-muted",
   };
 
   return (

@@ -1,30 +1,145 @@
 @import "tailwindcss";
 
+/* Tailwind dark mode stays on `.dark`; accent palettes use `data-theme`. */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Base light mode defaults */
 :root {
-  --background: #ffffff;
+  --background: #f4f4f5;
+  --background-from: #ffffff;
+  --background-to: #e4e4e7;
   --foreground: #171717;
+  --primary: #000000;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #171717;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #f4f4f5;
+  --accent-foreground: #171717;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --border: rgb(0 0 0 / 0.1);
+  --ring: rgb(0 0 0 / 0.2);
 }
 
+/* Dark mode overrides */
 .dark {
-  --background: #09090b;
+  --background: #18181b;
+  --background-from: #09090b;
+  --background-to: #18181b;
   --foreground: #f4f4f5;
+  --primary: #ffffff;
+  --primary-foreground: #000000;
+  --secondary: #27272a;
+  --secondary-foreground: #f4f4f5;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
+  --accent: #27272a;
+  --accent-foreground: #f4f4f5;
+  --card: #18181b;
+  --card-foreground: #f4f4f5;
+  --border: rgb(255 255 255 / 0.1);
+  --ring: rgb(255 255 255 / 0.2);
+}
+
+/* Accent palette variants */
+[data-theme="orange"] {
+  --background-from: #fff7ed;
+  --background-to: #ffedd5;
+  --primary: #ea580c;
+  --primary-foreground: #ffffff;
+}
+
+.dark[data-theme="orange"] {
+  --background-from: #431407;
+  --background-to: #7c2d12;
+  --primary: #fb923c;
+  --primary-foreground: #000000;
+}
+
+[data-theme="pink"] {
+  --background-from: #fdf2f8;
+  --background-to: #fce7f3;
+  --primary: #db2777;
+  --primary-foreground: #ffffff;
+}
+
+.dark[data-theme="pink"] {
+  --background-from: #500724;
+  --background-to: #831843;
+  --primary: #f472b6;
+  --primary-foreground: #000000;
+}
+
+[data-theme="ocean"] {
+  --background: #eff6ff;
+  --background-from: #f0f9ff;
+  --background-to: #dbeafe;
+  --foreground: #0c4a6e;
+  --primary: #0369a1;
+  --primary-foreground: #ffffff;
+  --secondary: #e0f2fe;
+  --secondary-foreground: #0c4a6e;
+  --muted: #e0f2fe;
+  --muted-foreground: #64748b;
+  --accent: #bae6fd;
+  --accent-foreground: #0c4a6e;
+  --card: #ffffff;
+  --card-foreground: #0c4a6e;
+  --border: rgb(3 105 161 / 0.15);
+  --ring: rgb(3 105 161 / 0.25);
+}
+
+.dark[data-theme="ocean"] {
+  --background: #0a1628;
+  --background-from: #020617;
+  --background-to: #0f2744;
+  --foreground: #e0f2fe;
+  --primary: #38bdf8;
+  --primary-foreground: #020617;
+  --secondary: #1e3a5f;
+  --secondary-foreground: #e0f2fe;
+  --muted: #132337;
+  --muted-foreground: #94a3b8;
+  --accent: #1e3a5f;
+  --accent-foreground: #e0f2fe;
+  --card: #0f2137;
+  --card-foreground: #e0f2fe;
+  --border: rgb(56 189 248 / 0.12);
+  --ring: rgb(56 189 248 / 0.25);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
+html {
+  min-height: 100dvh;
+  background-color: var(--background-from);
+  background-image: linear-gradient(to bottom left, var(--background-from), var(--background-to));
+  background-attachment: fixed;
+}
+
 body {
-  background: var(--background);
+  min-height: 100%;
+  background: transparent;
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
-
-
-

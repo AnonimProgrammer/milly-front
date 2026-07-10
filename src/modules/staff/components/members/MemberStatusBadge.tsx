@@ -28,7 +28,7 @@ export function MemberStatusBadge({ status }: MemberStatusBadgeProps) {
   }
 
   return (
-    <span className="rounded-full bg-zinc-200 dark:bg-zinc-700/60 px-2.5 py-0.5 text-xs font-medium text-zinc-600 dark:text-zinc-400">
+    <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
       {statusLabels[status]}
     </span>
   );

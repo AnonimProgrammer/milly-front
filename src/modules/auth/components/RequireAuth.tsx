@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ServiceUnavailable } from "@/modules/shared/ui";
 import { useAuth } from "../context/AuthProvider";
-import { AuthPageFallback } from "./AuthPageFallback";
 
 type RequireAuthProps = {
   children: React.ReactNode;
@@ -25,7 +24,7 @@ export function RequireAuth({ children, loginIntent }: RequireAuthProps) {
   }, [status, router, loginIntent]);
 
   if (status === "loading") {
-    return <AuthPageFallback />;
+    return <main className="min-h-screen bg-transparent" aria-busy="true" />;
   }
 
   if (status === "unavailable") {

@@ -1,5 +1,6 @@
 "use client";
 
+import { pageMain, primaryButton, selectionTheme, textMuted } from "@/modules/shared/theme/classNames";
 import { BrandBackNav } from "./BrandBackNav";
 import { PageHeader } from "./PageHeader";
 
@@ -21,23 +22,23 @@ export function ServiceUnavailable({
   const content = (
     <div className="flex flex-col items-center text-center">
       {fullPage ? (
-        <p className="text-6xl font-light tracking-tight text-black dark:text-zinc-100 sm:text-7xl">{code}</p>
+        <p className="text-6xl font-light tracking-tight text-foreground sm:text-7xl">{code}</p>
       ) : null}
       <h1
         className={
           fullPage
-            ? "mt-4 text-xl font-semibold text-black dark:text-zinc-100 sm:text-2xl"
-            : "text-xl font-semibold text-black dark:text-zinc-100 sm:text-2xl"
+            ? "mt-4 text-xl font-semibold text-foreground sm:text-2xl"
+            : "text-xl font-semibold text-foreground sm:text-2xl"
         }
       >
         {title}
       </h1>
-      <p className="mt-2 max-w-sm text-sm font-light leading-relaxed text-zinc-500 dark:text-zinc-400">{message}</p>
+      <p className={`mt-2 max-w-sm text-sm font-light leading-relaxed ${textMuted}`}>{message}</p>
       {onRetry ? (
         <button
           type="button"
           onClick={onRetry}
-          className="mt-8 rounded-full bg-black px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
+          className={`mt-8 rounded-full px-6 py-2.5 text-sm font-medium ${primaryButton}`}
         >
           Try again
         </button>
@@ -47,7 +48,7 @@ export function ServiceUnavailable({
 
   if (fullPage) {
     return (
-      <main className="relative flex min-h-screen flex-col overflow-hidden bg-white dark:bg-zinc-950 p-6 font-sans text-black dark:text-zinc-50 antialiased selection:bg-black selection:text-white">
+      <main className={`relative flex min-h-screen flex-col overflow-hidden p-6 ${pageMain} ${selectionTheme}`}>
         <PageHeader leading={<BrandBackNav href="/" />} />
 
         <div className="z-10 flex flex-1 flex-col items-center justify-center py-10">{content}</div>

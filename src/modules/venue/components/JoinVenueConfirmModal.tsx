@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { modalOverlay, modalPanel, primaryButton, textMuted } from "@/modules/shared/theme/classNames";
 
 type JoinVenueConfirmModalProps = {
   venueName: string;
@@ -26,29 +27,29 @@ export function JoinVenueConfirmModal({
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4 backdrop-blur-xs"
+      className={modalOverlay}
       onClick={onClose}
       role="presentation"
     >
       <div
-        className="w-full max-w-md rounded-3xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-6 shadow-2xl dark:shadow-black/40 sm:p-8"
+        className={modalPanel}
         role="dialog"
         aria-modal="true"
         aria-labelledby="join-venue-confirm-title"
         onClick={(event) => event.stopPropagation()}
       >
-        <h3 id="join-venue-confirm-title" className="text-xl font-bold text-black dark:text-zinc-100">
+        <h3 id="join-venue-confirm-title" className="text-xl font-bold text-foreground">
           You&apos;re in!
         </h3>
-        <p className="mt-3 text-sm font-light leading-relaxed text-zinc-600 dark:text-zinc-400">
-          You&apos;ve joined <span className="font-medium text-black dark:text-zinc-200">{venueName}</span>. Would you
+        <p className={`mt-3 text-sm font-light leading-relaxed ${textMuted}`}>
+          You&apos;ve joined <span className="font-medium text-foreground">{venueName}</span>. Would you
           like to go there now?
         </p>
 
         <button
           type="button"
           onClick={onConfirm}
-          className="mt-6 w-full cursor-pointer rounded-xl bg-black px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
+          className={`mt-6 w-full cursor-pointer rounded-xl px-4 py-3 text-sm font-medium ${primaryButton}`}
         >
           Go to {venueName}
         </button>
@@ -56,7 +57,7 @@ export function JoinVenueConfirmModal({
         <button
           type="button"
           onClick={onClose}
-          className="mt-3 w-full cursor-pointer py-2 text-sm font-medium text-zinc-400 dark:text-zinc-500 transition-colors hover:text-black dark:hover:text-zinc-200"
+          className="mt-3 w-full cursor-pointer py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
         >
           Stay here
         </button>
