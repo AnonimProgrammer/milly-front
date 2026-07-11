@@ -35,6 +35,7 @@ export type PaymentResponse = {
   providerReference: string;
   providerMetadata: Record<string, unknown> | null;
   createdAt: string;
+  receiptUrl: string | null;
 };
 
 export type BillSummaryResponse = {
