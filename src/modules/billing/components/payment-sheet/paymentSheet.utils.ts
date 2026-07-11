@@ -1,5 +1,6 @@
 import { formatAmount } from "@/modules/orders";
 import type { PaymentProvider, TipOption } from "../../types/payment";
+import type { ApiPaymentProvider } from "../../api/types";
 import type { PaymentStep } from "./types";
 
 export function calculateTipAmount(
@@ -40,6 +41,18 @@ export function getProviderName(provider: PaymentProvider | null): string {
       return "";
   }
 }
+
+export function getApiProviderName(provider: ApiPaymentProvider): string {
+  switch (provider) {
+    case "APPLE":
+      return "Apple Pay";
+    case "GOOGLE":
+      return "Google Pay";
+    case "CARD":
+      return "Credit Card";
+  }
+}
+
 
 export function getSheetTitle(step: PaymentStep, selectedAmount: number): string {
   if (step === "amount") return "Pay the bill";
