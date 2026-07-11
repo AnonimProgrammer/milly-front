@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { BottomSheet } from "@/modules/shared/ui";
 import { detectCardBrand, extractLast4, parseCardExpiry } from "../../api";
-import type { PaymentIntent, PaymentResult } from "../../api";
+import type { PaymentIntent, PaymentResponse, PaymentResult } from "../../api";
 import type { PaymentProvider, PaymentType, TipOption } from "../../types/payment";
 import { PaymentAmountStep } from "./PaymentAmountStep";
 import { PaymentErrorStep } from "./PaymentErrorStep";
@@ -40,6 +40,7 @@ export function PaymentSheet({ open, onClose, billTotal, remaining, onPay }: Pay
   const [simulateFailure, setSimulateFailure] = useState(false);
   const [tipOption, setTipOption] = useState<TipOption>("none");
   const [customTipAmount, setCustomTipAmount] = useState("");
+  const [completedPayment, setCompletedPayment] = useState<PaymentResponse | null>(null);
 
   const tipAmount = calculateTipAmount(tipOption, selectedAmount, customTipAmount);
 
@@ -56,6 +57,7 @@ export function PaymentSheet({ open, onClose, billTotal, remaining, onPay }: Pay
     setPayError("");
     setTipOption("none");
     setCustomTipAmount("");
+    setCompletedPayment(null);
   }
 
   function handleClose() {
@@ -150,6 +152,7 @@ export function PaymentSheet({ open, onClose, billTotal, remaining, onPay }: Pay
     const result = await onPay(intent);
 
     if (result.success) {
+      setCompletedPayment(result.payment);
       setStep("success");
       return;
     }
@@ -211,12 +214,8 @@ export function PaymentSheet({ open, onClose, billTotal, remaining, onPay }: Pay
 
         {step === "processing" && <PaymentProcessingStep provider={selectedProvider} />}
 
-        {step === "success" && (
-          <PaymentSuccessStep
-            amount={selectedAmount}
-            provider={selectedProvider}
-            onDone={handleClose}
-          />
+        {step === "success" && completedPayment && (
+          <PaymentSuccessStep payment={completedPayment} onDone={handleClose} />
         )}
 
         {step === "error" && (
