@@ -1,7 +1,9 @@
+import { showToast } from "@/modules/shared/feedback";
+import { secondaryButton } from "@/modules/shared/theme/classNames";
 import { Button } from "@/modules/shared/ui";
 import { formatAmount } from "@/modules/orders";
 import type { PaymentResponse } from "../../api/types";
-import { formatPaymentDateTime, getApiProviderName } from "./paymentSheet.utils";
+import { getApiProviderName, formatPaymentDateTime } from "./paymentSheet.utils";
 
 type PaymentSuccessStepProps = {
   payment: PaymentResponse;
@@ -9,6 +11,33 @@ type PaymentSuccessStepProps = {
 };
 
 export function PaymentSuccessStep({ payment, onDone }: PaymentSuccessStepProps) {
+  async function handleShare() {
+    if (!payment.receiptUrl) {
+      return;
+    }
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "Payment Receipt",
+          url: payment.receiptUrl,
+        });
+        return;
+      }
+
+      await navigator.clipboard.writeText(payment.receiptUrl);
+      showToast("Receipt link copied to clipboard.", "success");
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        return;
+      }
+      showToast("Could not share the receipt.", "error");
+    }
+  }
+
+  const receiptActionsClassName =
+    "flex h-auto w-full shrink-0 items-center justify-center rounded-lg px-4 py-3 text-sm font-medium transition-colors";
+
   return (
     <div className="flex flex-col items-center justify-center py-8 text-center">
       <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground">
@@ -54,6 +83,23 @@ export function PaymentSuccessStep({ payment, onDone }: PaymentSuccessStepProps)
           </div>
         </dl>
       </div>
+
+      {payment.receiptUrl && (
+        <div className="mb-3 flex w-full flex-col gap-2">
+          <a
+            href={payment.receiptUrl}
+            download={`receipt-${payment.providerReference}.pdf`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${receiptActionsClassName} ${secondaryButton}`}
+          >
+            Download Receipt
+          </a>
+          <Button variant="secondary" onClick={handleShare}>
+            Share Receipt
+          </Button>
+        </div>
+      )}
 
       <Button onClick={onDone}>Done</Button>
     </div>
