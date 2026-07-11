@@ -54,6 +54,13 @@ export function getApiProviderName(provider: ApiPaymentProvider): string {
 }
 
 
+export function formatPaymentDateTime(createdAt: string): string {
+  return new Intl.DateTimeFormat(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(new Date(createdAt));
+}
+
 export function getSheetTitle(step: PaymentStep, selectedAmount: number): string {
   if (step === "amount") return "Pay the bill";
   if (step === "provider") return `Pay ${formatAmount(selectedAmount)}`;
