@@ -30,21 +30,21 @@ function AccountTabNavFallback() {
 export function AccountLayout({ children }: AccountLayoutProps) {
   return (
     <div className={`relative flex min-h-screen flex-col overflow-hidden ${pageMain}`}>
-      <div className="z-10 w-full px-6 pt-6">
+      <div className="z-10 w-full px-3 pt-3 sm:px-6 sm:pt-6">
         <PageHeader leading={<AccountBackNav />} />
       </div>
 
-      <main className="z-10 mx-auto flex w-full max-w-xl flex-1 flex-col gap-6 px-6 py-8">
+      <main className="z-10 mx-auto flex w-full max-w-xl flex-1 flex-col gap-4 px-3 py-4 sm:gap-6 sm:px-6 sm:py-8">
         <Suspense fallback={<AccountTabNavFallback />}>
           <AccountTabNav />
         </Suspense>
 
-        <div className={`flex flex-col gap-8 p-8 shadow-2xl sm:p-10 ${surfacePanel}`}>
+        <div className={`flex flex-col gap-5 p-4 shadow-2xl sm:gap-8 sm:p-10 ${surfacePanel}`}>
           {children}
         </div>
       </main>
 
-      <footer className={`z-10 w-full max-w-xl mx-auto px-6 py-4 text-center text-xs font-light ${textMuted}`}>
+      <footer className={`z-10 mx-auto w-full max-w-xl px-3 py-3 text-center text-[11px] font-light sm:px-6 sm:py-4 sm:text-xs ${textMuted}`}>
         &copy; {new Date().getFullYear()} Milly. All rights reserved.
       </footer>
     </div>
