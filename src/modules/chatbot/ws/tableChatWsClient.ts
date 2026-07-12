@@ -1,7 +1,7 @@
 import { Client, type IMessage } from "@stomp/stompjs";
 import { buildCustomerWsUrl } from "@/modules/shared/ws";
 import { tableChatSendDestination, tableChatTopic } from "./config";
-import type { ChatMessageEvent } from "./types";
+import type { ChatHistoryMessage, ChatMessageEvent } from "./types";
 
 const RECONNECT_DELAY_MS = 1_500;
 
@@ -31,14 +31,14 @@ export class TableChatWsClient {
     this.options.onConnectionChange?.(false);
   }
 
-  sendMessage(text: string): void {
+  sendMessage(text: string, history: ChatHistoryMessage[] = []): void {
     if (this.client === null || !this.client.connected) {
       return;
     }
 
     this.client.publish({
       destination: tableChatSendDestination(this.options.tableId),
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ text, history }),
     });
   }
 
