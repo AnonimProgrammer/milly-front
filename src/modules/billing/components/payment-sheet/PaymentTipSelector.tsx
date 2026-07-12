@@ -8,7 +8,7 @@ const TIP_OPTIONS: { value: TipOption; label: string }[] = [
   { value: "5", label: "5%" },
   { value: "10", label: "10%" },
   { value: "15", label: "15%" },
-  { value: "custom", label: "Custom Amount" },
+  { value: "custom", label: "Custom" },
 ];
 
 type PaymentTipSelectorProps = {
@@ -29,12 +29,13 @@ export function PaymentTipSelector({
   return (
     <div className="space-y-3">
       <p className="text-sm font-medium text-foreground">Add a tip (optional)</p>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="flex gap-2 overflow-x-auto pb-1 snap-x snap-mandatory [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {TIP_OPTIONS.map((option) => (
           <Button
             key={option.value}
             type="button"
             variant={selectedOption === option.value ? "primary" : "secondary"}
+            className="!w-auto shrink-0 snap-start px-4"
             onClick={() => onSelectOption(option.value)}
           >
             {option.label}
