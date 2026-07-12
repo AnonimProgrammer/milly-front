@@ -21,12 +21,6 @@ interface ThemeContextType {
   resolvedColorMode: "light" | "dark";
   setColorMode: (colorMode: ColorMode) => void;
   setColorTheme: (colorTheme: ColorTheme) => void;
-  /** @deprecated Use `colorMode` instead. */
-  theme: ColorMode;
-  /** @deprecated Use `resolvedColorMode` instead. */
-  resolvedTheme: "light" | "dark";
-  /** @deprecated Use `setColorMode` instead. */
-  setTheme: (colorMode: ColorMode) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -101,9 +95,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         resolvedColorMode,
         setColorMode,
         setColorTheme,
-        theme: colorMode,
-        resolvedTheme: resolvedColorMode,
-        setTheme: setColorMode,
       }}
     >
       {children}
