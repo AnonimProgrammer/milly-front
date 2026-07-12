@@ -9,12 +9,10 @@ type PaymentProviderStepProps = {
   cardNumber: string;
   cardExpiry: string;
   cardCvc: string;
-  simulateFailure: boolean;
   onSelectProvider: (provider: PaymentProvider) => void;
   onCardNumberChange: (value: string) => void;
   onCardExpiryChange: (value: string) => void;
   onCardCvcChange: (value: string) => void;
-  onSimulateFailureChange: (value: boolean) => void;
   onContinue: () => void;
   onBack: () => void;
 };
@@ -24,12 +22,10 @@ export function PaymentProviderStep({
   cardNumber,
   cardExpiry,
   cardCvc,
-  simulateFailure,
   onSelectProvider,
   onCardNumberChange,
   onCardExpiryChange,
   onCardCvcChange,
-  onSimulateFailureChange,
   onContinue,
   onBack,
 }: PaymentProviderStepProps) {
@@ -74,23 +70,6 @@ export function PaymentProviderStep({
           onCardCvcChange={onCardCvcChange}
         />
       )}
-
-      <div className="flex items-center justify-between border-t border-border pt-3 text-xs text-muted-foreground">
-        <span>Simulate payment failure (for testing)</span>
-        <button
-          type="button"
-          onClick={() => onSimulateFailureChange(!simulateFailure)}
-          className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-            simulateFailure ? "bg-primary" : "bg-muted"
-          }`}
-        >
-          <span
-            className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-primary-foreground shadow ring-0 transition duration-200 ease-in-out ${
-              simulateFailure ? "translate-x-4" : "translate-x-0"
-            }`}
-          />
-        </button>
-      </div>
 
       <div className="flex flex-col gap-2 pt-2">
         <Button onClick={onContinue} disabled={!selectedProvider || cardIncomplete}>

@@ -22,9 +22,6 @@ type PaymentSheetProps = {
   onPay: (intent: PaymentIntent) => Promise<PaymentResult>;
 };
 
-const SIMULATED_FAILURE_MESSAGE =
-  "Simulated failure enabled — this is a dev-only test path.";
-
 export function PaymentSheet({ open, onClose, billTotal, remaining, onPay }: PaymentSheetProps) {
   const [step, setStep] = useState<PaymentStep>("amount");
   const [customAmount, setCustomAmount] = useState("");
@@ -37,7 +34,6 @@ export function PaymentSheet({ open, onClose, billTotal, remaining, onPay }: Pay
   const [cardCvc, setCardCvc] = useState("");
   const [error, setError] = useState("");
   const [payError, setPayError] = useState<string>("");
-  const [simulateFailure, setSimulateFailure] = useState(false);
   const [tipOption, setTipOption] = useState<TipOption>("none");
   const [customTipAmount, setCustomTipAmount] = useState("");
   const [completedPayment, setCompletedPayment] = useState<PaymentResponse | null>(null);
@@ -141,14 +137,6 @@ export function PaymentSheet({ open, onClose, billTotal, remaining, onPay }: Pay
     setError("");
     setPayError("");
 
-    if (simulateFailure) {
-      setTimeout(() => {
-        setPayError(SIMULATED_FAILURE_MESSAGE);
-        setStep("error");
-      }, 800);
-      return;
-    }
-
     const result = await onPay(intent);
 
     if (result.success) {
@@ -185,12 +173,10 @@ export function PaymentSheet({ open, onClose, billTotal, remaining, onPay }: Pay
             cardNumber={cardNumber}
             cardExpiry={cardExpiry}
             cardCvc={cardCvc}
-            simulateFailure={simulateFailure}
             onSelectProvider={setSelectedProvider}
             onCardNumberChange={setCardNumber}
             onCardExpiryChange={setCardExpiry}
             onCardCvcChange={setCardCvc}
-            onSimulateFailureChange={setSimulateFailure}
             onContinue={handleContinueToReview}
             onBack={() => setStep("amount")}
           />
