@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { TableChatWsClient } from "./tableChatWsClient";
-import type { ChatMessageEvent } from "./types";
+import type { ChatHistoryMessage, ChatMessageEvent } from "./types";
 
 export function useTableChatWs(
   tableId: string,
@@ -47,8 +47,8 @@ export function useTableChatWs(
     };
   }, [tableId, latched]);
 
-  const sendMessage = useCallback((text: string) => {
-    clientRef.current?.sendMessage(text);
+  const sendMessage = useCallback((text: string, history: ChatHistoryMessage[] = []) => {
+    clientRef.current?.sendMessage(text, history);
   }, []);
 
   return { sendMessage, connected };
