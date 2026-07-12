@@ -1,4 +1,4 @@
-import { useId, type FormEvent } from "react";
+import { useId, type SubmitEvent } from "react";
 import { MAX_CHAT_MESSAGES } from "../constants";
 
 type ChatComposerProps = {
@@ -6,7 +6,7 @@ type ChatComposerProps = {
   connected: boolean;
   limitReached: boolean;
   onDraftChange: (value: string) => void;
-  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  onSubmit: (event: SubmitEvent<HTMLFormElement>) => void;
 };
 
 export function ChatComposer({

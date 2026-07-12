@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import type { FormEvent, RefObject } from "react";
+import type { RefObject, SubmitEvent } from "react";
 import { createPortal } from "react-dom";
 import type { ChatMessage } from "../types/chatMessage";
 import type { ChatPanelPosition } from "../hooks/useChatPanelPosition";
@@ -16,7 +16,7 @@ type ChatPanelProps = {
   messagesContainerRef: RefObject<HTMLDivElement | null>;
   onClose: () => void;
   onDraftChange: (value: string) => void;
-  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  onSubmit: (event: SubmitEvent<HTMLFormElement>) => void;
 };
 
 export function ChatPanel({
