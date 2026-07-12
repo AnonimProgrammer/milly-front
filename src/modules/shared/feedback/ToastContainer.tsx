@@ -12,20 +12,20 @@ export function ToastContainer() {
 
   return (
     <div
-      className="pointer-events-none fixed bottom-4 right-4 z-[110] flex w-full max-w-sm flex-col gap-2"
+      className="pointer-events-none fixed top-[max(0.75rem,env(safe-area-inset-top))] right-3 z-[110] flex w-[min(100%-1.5rem,24rem)] flex-col gap-2 sm:right-4 sm:top-auto sm:bottom-4 sm:w-full sm:max-w-sm"
       aria-live="polite"
     >
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className={`pointer-events-auto flex items-start justify-between gap-3 rounded-xl border px-4 py-3 text-sm shadow-lg ${
+          className={`pointer-events-auto flex min-w-0 items-start justify-between gap-2 rounded-xl border px-3 py-2.5 text-xs shadow-lg sm:gap-3 sm:px-4 sm:py-3 sm:text-sm ${
             toast.type === "error"
               ? "border-red-500/30 bg-card text-red-600 dark:text-red-400"
               : "border-border bg-card text-foreground"
           }`}
           role="alert"
         >
-          <p className="font-medium leading-snug">{toast.message}</p>
+          <p className="min-w-0 flex-1 break-words font-medium leading-snug">{toast.message}</p>
           <button
             type="button"
             onClick={() => dismissToast(toast.id)}

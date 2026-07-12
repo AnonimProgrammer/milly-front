@@ -34,9 +34,11 @@ export function BottomSheet({
         className="absolute inset-0 bg-black/50"
         onClick={onClose}
       />
-      <div className="relative z-10 w-full rounded-t-2xl bg-card px-5 pb-6 pt-5 text-card-foreground shadow-xl">
+      <div className="relative z-10 max-h-[min(90dvh,100%)] w-full overflow-y-auto overscroll-contain rounded-t-2xl bg-card px-3 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4 text-card-foreground shadow-xl sm:px-5 sm:pt-5">
         {title && (
-          <h2 className="mb-4 text-lg font-semibold text-foreground">{title}</h2>
+          <h2 className="mb-3 text-base font-semibold text-foreground sm:mb-4 sm:text-lg">
+            {title}
+          </h2>
         )}
         {children}
       </div>

@@ -12,7 +12,7 @@ export function AppearanceSection() {
   const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-5 sm:gap-8">
       <ColorModeOptions
         activeMode={mounted ? colorMode : null}
         onSelect={setColorMode}

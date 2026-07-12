@@ -73,9 +73,11 @@ export function PaymentSuccessStep({ payment, onDone }: PaymentSuccessStepProps)
             <dt>Date &amp; time</dt>
             <dd className="font-semibold text-foreground">{formatPaymentDateTime(payment.createdAt)}</dd>
           </div>
-          <div className="flex justify-between gap-4">
-            <dt>Payment reference</dt>
-            <dd className="font-semibold text-foreground">{payment.providerReference}</dd>
+          <div className="flex justify-between gap-3">
+            <dt className="shrink-0">Payment reference</dt>
+            <dd className="min-w-0 break-all text-right font-semibold text-foreground">
+              {payment.providerReference}
+            </dd>
           </div>
           <div className="flex justify-between gap-4">
             <dt>Method</dt>

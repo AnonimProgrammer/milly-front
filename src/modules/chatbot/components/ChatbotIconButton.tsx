@@ -50,11 +50,11 @@ export function ChatbotIconButton({ tableId, className = "" }: ChatbotIconButton
         aria-label={open ? "Close AI chat" : "Open AI chat"}
         aria-expanded={open}
         aria-haspopup="dialog"
-        className="group inline-flex h-11 items-center gap-2.5 overflow-visible rounded-full border border-border bg-card py-2 pl-3 pr-4 text-foreground shadow-sm transition-colors duration-200 hover:bg-purple-500/10 hover:shadow-md"
+        className="group inline-flex h-8 items-center gap-2 overflow-visible rounded-full border border-border bg-card p-1.5 text-foreground shadow-sm transition-colors duration-200 hover:bg-purple-500/10 hover:shadow-md sm:h-11 sm:gap-2.5 sm:p-0 sm:py-2 sm:pl-3 sm:pr-4"
         onClick={() => setOpen((current) => !current)}
       >
-        <GeminiIcon className="size-6 shrink-0 text-purple-600 transition-colors duration-200 group-hover:text-purple-700 dark:text-purple-400 dark:group-hover:text-purple-300" />
-        <span className="text-sm font-medium leading-none">Ask AI</span>
+        <GeminiIcon className="size-4 shrink-0 text-purple-600 transition-colors duration-200 group-hover:text-purple-700 dark:text-purple-400 dark:group-hover:text-purple-300 sm:size-6" />
+        <span className="hidden text-sm font-medium leading-none sm:inline">Ask AI</span>
       </button>
 
       {open && panelPosition ? (

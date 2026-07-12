@@ -11,8 +11,8 @@ import { isAuthenticatedStatus } from "../utils/authLinks";
 
 function SettingsIconButton() {
   return (
-    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-muted transition-colors">
-      <Settings className="h-[22px] w-[22px] text-foreground" strokeWidth={1.75} />
+    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border bg-muted transition-colors sm:h-10 sm:w-10">
+      <Settings className="h-4 w-4 text-foreground sm:h-[22px] sm:w-[22px]" strokeWidth={1.75} />
     </span>
   );
 }

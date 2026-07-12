@@ -2,11 +2,18 @@
 
 import { useCallback, useEffect, useLayoutEffect, useState, type RefObject } from "react";
 
-export type ChatPanelPosition = {
-  top: number;
-  right: number;
-  width: number;
-};
+export type ChatPanelPosition =
+  | {
+      mode: "sheet";
+    }
+  | {
+      mode: "anchored";
+      top: number;
+      right: number;
+      width: number;
+    };
+
+const MOBILE_BREAKPOINT = 640;
 
 export function useChatPanelPosition(
   open: boolean,
@@ -21,6 +28,11 @@ export function useChatPanelPosition(
   }, []);
 
   const updatePanelPosition = useCallback(() => {
+    if (window.innerWidth < MOBILE_BREAKPOINT) {
+      setPanelPosition({ mode: "sheet" });
+      return;
+    }
+
     const trigger = triggerRef.current;
     if (!trigger) {
       return;
@@ -30,6 +42,7 @@ export function useChatPanelPosition(
     const width = Math.min(384, window.innerWidth - 24);
 
     setPanelPosition({
+      mode: "anchored",
       top: rect.bottom + 8,
       right: Math.max(12, window.innerWidth - rect.right),
       width,
@@ -67,6 +80,18 @@ export function useChatPanelPosition(
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
   }, [open, onClose]);
+
+  useEffect(() => {
+    if (!open || panelPosition?.mode !== "sheet") {
+      return;
+    }
+
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open, panelPosition?.mode]);
 
   return { mounted, panelPosition };
 }

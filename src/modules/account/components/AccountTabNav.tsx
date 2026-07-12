@@ -18,7 +18,7 @@ export function AccountTabNav() {
 
   return (
     <nav
-      className="flex flex-wrap justify-center gap-2.5 border-b border-border pb-4"
+      className="flex flex-wrap justify-center gap-2 border-b border-border pb-3 sm:gap-2.5 sm:pb-4"
       aria-label="Account sections"
     >
       {tabs.map((tab) => {
@@ -29,7 +29,7 @@ export function AccountTabNav() {
           <Link
             key={tab.id}
             href={href}
-            className={`rounded-xl px-6 py-2.5 text-sm font-medium transition-all duration-200 ${
+            className={`rounded-lg px-4 py-2 text-xs font-medium transition-all duration-200 sm:rounded-xl sm:px-6 sm:py-2.5 sm:text-sm ${
               isActive ? tabActive : tabInactive
             }`}
             aria-current={isActive ? "page" : undefined}
