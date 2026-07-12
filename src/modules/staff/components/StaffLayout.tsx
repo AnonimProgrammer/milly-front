@@ -15,11 +15,11 @@ export function StaffLayout({ venueId, children }: StaffLayoutProps) {
   const membership = useVenueMembership();
 
   return (
-    <div className={`flex min-h-screen flex-col bg-transparent p-6 ${pageShell}`}>
+    <div className={`flex min-h-screen flex-col bg-transparent p-3 sm:p-6 ${pageShell}`}>
       <StaffHeader />
 
-      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 pt-4">
-        <h2 className="text-center font-serif text-3xl font-normal tracking-wide text-foreground sm:text-4xl">
+      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-4 pt-2 sm:gap-6 sm:pt-4">
+        <h2 className="text-center font-serif text-2xl font-normal tracking-wide text-foreground sm:text-4xl">
           {membership.venueName}
         </h2>
 

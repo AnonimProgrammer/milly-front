@@ -34,20 +34,23 @@ export function StaffTabNav({ venueId, role }: StaffTabNavProps) {
   const visibleTabs = tabs.filter((tab) => !tab.managerOnly || role === "MANAGER");
 
   return (
-    <div className="w-full border-b border-border pb-4">
-      <nav className="flex flex-wrap justify-center gap-2.5" aria-label="Staff Portal Tabs">
+    <div className="w-full border-b border-border pb-3 sm:pb-4">
+      <nav
+        className="flex w-full gap-1 sm:justify-center sm:gap-2.5"
+        aria-label="Staff Portal Tabs"
+      >
         {visibleTabs.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
             <Link
               key={tab.id}
               href={staffPath(venueId, tab.id)}
-              className={`rounded-xl px-6 py-2.5 text-sm font-medium transition-all duration-200 ${
+              className={`min-w-0 flex-1 rounded-lg px-1.5 py-2 text-center text-xs font-medium transition-all duration-200 sm:flex-none sm:rounded-xl sm:px-6 sm:py-2.5 sm:text-sm ${
                 isActive ? tabActive : tabInactive
               }`}
               aria-current={isActive ? "page" : undefined}
             >
-              {tab.label}
+              <span className="block truncate">{tab.label}</span>
             </Link>
           );
         })}
