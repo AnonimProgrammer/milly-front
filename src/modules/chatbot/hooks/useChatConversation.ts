@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type SubmitEvent } from "react";
 import { MAX_CHAT_MESSAGES } from "../constants";
 import { createChatMessage, type ChatMessage } from "../types/chatMessage";
 import { useTableChatWs } from "../ws";
@@ -43,7 +43,7 @@ export function useChatConversation(tableId: string, active: boolean) {
     container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
   }, [messages, active]);
 
-  const submitDraft = (event: FormEvent<HTMLFormElement>) => {
+  const submitDraft = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (limitReached) {
