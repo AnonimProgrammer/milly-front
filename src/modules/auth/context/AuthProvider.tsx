@@ -10,7 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { useRouter } from "next/navigation";
-import { ApiError, clearSessionHandlers, isServiceUnavailable, setSessionHandlers } from "@/modules/shared/api";
+import { ApiError, clearSessionHandlers, isAccountInactiveError, isServiceUnavailable, setSessionHandlers } from "@/modules/shared/api";
 import { continueWithGoogle, continueWithPassword, getCurrentUser, logout } from "../api/authApi";
 import { attemptRefreshSession } from "../api/refreshSessionMutex";
 import type { CurrentUser, PasswordProfile } from "../api/types";
@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(currentUser);
       setStatus("authenticated");
     } catch (error) {
-      if (error instanceof ApiError && error.status === 401) {
+      if (error instanceof ApiError && (error.status === 401 || isAccountInactiveError(error))) {
         clearSession();
         return;
       }
