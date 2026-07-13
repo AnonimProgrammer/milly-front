@@ -1,40 +1,34 @@
 "use client";
 
 import { useState } from "react";
+import { showErrorToast } from "@/modules/shared/feedback";
 import { inputField, listRow, primaryButton, textMuted } from "@/modules/shared/theme/classNames";
 import type { VenueTable } from "../types";
 import { TableDetailModal } from "./TableDetailModal";
+import { TableStatusBadge } from "./TableStatusBadge";
 
 type TablesSectionProps = {
   tables: VenueTable[];
   onAddTable: (label: string) => void;
+  onUpdateTableLabel: (tableId: string, label: string) => void;
   onDeactivateTable: (tableId: string) => void;
+  onActivateTable: (tableId: string) => void;
   onGenerateQr: (tableId: string) => void;
   generatingQrTableId: string | null;
+  savingLabelTableId: string | null;
+  togglingStatusTableId: string | null;
 };
-
-function TableStatusBadge({ status }: { status: VenueTable["status"] }) {
-  if (status === "active") {
-    return (
-      <span className="rounded-full bg-green-100 dark:bg-green-900/30 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:text-green-400 border border-green-200/80 dark:border-green-800/50">
-        Active
-      </span>
-    );
-  }
-
-  return (
-    <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-      Inactive
-    </span>
-  );
-}
 
 export function TablesSection({
   tables,
   onAddTable,
+  onUpdateTableLabel,
   onDeactivateTable,
+  onActivateTable,
   onGenerateQr,
   generatingQrTableId,
+  savingLabelTableId,
+  togglingStatusTableId,
 }: TablesSectionProps) {
   const [newTable, setNewTable] = useState("");
   const [selectedTableId, setSelectedTableId] = useState<string | null>(null);
@@ -50,17 +44,12 @@ export function TablesSection({
       : `Table ${newTable.trim()}`;
 
     if (tables.some((table) => table.label === formatted)) {
-      alert("This table already exists!");
+      showErrorToast("This table already exists!");
       return;
     }
 
     onAddTable(formatted);
     setNewTable("");
-  };
-
-  const handleDeactivate = (tableId: string) => {
-    onDeactivateTable(tableId);
-    setSelectedTableId(null);
   };
 
   return (
@@ -113,11 +102,24 @@ export function TablesSection({
 
       {selectedTable && (
         <TableDetailModal
+          key={selectedTable.id}
           table={selectedTable}
-          isGeneratingQr={generatingQrTableId === selectedTable.id}
+          busy={{
+            savingLabel: savingLabelTableId === selectedTable.id,
+            generatingQr: generatingQrTableId === selectedTable.id,
+            togglingStatus: togglingStatusTableId === selectedTable.id,
+          }}
           onClose={() => setSelectedTableId(null)}
-          onGenerateQr={onGenerateQr}
-          onDeactivate={handleDeactivate}
+          onUpdateLabel={(label) => {
+            if (tables.some((table) => table.id !== selectedTable.id && table.label === label)) {
+              showErrorToast("This table already exists!");
+              return;
+            }
+            onUpdateTableLabel(selectedTable.id, label);
+          }}
+          onGenerateQr={() => onGenerateQr(selectedTable.id)}
+          onActivate={() => onActivateTable(selectedTable.id)}
+          onDeactivate={() => onDeactivateTable(selectedTable.id)}
         />
       )}
     </>
