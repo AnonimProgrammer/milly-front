@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Settings } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { adminPath, isAdminRoute } from "@/modules/admin/utils/adminRoutes";
+import { isSystemAdmin } from "@/modules/admin/utils/isAdmin";
 import { shouldCaptureReturnTo, withReturnTo } from "@/modules/shared/navigation";
 import { loginButton } from "@/modules/shared/theme/classNames";
 import { useAuth } from "../context/AuthProvider";
@@ -24,6 +26,7 @@ export function UserAccountNav() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const isAuthenticated = isAuthenticatedStatus(status);
+  const showAdminConsole = isAuthenticated && isSystemAdmin(user) && !isAdminRoute(pathname);
 
   const settingsHref = shouldCaptureReturnTo(pathname)
     ? withReturnTo("/settings", pathname)
@@ -74,6 +77,15 @@ export function UserAccountNav() {
 
   return (
     <div className="flex items-center gap-3">
+      {showAdminConsole ? (
+        <Link
+          href={adminPath("users")}
+          className="rounded-full border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+        >
+          Admin Console
+        </Link>
+      ) : null}
+
       {isAuthenticated && user ? (
         <span className="text-base font-medium text-foreground">
           {user.firstName} {user.lastName}
