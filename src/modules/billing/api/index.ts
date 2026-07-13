@@ -1,4 +1,4 @@
-export { getBill, processPayment } from "./billingApi";
+export { processPayment } from "./billingApi";
 export {
   detectCardBrand,
   extractLast4,
