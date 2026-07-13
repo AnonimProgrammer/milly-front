@@ -63,5 +63,7 @@ export const config = {
     "/join-venue/:path*",
     "/register-venue",
     "/venue/:venueId/staff/:path*",
+    "/admin",
+    "/admin/:path*",
   ],
 };
