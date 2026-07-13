@@ -1,4 +1,5 @@
-import type { VenueMember } from "../types/members";
+import type { VenueRole } from "@/modules/venue";
+import type { MemberStatus, VenueMember } from "../types/members";
 
 export type VenueMemberResponse = VenueMember;
 
@@ -18,4 +19,11 @@ export type PageResponse<T> = {
 export type ListMembersParams = {
   cursor?: string;
   limit?: number;
+  status?: "active" | "inactive" | "all";
+  role?: VenueRole;
+};
+
+export type UpdateVenueMemberRequest = {
+  role?: VenueRole;
+  status?: MemberStatus;
 };
