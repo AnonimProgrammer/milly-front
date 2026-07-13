@@ -1,7 +1,6 @@
 import { apiRequest, ApiError } from "@/modules/shared/api";
 import { toCreatePaymentRequest } from "./mappers";
 import type {
-  BillSummaryResponse,
   PaymentIntent,
   PaymentResult,
   ProcessPaymentResponse,
@@ -9,17 +8,6 @@ import type {
 
 function paymentsPath(tableId: string, orderId: string): string {
   return `/api/v1/public/tables/${tableId}/orders/${orderId}/payments`;
-}
-
-function billPath(tableId: string, orderId: string): string {
-  return `/api/v1/public/tables/${tableId}/orders/${orderId}/bill`;
-}
-
-export async function getBill(tableId: string, orderId: string): Promise<BillSummaryResponse> {
-  return apiRequest<BillSummaryResponse>(billPath(tableId, orderId), {
-    background: true,
-    silent: true,
-  });
 }
 
 /**
