@@ -1,5 +1,10 @@
 import { apiRequest } from "@/modules/shared/api";
-import type { ContinueResponse, CurrentUser, PasswordProfile } from "./types";
+import type {
+  ContinueResponse,
+  CurrentUser,
+  PasswordProfile,
+  UpdateCurrentUserRequest,
+} from "./types";
 
 export async function continueWithPassword(params: {
   email: string;
@@ -41,6 +46,15 @@ export async function continueWithGoogle(params: {
 
 export async function getCurrentUser(): Promise<CurrentUser> {
   return apiRequest<CurrentUser>("/api/v1/auth/me", { silent: true, background: true });
+}
+
+export async function updateCurrentUser(
+  request: UpdateCurrentUserRequest,
+): Promise<CurrentUser> {
+  return apiRequest<CurrentUser>("/api/v1/auth/me", {
+    method: "PATCH",
+    body: request,
+  });
 }
 
 export async function refreshSession(): Promise<void> {

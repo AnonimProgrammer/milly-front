@@ -11,9 +11,9 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import { ApiError, clearSessionHandlers, isAccountInactiveError, isServiceUnavailable, setSessionHandlers } from "@/modules/shared/api";
-import { continueWithGoogle, continueWithPassword, getCurrentUser, logout } from "../api/authApi";
+import { continueWithGoogle, continueWithPassword, getCurrentUser, logout, updateCurrentUser } from "../api/authApi";
 import { attemptRefreshSession } from "../api/refreshSessionMutex";
-import type { CurrentUser, PasswordProfile } from "../api/types";
+import type { CurrentUser, PasswordProfile, UpdateCurrentUserRequest } from "../api/types";
 import { isProtectedRoute } from "../utils/protectedRoutes";
 
 export type AuthStatus = "loading" | "authenticated" | "anonymous" | "unavailable";
@@ -26,6 +26,7 @@ type AuthContextValue = {
   signInWithGoogle: (idToken: string, profile?: PasswordProfile) => Promise<void>;
   signOut: () => Promise<void>;
   refreshUser: () => Promise<void>;
+  updateProfile: (request: UpdateCurrentUserRequest) => Promise<CurrentUser>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -115,6 +116,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [clearSession, router]);
 
+  const updateProfile = useCallback(async (request: UpdateCurrentUserRequest) => {
+    const updated = await updateCurrentUser(request);
+    setUser(updated);
+    setStatus("authenticated");
+    return updated;
+  }, []);
+
   const value = useMemo(
     () => ({
       user,
@@ -124,8 +132,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signInWithGoogle,
       signOut,
       refreshUser,
+      updateProfile,
     }),
-    [user, status, signIn, signUp, signInWithGoogle, signOut, refreshUser],
+    [user, status, signIn, signUp, signInWithGoogle, signOut, refreshUser, updateProfile],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
