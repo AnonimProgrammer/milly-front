@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState } from "react";
 import { useStaffVenueWs } from "@/modules/staff";
-import { useVenueMembership } from "@/modules/venue";
+import { canManageVenue, useVenueMembership } from "@/modules/venue";
 import type { Order } from "../types";
 import { getTodayOrderDate } from "../utils/order.helpers";
 import {
@@ -15,7 +15,7 @@ import { useStaffOrdersLoader } from "./useStaffOrdersLoader";
 
 export function useStaffOrders(venueId: string) {
   const membership = useVenueMembership();
-  const isManager = membership.role === "MANAGER";
+  const isManager = canManageVenue(membership.role);
   const [orders, setOrders] = useState<Order[]>([]);
   const [selectedDate, setSelectedDate] = useState(getTodayOrderDate);
   const supportingDataRef = useRef<StaffOrdersSupportingData>(emptySupportingData);
