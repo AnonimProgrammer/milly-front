@@ -7,6 +7,10 @@ export function resolvePostAuthRedirect(intent: string | null): string {
     return "/join-venue";
   }
 
+  if (intent === "admin") {
+    return "/admin/users";
+  }
+
   if (intent?.startsWith("staff:")) {
     const venueId = intent.slice("staff:".length);
     if (venueId) {
