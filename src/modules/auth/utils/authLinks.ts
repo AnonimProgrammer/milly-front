@@ -16,11 +16,6 @@ export function isAuthenticatedStatus(status: AuthStatus): boolean {
   return status === "authenticated";
 }
 
-/** True when auth UI should show sign-up / log-in (unknown or logged-out). */
-export function isGuestAuthStatus(status: AuthStatus): boolean {
-  return status === "anonymous" || status === "unavailable" || status === "loading";
-}
-
 export function resolveVenueEntryPath(intent: VenueIntent, status: AuthStatus): string {
   if (isAuthenticatedStatus(status)) {
     return resolvePostAuthRedirect(intent);
