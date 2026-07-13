@@ -6,7 +6,7 @@ import type { VenueRole } from "@/modules/venue";
 import { createVenueInvitation } from "@/modules/venue/api/invitationApi";
 
 export function useInviteMember(venueId: string) {
-  const [role, setRole] = useState<VenueRole>("WAITER");
+  const [role, setRole] = useState<VenueRole>("EMPLOYEE");
   const [inviteUrl, setInviteUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isCopied, setIsCopied] = useState(false);

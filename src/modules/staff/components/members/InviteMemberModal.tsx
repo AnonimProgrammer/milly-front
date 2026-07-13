@@ -63,7 +63,7 @@ export function InviteMemberModal({ venueId, onClose }: InviteMemberModalProps) 
             disabled={isGenerating}
             className={inputField}
           >
-            <option value="WAITER">Waiter</option>
+            <option value="EMPLOYEE">Employee</option>
             <option value="MANAGER">Manager</option>
           </select>
         </div>

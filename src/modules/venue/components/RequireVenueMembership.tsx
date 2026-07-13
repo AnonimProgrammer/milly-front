@@ -14,6 +14,8 @@ type RequireVenueMembershipProps = {
   children: ReactNode;
 };
 
+type ForbiddenReason = "not-member" | "blocked";
+
 export function RequireVenueMembership({ venueId, children }: RequireVenueMembershipProps) {
   const [membership, setMembership] = useState<Awaited<ReturnType<typeof getVenueMembership>> | null>(
     null,
@@ -21,6 +23,7 @@ export function RequireVenueMembership({ venueId, children }: RequireVenueMember
   const [status, setStatus] = useState<"loading" | "ready" | "forbidden" | "unavailable">(
     "loading",
   );
+  const [forbiddenReason, setForbiddenReason] = useState<ForbiddenReason>("not-member");
 
   const loadMembership = useCallback(async () => {
     setStatus("loading");
@@ -30,7 +33,14 @@ export function RequireVenueMembership({ venueId, children }: RequireVenueMember
       setMembership(data);
       setStatus("ready");
     } catch (error) {
-      if (error instanceof ApiError && (error.status === 403 || error.status === 404)) {
+      if (error instanceof ApiError && error.status === 403) {
+        setForbiddenReason(error.errorCode === "MEMBERSHIP_INACTIVE" ? "blocked" : "not-member");
+        setStatus("forbidden");
+        return;
+      }
+
+      if (error instanceof ApiError && error.status === 404) {
+        setForbiddenReason("not-member");
         setStatus("forbidden");
         return;
       }
@@ -59,11 +69,15 @@ export function RequireVenueMembership({ venueId, children }: RequireVenueMember
   }
 
   if (status === "forbidden") {
+    const isBlocked = forbiddenReason === "blocked";
+
     return (
       <main className={`flex min-h-screen flex-col items-center justify-center p-6 text-center ${pageMain}`}>
         <h1 className="text-xl font-semibold text-foreground">Access denied</h1>
         <p className={`mt-2 max-w-sm text-sm font-light ${textMuted}`}>
-          You are not a member of this venue. Join a venue or pick one from your list.
+          {isBlocked
+            ? "Your access to this venue has been blocked. Contact the venue owner or a manager if you think this is a mistake."
+            : "You are not a member of this venue. Join a venue or pick one from your list."}
         </p>
         <Link
           href="/join-venue"

@@ -1,5 +1,10 @@
 import { apiRequest } from "@/modules/shared/api";
-import type { ListMembersParams, PageResponse, VenueMemberResponse } from "./types";
+import type {
+  ListMembersParams,
+  PageResponse,
+  UpdateVenueMemberRequest,
+  VenueMemberResponse,
+} from "./types";
 
 function membersPath(venueId: string) {
   return `/api/v1/venues/${venueId}/members`;
@@ -17,6 +22,12 @@ function buildMembersQuery(params?: ListMembersParams): string {
   }
   if (params.limit != null) {
     search.set("limit", String(params.limit));
+  }
+  if (params.status) {
+    search.set("status", params.status);
+  }
+  if (params.role) {
+    search.set("role", params.role);
   }
 
   const query = search.toString();
@@ -58,4 +69,15 @@ export async function listAllMembers(
   } while (cursor);
 
   return members;
+}
+
+export async function updateMember(
+  venueId: string,
+  memberId: string,
+  request: UpdateVenueMemberRequest,
+): Promise<VenueMemberResponse> {
+  return apiRequest<VenueMemberResponse>(`${membersPath(venueId)}/${memberId}`, {
+    method: "PATCH",
+    body: request,
+  });
 }

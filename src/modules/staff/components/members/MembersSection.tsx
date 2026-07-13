@@ -1,19 +1,59 @@
 "use client";
 
-import { useState } from "react";
-import { listRow, primaryButton, textMuted } from "@/modules/shared/theme/classNames";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/modules/auth";
+import { primaryButton, textMuted } from "@/modules/shared/theme/classNames";
+import { useVenueMembership } from "@/modules/venue";
 import type { VenueMember } from "../../types/members";
+import { canEditMember } from "../../utils/memberPermissions";
+import {
+  memberFilterEmptyMessage,
+  memberFilterShowsStatus,
+  type MemberListFilter,
+} from "../../utils/memberFilters";
+import { EditMemberModal } from "./EditMemberModal";
 import { InviteMemberModal } from "./InviteMemberModal";
-import { MemberRoleBadge } from "./MemberRoleBadge";
-import { MemberStatusBadge } from "./MemberStatusBadge";
+import { MemberFilterTabs } from "./MemberFilterTabs";
+import { MembersList } from "./MembersList";
+import { MembersRefreshError } from "./MembersRefreshError";
 
 type MembersSectionProps = {
   venueId: string;
   members: VenueMember[];
+  filter: MemberListFilter;
+  isRefreshing: boolean;
+  refreshFailed: boolean;
+  onFilterChange: (filter: MemberListFilter) => void;
+  onMembersChanged: () => void;
+  onRetryRefresh: () => void;
 };
 
-export function MembersSection({ venueId, members }: MembersSectionProps) {
+export function MembersSection({
+  venueId,
+  members,
+  filter,
+  isRefreshing,
+  refreshFailed,
+  onFilterChange,
+  onMembersChanged,
+  onRetryRefresh,
+}: MembersSectionProps) {
+  const { user } = useAuth();
+  const membership = useVenueMembership();
   const [inviteOpen, setInviteOpen] = useState(false);
+  const [editingMember, setEditingMember] = useState<VenueMember | null>(null);
+  const viewerEmail = user?.email ?? "";
+  const showStatus = memberFilterShowsStatus(filter);
+  const emptyMessage = memberFilterEmptyMessage(filter);
+
+  useEffect(() => {
+    if (editingMember && !members.some((member) => member.id === editingMember.id)) {
+      setEditingMember(null);
+    }
+  }, [members, editingMember]);
+
+  const canEdit = (member: VenueMember) =>
+    canEditMember(membership.role, member, viewerEmail);
 
   return (
     <div className="relative mx-auto flex w-full max-w-4xl flex-col gap-6">
@@ -33,28 +73,35 @@ export function MembersSection({ venueId, members }: MembersSectionProps) {
         </button>
       </div>
 
-      <div className="flex flex-col gap-2.5">
-        {members.map((member) => (
-          <div
-            key={member.id}
-            className={`flex items-center justify-between gap-4 p-4 ${listRow}`}
-          >
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-foreground">
-                {member.firstName} {member.lastName}
-              </p>
-              <p className={`mt-0.5 truncate text-xs ${textMuted}`}>{member.email}</p>
-            </div>
-            <div className="flex shrink-0 items-center gap-2">
-              <MemberRoleBadge role={member.role} />
-              <MemberStatusBadge status={member.status} />
-            </div>
-          </div>
-        ))}
-      </div>
+      <MemberFilterTabs
+        filter={filter}
+        memberCount={members.length}
+        isRefreshing={isRefreshing}
+        onFilterChange={onFilterChange}
+      />
+
+      {refreshFailed ? <MembersRefreshError onRetry={onRetryRefresh} /> : null}
+
+      <MembersList
+        members={members}
+        isRefreshing={isRefreshing}
+        emptyMessage={emptyMessage}
+        showStatus={showStatus}
+        canEdit={canEdit}
+        onEdit={setEditingMember}
+      />
 
       {inviteOpen ? (
         <InviteMemberModal venueId={venueId} onClose={() => setInviteOpen(false)} />
+      ) : null}
+
+      {editingMember ? (
+        <EditMemberModal
+          venueId={venueId}
+          member={editingMember}
+          onClose={() => setEditingMember(null)}
+          onSaved={onMembersChanged}
+        />
       ) : null}
     </div>
   );

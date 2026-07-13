@@ -4,6 +4,7 @@ import { useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { AuthPageFallback } from "@/modules/auth";
 import { staffPath } from "@/modules/staff";
+import { canManageVenue } from "../utils/venueRole";
 import { useVenueMembership } from "../context/VenueMembershipContext";
 
 type RequireManagerRoleProps = {
@@ -14,7 +15,7 @@ type RequireManagerRoleProps = {
 export function RequireManagerRole({ venueId, children }: RequireManagerRoleProps) {
   const membership = useVenueMembership();
   const router = useRouter();
-  const isManager = membership.role === "MANAGER";
+  const isManager = canManageVenue(membership.role);
 
   useEffect(() => {
     if (!isManager) {
