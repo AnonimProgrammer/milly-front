@@ -70,10 +70,3 @@ export function getSheetTitle(step: PaymentStep, selectedAmount: number): string
   if (step === "error") return "Payment Failed";
   return "";
 }
-
-export function getPayButtonLabel(provider: PaymentProvider | null): string {
-  if (provider === "apple-pay") return "Pay with Apple Pay";
-  if (provider === "google-pay") return "Pay with Google Pay";
-  if (provider === "card") return "Pay with Card";
-  return "Select a payment option";
-}
