@@ -1,10 +1,13 @@
-export type VenueRole = "MANAGER" | "WAITER";
+export type VenueRole = "OWNER" | "MANAGER" | "EMPLOYEE";
+
+export type VenueMembershipStatus = "active" | "inactive" | "invited";
 
 export type VenueMembership = {
   venueId: string;
   venueName: string;
   location: string;
   role: VenueRole;
+  status: VenueMembershipStatus;
 };
 
 export type CreateVenueRequest = {
