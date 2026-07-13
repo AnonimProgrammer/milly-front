@@ -1,5 +1,10 @@
 import { apiRequest, apiRequestNoContent } from "@/modules/shared/api";
-import type { CreateTableRequest, TableQrResponse, TableResponse } from "./types";
+import type {
+  CreateTableRequest,
+  TableQrResponse,
+  TableResponse,
+  UpdateTableLabelRequest,
+} from "./types";
 
 function tablesPath(venueId: string) {
   return `/api/v1/venues/${venueId}/tables`;
@@ -25,8 +30,25 @@ export async function createTable(
   });
 }
 
+export async function updateTableLabel(
+  venueId: string,
+  tableId: string,
+  request: UpdateTableLabelRequest,
+): Promise<TableResponse> {
+  return apiRequest<TableResponse>(`${tablesPath(venueId)}/${tableId}`, {
+    method: "PATCH",
+    body: request,
+  });
+}
+
 export async function deactivateTable(venueId: string, tableId: string): Promise<void> {
   return apiRequestNoContent(`${tablesPath(venueId)}/${tableId}/deactivate`, {
+    method: "POST",
+  });
+}
+
+export async function activateTable(venueId: string, tableId: string): Promise<void> {
+  return apiRequestNoContent(`${tablesPath(venueId)}/${tableId}/activate`, {
     method: "POST",
   });
 }
