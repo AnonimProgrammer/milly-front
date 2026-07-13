@@ -6,6 +6,7 @@ import {
   ApiError,
   NetworkError,
   getRequestErrorMessage,
+  isAccountInactiveError,
   type ApiResponse,
 } from "./types";
 
@@ -18,6 +19,13 @@ type RequestOptions = Omit<RequestInit, "body"> & {
 };
 
 function notifyRequestError(error: unknown, silent?: boolean): void {
+  if (error instanceof ApiError && isAccountInactiveError(error)) {
+    if (!silent) {
+      showErrorToast(error.message);
+    }
+    return;
+  }
+
   if (silent) {
     return;
   }
@@ -93,6 +101,16 @@ function createApiError(status: number, message?: string, errorCode?: string): A
   return new ApiError(status, message ?? "Request failed.", errorCode);
 }
 
+function handleAccountInactive(): void {
+  const { onSessionExpired } = getSessionHandlers();
+  onSessionExpired?.();
+}
+
+function rejectAccountInactive(status: number, message?: string, errorCode?: string): never {
+  handleAccountInactive();
+  throw createApiError(status, message, errorCode);
+}
+
 async function executeRequest<T>(
   path: string,
   options: RequestOptions,
@@ -114,6 +132,10 @@ async function executeRequest<T>(
 
   if (response.ok) {
     return payload.data;
+  }
+
+  if (response.status === 403 && payload.errorCode === "ACCOUNT_INACTIVE") {
+    rejectAccountInactive(response.status, payload.message, payload.errorCode);
   }
 
   if (response.status === 401 && shouldAttemptRefresh(path, isRetry)) {
@@ -152,6 +174,10 @@ async function executeNoContentRequest(
   }
 
   const payload = await parseResponse<null>(response);
+
+  if (response.status === 403 && payload.errorCode === "ACCOUNT_INACTIVE") {
+    rejectAccountInactive(response.status, payload.message, payload.errorCode);
+  }
 
   if (response.status === 401 && shouldAttemptRefresh(path, isRetry)) {
     const { refreshSession, onSessionExpired } = getSessionHandlers();
