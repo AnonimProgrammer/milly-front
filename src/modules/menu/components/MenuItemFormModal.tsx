@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type SubmitEvent } from "react";
+import { showErrorToast } from "@/modules/shared/feedback";
 import {
   inputField,
   modalOverlay,
@@ -43,12 +44,12 @@ export function MenuItemFormModal({
     const prepMinutes = parseInt(approximatePreparationMinutes, 10);
 
     if (isNaN(priceNum) || priceNum < 0) {
-      alert("Please enter a valid price.");
+      showErrorToast("Please enter a valid price.");
       return;
     }
 
     if (isNaN(prepMinutes) || prepMinutes < 1 || prepMinutes > 480) {
-      alert("Please enter a preparation time between 1 and 480 minutes.");
+      showErrorToast("Please enter a preparation time between 1 and 480 minutes.");
       return;
     }
 
