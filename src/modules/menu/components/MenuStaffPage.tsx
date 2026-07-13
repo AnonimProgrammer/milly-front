@@ -3,14 +3,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { LoadFailedMessage, StaffPageLoading } from "@/modules/staff";
 import {
-  MenuSection,
   createMenuItem,
   deleteMenuItem,
   listMenuItems,
   mapMenuItemResponse,
   updateMenuItem,
-  type MenuItem,
-} from "@/modules/menu";
+} from "../api";
+import type { MenuItem } from "../types";
+import { MenuSection } from "./MenuSection";
 
 type MenuStaffPageProps = {
   venueId: string;
