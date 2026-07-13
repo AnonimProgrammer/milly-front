@@ -37,6 +37,10 @@ export function isServiceUnavailable(error: unknown): boolean {
   return error instanceof ApiError && error.status >= 500;
 }
 
+export function isAccountInactiveError(error: unknown): boolean {
+  return error instanceof ApiError && error.status === 403 && error.errorCode === "ACCOUNT_INACTIVE";
+}
+
 export function getRequestErrorMessage(error: unknown): string {
   if (error instanceof ApiError || error instanceof NetworkError) {
     return error.message;
