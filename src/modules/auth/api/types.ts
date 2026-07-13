@@ -9,7 +9,14 @@ export type CurrentUser = {
   email: string;
   firstName: string;
   lastName: string;
+  phoneNumber: string | null;
   roles: string[];
+};
+
+export type UpdateCurrentUserRequest = {
+  firstName?: string;
+  lastName?: string;
+  phoneNumber?: string;
 };
 
 export type ContinueResponse = {
