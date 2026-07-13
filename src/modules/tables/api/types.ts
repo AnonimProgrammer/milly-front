@@ -19,3 +19,7 @@ export type TableQrResponse = {
 export type CreateTableRequest = {
   label: string;
 };
+
+export type UpdateTableLabelRequest = {
+  label: string;
+};
