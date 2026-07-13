@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { listAllMembers } from "../../api/membersApi";
 import type { VenueMember } from "../../types/members";
+import { memberFilterToParams, type MemberListFilter } from "../../utils/memberFilters";
 import { LoadFailedMessage } from "../LoadFailedMessage";
 import { StaffPageLoading } from "../StaffPageLoading";
 import { MembersSection } from "./MembersSection";
@@ -13,25 +14,57 @@ type MembersStaffPageProps = {
 
 export function MembersStaffPage({ venueId }: MembersStaffPageProps) {
   const [members, setMembers] = useState<VenueMember[]>([]);
+  const [filter, setFilter] = useState<MemberListFilter>("active");
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [loadFailed, setLoadFailed] = useState(false);
-
-  const loadMembers = useCallback(async () => {
-    setLoadFailed(false);
-    setIsLoading(true);
-
-    try {
-      const memberResponses = await listAllMembers(venueId, undefined, { background: true });
-      setMembers(memberResponses);
-    } catch {
-      setLoadFailed(true);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [venueId]);
+  const [refreshFailed, setRefreshFailed] = useState(false);
+  const hasLoadedOnce = useRef(false);
 
   useEffect(() => {
-    void loadMembers();
+    hasLoadedOnce.current = false;
+  }, [venueId]);
+
+  const loadMembers = useCallback(
+    async (options?: { clearList?: boolean }) => {
+      const isInitialLoad = !hasLoadedOnce.current;
+
+      if (isInitialLoad) {
+        setIsLoading(true);
+      } else {
+        setIsRefreshing(true);
+        if (options?.clearList) {
+          setMembers([]);
+        }
+      }
+
+      setLoadFailed(false);
+      setRefreshFailed(false);
+
+      try {
+        const memberResponses = await listAllMembers(
+          venueId,
+          memberFilterToParams(filter),
+          { background: true },
+        );
+        setMembers(memberResponses);
+        hasLoadedOnce.current = true;
+      } catch {
+        if (isInitialLoad) {
+          setLoadFailed(true);
+        } else {
+          setRefreshFailed(true);
+        }
+      } finally {
+        setIsLoading(false);
+        setIsRefreshing(false);
+      }
+    },
+    [venueId, filter],
+  );
+
+  useEffect(() => {
+    void loadMembers({ clearList: hasLoadedOnce.current });
   }, [loadMembers]);
 
   if (isLoading) {
@@ -42,5 +75,16 @@ export function MembersStaffPage({ venueId }: MembersStaffPageProps) {
     return <LoadFailedMessage onRetry={() => void loadMembers()} />;
   }
 
-  return <MembersSection venueId={venueId} members={members} />;
+  return (
+    <MembersSection
+      venueId={venueId}
+      members={members}
+      filter={filter}
+      isRefreshing={isRefreshing}
+      refreshFailed={refreshFailed}
+      onFilterChange={setFilter}
+      onMembersChanged={() => void loadMembers()}
+      onRetryRefresh={() => void loadMembers()}
+    />
+  );
 }
