@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { tabActive, tabInactive } from "@/modules/shared/theme/classNames";
 import type { VenueRole } from "@/modules/venue";
+import { canManageVenue } from "@/modules/venue";
 import {
   getStaffSectionFromPath,
   staffPath,
@@ -31,7 +32,7 @@ const tabs: TabOption[] = [
 export function StaffTabNav({ venueId, role }: StaffTabNavProps) {
   const pathname = usePathname();
   const activeTab = getStaffSectionFromPath(pathname) ?? "orders";
-  const visibleTabs = tabs.filter((tab) => !tab.managerOnly || role === "MANAGER");
+  const visibleTabs = tabs.filter((tab) => !tab.managerOnly || canManageVenue(role));
 
   return (
     <div className="w-full border-b border-border pb-3 sm:pb-4">
