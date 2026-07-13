@@ -5,4 +5,4 @@ export {
   tableTopic,
   venueStaffTopic,
 } from "./config";
-export type { OrderEvent, OrderEventType, WsTicketResponse } from "./types";
+export type { WsTicketResponse } from "./types";
