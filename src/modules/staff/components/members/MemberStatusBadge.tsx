@@ -6,7 +6,7 @@ type MemberStatusBadgeProps = {
 
 const statusLabels: Record<MemberStatus, string> = {
   active: "Active",
-  inactive: "Inactive",
+  inactive: "Blocked",
   invited: "Invited",
 };
 
@@ -28,7 +28,7 @@ export function MemberStatusBadge({ status }: MemberStatusBadgeProps) {
   }
 
   return (
-    <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+    <span className="rounded-full border border-border bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
       {statusLabels[status]}
     </span>
   );
