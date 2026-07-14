@@ -1,4 +1,4 @@
-﻿# Table Chatbot
+# Table Chatbot
 
 ---
 
@@ -40,7 +40,7 @@ Client implementation: `modules/chatbot/ws/tableChatWsClient.ts` (`@stomp/stompj
 Payload send:
 
 ```json
-{ "text": "What vegetarian options do you have?", "history": [{ "role": "user", "content": "â€¦" }] }
+{ "text": "What vegetarian options do you have?", "history": [{ "role": "user", "content": "…" }] }
 ```
 
 `history` is built from the in-panel conversation (roles `user` | `assistant`). Backend keeps at most the last 10 history items for the model.
@@ -53,3 +53,59 @@ Inbound events (`ChatMessageEvent`):
 
 | `type` | UI meaning |
 |--------|------------|
+| `WELCOME` | Greeting after subscribe |
+| `ASSISTANT_REPLY` | Model answer |
+| `ERROR` | Shown as an error bubble / notice |
+
+Local user messages are appended in the UI when sending; they are not echoed by the server as a separate event type.
+
+---
+
+## Chat flow
+
+```mermaid
+sequenceDiagram
+  actor Guest
+  participant UI as Chat panel
+  participant WS as TableChatWsClient
+  participant API as API STOMP
+
+  Guest->>UI: Open chat
+  UI->>WS: connect
+  WS->>API: CONNECT + SUBSCRIBE chat topic
+  API-->>WS: WELCOME
+  WS-->>UI: show welcome
+
+  Guest->>UI: Send text
+  UI->>WS: publish text + history
+  WS->>API: SEND /app/table/id/chat
+  API-->>WS: ASSISTANT_REPLY or ERROR
+  WS-->>UI: append bubble
+```
+
+Hook surface: `useTableChatWs`, `useChatConversation` (send + local list).
+
+---
+
+## Limits and failure UI
+
+| Rule | Constant / behaviour |
+|------|----------------------|
+| Max messages in panel | `MAX_CHAT_MESSAGES = 10` (`constants.ts`) — composer blocks when reached |
+| Empty send | Ignored client-side |
+| Disconnect | Auto reconnect delay ~1.5s while panel wants a connection |
+| AI disabled on backend | `ERROR` event with unavailable message |
+
+Chat has no REST fallback; it requires a working WS URL to the backend.
+
+---
+
+## Env dependencies
+
+| Variable | Role |
+|----------|------|
+| `NEXT_PUBLIC_WS_URL` | Required in typical local/prod setups where REST is proxied through Next |
+
+If WS points at the wrong host, the order board may still work via REST while chat stays disconnected.
+
+Related: [routes.md](./routes.md) (`/table/[tableId]`), [system-design.md](./system-design.md), [installation.md](./installation.md).
