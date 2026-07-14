@@ -1,4 +1,4 @@
-﻿# System Design
+# System Design
 
 ---
 
@@ -13,8 +13,9 @@
 1. [System context](#system-context)
 2. [High-level architecture](#high-level-architecture)
 3. [Modules](#modules)
-4. [How the app reaches the API](#how-the-app-reaches-the-api)
-5. [Related documentation](#related-documentation)
+4. [UI styling](#ui-styling)
+5. [How the app reaches the API](#how-the-app-reaches-the-api)
+6. [Related documentation](#related-documentation)
 
 ---
 
@@ -84,14 +85,28 @@ State is mostly React context and local hooks (no global Redux/React Query store
 
 ---
 
+## UI styling
+
+The UI uses **Tailwind CSS v4** (utility classes) plus small shared components under `modules/shared/ui` and `lucide-react` icons. No separate component library (MUI, Chakra, etc.) is used.
+
+Why Tailwind here:
+
+- Keeps styles next to the markup for the many staff and customer screens without a large shared CSS bundle.
+- Works cleanly with Next.js and PostCSS; unused utilities are dropped at build time.
+- Theme tokens (light/dark) stay in a thin `shared/theme` layer instead of fighting a third-party design system.
+
+Reusable chrome (buttons, sheets, headers) lives in `shared/ui` so modules do not reinvent primitives.
+
+---
+
 ## How the app reaches the API
 
 | Channel | Local default | Notes |
 |---------|---------------|-------|
-| REST | Browser â†’ same-origin `/api/v1` â†’ rewrite to `API_URL` | Cookies `access-token`, `refresh-token` forwarded |
+| REST | Browser → same-origin `/api/v1` → rewrite to `API_URL` | Cookies `access-token`, `refresh-token` forwarded |
 | WebSocket | `ws://localhost:8080/ws` | Set `NEXT_PUBLIC_WS_URL` when REST uses the proxy |
 
-Staff WS: `POST /api/v1/ws-ticket` then `ws://â€¦/ws?ticket=â€¦`.  
+Staff WS: `POST /api/v1/ws-ticket` then `ws://…/ws?ticket=…`.  
 Customer WS: anonymous `/ws`; order topic and chat topic are table-scoped.
 
 See [routes.md](./routes.md) and [chatbot.md](./chatbot.md) for route and chat contracts with the API.
