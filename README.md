@@ -1,4 +1,4 @@
-﻿# milly-front
+# milly-front
 
 Next.js frontend for **Milly** — a multi-venue restaurant ordering platform. Covers staff venue portals, platform admin, and anonymous customer table ordering. Talks to the Milly API over REST (`/api/v1`) and STOMP WebSocket (`/ws`).
 
@@ -24,3 +24,16 @@ Quick start: [documentation/installation.md](./documentation/installation.md). D
 |------|-----|
 | Frontend repository | [github.com/AnonimProgrammer/milly-front](https://github.com/AnonimProgrammer/milly-front) |
 | Live application | [milly-front.vercel.app](https://milly-front.vercel.app) |
+
+---
+
+## Documentation guide
+
+| Document | Covers |
+|----------|--------|
+| [System Design](./documentation/system-design.md) | Architecture, modules, Tailwind choice, API access |
+| [Installation](./documentation/installation.md) | Clone, env, local run with the API |
+| [Development Instructions](./documentation/development-instructions.md) | Layout, feature workflow, git |
+| [Build Instructions](./documentation/build-instructions.md) | Production build and deploy env |
+| [Route Documentation](./documentation/routes.md) | App Router map and access control |
+| [Table Chatbot](./documentation/chatbot.md) | Customer chat UI and STOMP wiring |
