@@ -1,36 +1,26 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+﻿# milly-front
 
-## Getting Started
+Next.js frontend for **Milly** — a multi-venue restaurant ordering platform. Covers staff venue portals, platform admin, and anonymous customer table ordering. Talks to the Milly API over REST (`/api/v1`) and STOMP WebSocket (`/ws`).
 
-First, run the development server:
+Quick start: [documentation/installation.md](./documentation/installation.md). Development: [documentation/development-instructions.md](./documentation/development-instructions.md).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Team information
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Full name | LinkedIn | GitHub |
+|-----------|----------|--------|
+| Ali Safarli | [linkedin.com/in/ali-safarli-7a01a7297](https://www.linkedin.com/in/ali-safarli-7a01a7297) | [github.com/alisafarli06](https://github.com/alisafarli06) |
+| Mikayil Guliyev | [linkedin.com/in/mikayil-guliyev-341275306](https://www.linkedin.com/in/mikayil-guliyev-341275306) | [github.com/miko44quliyev](https://github.com/miko44quliyev) |
+| Ilkin Ismayilov | [linkedin.com/in/ilkin-ismayilov](https://www.linkedin.com/in/ilkin-ismayilov) | [github.com/ilkinismayilov-905](https://github.com/ilkinismayilov-905) |
+| Yusif Xankishiyev | [linkedin.com/in/yusif-xankishiyev](https://www.linkedin.com/in/yusif-xankishiyev) | [github.com/XankisiyevYusif](https://github.com/XankisiyevYusif) |
+| Omar Ismayilov | [linkedin.com/in/omar-ismayilov-6b97b9337](https://www.linkedin.com/in/omar-ismayilov-6b97b9337) | [github.com/AnonimProgrammer](https://github.com/AnonimProgrammer) |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Project links
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Link | URL |
+|------|-----|
+| Frontend repository | [github.com/AnonimProgrammer/milly-front](https://github.com/AnonimProgrammer/milly-front) |
+| Live application | [milly-front.vercel.app](https://milly-front.vercel.app) |
